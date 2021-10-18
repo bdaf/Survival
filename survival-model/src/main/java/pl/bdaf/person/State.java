@@ -14,17 +14,17 @@ public abstract class State {
     abstract void goOutsideToFindFood();
     abstract void drink();
     abstract void eat();
-
+    abstract void setWorseState();
     abstract void changeStateRandomly(double aPercentageForHealthState, double aPercentageForMediumState);
 
-    class HealthyState extends State{
+    static class HealthyState extends State{
 
-        public HealthyState(Person aPerson) {
+        HealthyState(Person aPerson) {
             super(aPerson);
         }
 
         @Override
-        public void goOutsideToFindFood() {
+        void goOutsideToFindFood() {
             //TODO
         }
 
@@ -36,6 +36,11 @@ public abstract class State {
         @Override
         public void eat() {
             person.setStrength(person.getStrength()+3);
+        }
+
+        @Override
+        void setWorseState() {
+            person.setState(new MediumState(person));
         }
 
         @Override
@@ -61,6 +66,11 @@ public abstract class State {
         @Override
         public void eat() {
             changeStateRandomly(0.6,0.0);
+        }
+
+        @Override
+        void setWorseState() {
+            person.setState(new SickState(person));
         }
 
         @Override
@@ -92,6 +102,11 @@ public abstract class State {
             changeStateRandomly(0.4,0.4);
         }
 
+        @Override
+        void setWorseState() {
+            person.setState(new DeadState(person));
+        }
+
         void changeStateRandomly(double aPercentageForHealthState, double aPercentageForMediumHealth) {
             double randedNumber = rand.nextDouble();
             if (randedNumber < aPercentageForHealthState) {
@@ -99,6 +114,33 @@ public abstract class State {
             } else if (randedNumber < aPercentageForMediumHealth) {
                 person.setState(new MediumState(person));
             }
+        }
+    }
+
+    class DeadState extends State{
+
+        protected DeadState(Person aPerson) { super(aPerson); }
+
+        @Override
+        public void goOutsideToFindFood() {
+            throw new IllegalStateException("Dead person's state cannot go out, he's dead!");
+        }
+
+        @Override
+        public void drink() {
+            throw new IllegalStateException("Dead person's state cannot drink!");
+        }
+
+        @Override
+        public void eat() {
+            throw new IllegalStateException("Dead person cannot eat!");
+        }
+
+        @Override
+        void setWorseState() {}
+
+        void changeStateRandomly(double aPercentageForHealthState, double aPercentageForMediumHealth) {
+            throw new IllegalStateException("Dead person's state cannot be changed!");
         }
     }
 }
