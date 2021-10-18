@@ -6,8 +6,12 @@ public class Person {
     private State state;
 
     Person(int aStrength) {
+        this(aStrength, new State.Healthy());
+    }
+
+    Person(int aStrength, State aState) {
         strength = aStrength;
-        state = new State.HealthyState(this);
+        state = aState;
     }
 
     public State getState() {
@@ -24,5 +28,25 @@ public class Person {
 
     public void setStrength(int strength) {
         this.strength = strength;
+    }
+
+    public void eat() {
+        state.eat(this);
+    }
+
+    public void drink() {
+        state.drink(this);
+    }
+
+    public void setWorseState() {
+        state = state.getWorseState();
+    }
+
+    public void setBetterState() {
+        state = state.getBetterState();
+    }
+
+    public void goOutsideFindFood() {
+        state.goOutsideFindFood(this);
     }
 }
