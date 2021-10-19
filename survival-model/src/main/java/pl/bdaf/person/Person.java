@@ -12,22 +12,12 @@ public class Person {
 
     private State state;
 
-    Person() { this(10); }
-
-    Person(int aStrength) {
-        this(aStrength, new State.Healthy());
-    }
-
-    Person(int aStrength, State aState) {
-        this(aStrength,10,10,10, aState);
-    }
-
-    Person(int aStrength, int aHydrationPoints, int aSatietyPoints, int aCheerfulness, State aState) {
-        strength = aStrength;
-        hydrationPoints = aHydrationPoints;
-        satietyPoints = aSatietyPoints;
-        cheerfulness = aCheerfulness;
-        state = aState;
+    Person(PersonStatistic aStats){
+        strength = aStats.strength;
+        cheerfulness = aStats.cheerfulness;
+        satietyPoints = aStats.satietyPoints;
+        hydrationPoints = aStats.hydrationPoints;
+        state = new State.Healthy();
     }
 
     public State getState() {

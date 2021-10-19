@@ -21,27 +21,30 @@ public class StateTest {
         randomize = new Random();
         randomize = mock(Random.class);
         state = new State.Healthy(randomize);
-        person = new Person(10, state);
+        person = new Person(PersonStatistic.TO_TEST);
+        person.setState(state);
     }
 
     @Test
-    void personShouldGet2StrengthPointByDrinkingTwiceAnd3PointsByEatingBeingHealthy() {
+    void personShouldGet8StrengthPointByDrinkingTwiceAnd13PointsByEatingBeingHealthy() {
+        assertEquals(HEALTHY, person.getState().toString());
         person.drink();
-        assertEquals(11, person.getStrength());
+        assertEquals(14, person.getStrength());
         person.drink();
-        assertEquals(12, person.getStrength());
+        assertEquals(18, person.getStrength());
         person.eat();
-        assertEquals(15, person.getStrength());
+        assertEquals(31, person.getStrength());
     }
 
     @Test
-    void personShouldGet9StrengthPointByEating3TimesBeingHealthy() {
+    void personShouldGet39StrengthPointByEating3TimesBeingHealthy() {
+        assertEquals(HEALTHY, person.getState().toString());
         person.eat();
-        assertEquals(13, person.getStrength());
+        assertEquals(23, person.getStrength());
         person.eat();
-        assertEquals(16, person.getStrength());
+        assertEquals(36, person.getStrength());
         person.eat();
-        assertEquals(19, person.getStrength());
+        assertEquals(49, person.getStrength());
     }
 
     @Test
@@ -98,7 +101,7 @@ public class StateTest {
         person.setWorseState();
         assertEquals(SICK, person.getState().toString());
 
-
+        when(randomize.nextDouble()).thenReturn(0.45);
         person.eat();
         assertEquals(SICK, person.getState().toString());
 
@@ -141,40 +144,42 @@ public class StateTest {
         assertEquals(14, person.getStrength());
         assertEquals(11, person.getCheerfulness());
         assertEquals(11, person.getSatietyPoints());
-        assertEquals(15, person.getHydrationPoints());
+        assertEquals(14, person.getHydrationPoints());
 
         person.eat();
         assertEquals(27, person.getStrength());
         assertEquals(14, person.getCheerfulness());
         assertEquals(18, person.getSatietyPoints());
-        assertEquals(16, person.getHydrationPoints());
+        assertEquals(15, person.getHydrationPoints());
 
-        person = new Person(10, new State.Medium(randomize));
+        person = new Person(PersonStatistic.TO_TEST);
+        person.setState(new State.Medium(randomize));
 
         person.drink();
         assertEquals(13, person.getStrength());
         assertEquals(11, person.getCheerfulness());
         assertEquals(11, person.getSatietyPoints());
-        assertEquals(15, person.getHydrationPoints());
+        assertEquals(14, person.getHydrationPoints());
 
         person.eat();
         assertEquals(23, person.getStrength());
         assertEquals(14, person.getCheerfulness());
         assertEquals(18, person.getSatietyPoints());
-        assertEquals(16, person.getHydrationPoints());
+        assertEquals(15, person.getHydrationPoints());
 
-        person = new Person(10, new State.Sick(randomize));
+        person = new Person(PersonStatistic.TO_TEST);
+        person.setState(new State.Medium(randomize));
 
         person.drink();
         assertEquals(13, person.getStrength());
         assertEquals(11, person.getCheerfulness());
         assertEquals(11, person.getSatietyPoints());
-        assertEquals(15, person.getHydrationPoints());
+        assertEquals(14, person.getHydrationPoints());
 
         person.eat();
         assertEquals(23, person.getStrength());
         assertEquals(14, person.getCheerfulness());
         assertEquals(18, person.getSatietyPoints());
-        assertEquals(16, person.getHydrationPoints());
+        assertEquals(15, person.getHydrationPoints());
     }
 }

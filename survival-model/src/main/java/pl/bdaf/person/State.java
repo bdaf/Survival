@@ -26,7 +26,7 @@ public abstract class State {
         aPerson.setStrength(aPerson.getStrength()+3);
         aPerson.setCheerfulness(aPerson.getCheerfulness()+1);
         aPerson.setSatietyPoints(aPerson.getSatietyPoints()+1);
-        aPerson.setHydrationPoints(aPerson.getHydrationPoints()+5);
+        aPerson.setHydrationPoints(aPerson.getHydrationPoints()+4);
     }
 
     void eat(Person aPerson){
