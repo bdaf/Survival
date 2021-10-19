@@ -6,22 +6,22 @@ import org.junit.jupiter.api.Test;
 import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-import static pl.bdaf.person.State.HEALTHY;
-import static pl.bdaf.person.State.MEDIUM;
+import static pl.bdaf.person.State.*;
 
 public class StateTest {
 
-    private Random randomizer;
+    private Random randomize;
     private Person person;
     private State state;
 
     @BeforeEach
     void init() {
-        randomizer = new Random();
-        randomizer = mock(Random.class);
-        state = new State.Healthy(randomizer);
+        randomize = new Random();
+        randomize = mock(Random.class);
+        state = new State.Healthy(randomize);
         person = new Person(10, state);
     }
 
@@ -49,13 +49,87 @@ public class StateTest {
     void personInMediumStateShouldBecameHealthyByDrinking() {
         person.setWorseState();
         assertEquals(MEDIUM, person.getState().toString());
-        when(randomizer.nextDouble()).thenReturn(0.8);
+        when(randomize.nextDouble()).thenReturn(0.8);
         person.drink();
         assertEquals(MEDIUM, person.getState().toString());
 
-        when(randomizer.nextDouble()).thenReturn(0.79);
+        when(randomize.nextDouble()).thenReturn(0.79);
         person.drink();
         assertEquals(HEALTHY, person.getState().toString());
+    }
+
+    @Test
+    void personInMediumStateShouldBecameHealthyByEating() {
+        person.setWorseState();
+        assertEquals(MEDIUM, person.getState().toString());
+        when(randomize.nextDouble()).thenReturn(0.6);
+        person.eat();
+        assertEquals(MEDIUM, person.getState().toString());
+
+        when(randomize.nextDouble()).thenReturn(0.5);
+        person.eat();
+        assertEquals(HEALTHY, person.getState().toString());
+    }
+
+    @Test
+    void personInSickStateShouldBecameHealthyByDrinking() {
+        person.setWorseState();
+        person.setWorseState();
+        assertEquals(SICK, person.getState().toString());
+
+        when(randomize.nextDouble()).thenReturn(0.6);
+        person.drink();
+        assertEquals(SICK, person.getState().toString());
+
+        when(randomize.nextDouble()).thenReturn(0.5);
+        person.drink();
+        assertEquals(MEDIUM, person.getState().toString());
+
+        person.setWorseState();
+        assertEquals(SICK, person.getState().toString());
+
+        when(randomize.nextDouble()).thenReturn(0.19);
+        person.drink();
+        assertEquals(HEALTHY, person.getState().toString());
+    }
+
+    @Test
+    void personInSickStateShouldBecameHealthyByEating() {
+        person.setWorseState();
+        person.setWorseState();
+        assertEquals(SICK, person.getState().toString());
+
+        when(randomize.nextDouble()).thenReturn(0.45);
+        person.eat();
+        assertEquals(SICK, person.getState().toString());
+
+        when(randomize.nextDouble()).thenReturn(0.44);
+        person.eat();
+        assertEquals(MEDIUM, person.getState().toString());
+
+        person.setWorseState();
+        assertEquals(SICK, person.getState().toString());
+
+        when(randomize.nextDouble()).thenReturn(0.34);
+        person.eat();
+        assertEquals(HEALTHY, person.getState().toString());
+    }
+
+    @Test
+    void shouldThrowExceptionWhenDeadPersonTriesToDoAnything() {
+        person.setWorseState();
+        person.setWorseState();
+        person.setWorseState();
+        assertEquals(DEAD, person.getState().toString());
+
+        assertEquals(person.getState(), person.getState().getWorseState());
+        assertEquals(SICK, person.getState().getBetterState().toString());
+
+        assertThrows(IllegalStateException.class, () -> person.goOutsideFindFood());
+        assertThrows(IllegalStateException.class, () -> person.drink());
+        assertThrows(IllegalStateException.class, () -> person.eat());
+        assertThrows(IllegalStateException.class, () -> person.eat());
+
     }
 
 }

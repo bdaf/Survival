@@ -38,7 +38,7 @@ public abstract class State {
         return name;
     }
 
-    abstract void changeStateRandomly(Person aPerson, double aPercentageForHealthState, double aPercentageForMediumState);
+    abstract void changeStateRandomly(Person aPerson, double aPercentageForHigherTwoStates, double aPercentageForHigherState);
 
     @Override
     public boolean equals(Object obj) {
@@ -85,7 +85,7 @@ public abstract class State {
         }
 
         @Override
-        void changeStateRandomly(Person aPerson, double aPercentageForHealthState, double aPercentageForMediumState) {
+        void changeStateRandomly(Person aPerson, double aPercentageForHigherTwoStates, double aPercentageForHigherState) {
         }
 
         @Override
@@ -114,12 +114,12 @@ public abstract class State {
 
         @Override
         public void drink(Person aPerson) {
-            changeStateRandomly(aPerson,0.8, 0.0);
+            changeStateRandomly(aPerson,0.0, 0.8);
         }
 
         @Override
         public void eat(Person aPerson) {
-            changeStateRandomly(aPerson,0.6, 0.0);
+            changeStateRandomly(aPerson,0.0, 0.6);
         }
 
         @Override
@@ -133,8 +133,8 @@ public abstract class State {
         }
 
         @Override
-        void changeStateRandomly(Person aPerson, double aPercentageForHealthState, double aPercentageForMediumState) {
-            if (rand.nextDouble() < aPercentageForHealthState) {
+        void changeStateRandomly(Person aPerson, double aPercentageForHigherTwoStates, double aPercentageForHigherState) {
+            if (rand.nextDouble() < aPercentageForHigherState) {
                 aPerson.setBetterState();
             }
         }
@@ -169,7 +169,7 @@ public abstract class State {
 
         @Override
         public void eat(Person aPerson) {
-            changeStateRandomly(aPerson,0.4, 0.4);
+            changeStateRandomly(aPerson,0.35, 0.45);
         }
 
         @Override
@@ -182,12 +182,13 @@ public abstract class State {
             return new Medium(rand);
         }
 
+        @Override
         void changeStateRandomly(Person aPerson, double aPercentageForHigherTwoStates, double aPercentageForHigherState) {
             if (rand.nextDouble() < aPercentageForHigherTwoStates) {
-                aPerson.getState().getBetterState();
-                aPerson.getState().getBetterState();
+                aPerson.setBetterState();
+                aPerson.setBetterState();
             } else if (rand.nextDouble() < aPercentageForHigherState) {
-                aPerson.getState().getBetterState();
+                aPerson.setBetterState();
             }
         }
 
@@ -234,7 +235,8 @@ public abstract class State {
             return new Sick(rand);
         }
 
-        void changeStateRandomly(Person aPerson, double aPercentageForHealthState, double aPercentageForMediumHealth) {
+        @Override
+        void changeStateRandomly(Person aPerson, double aPercentageForHigherTwoStates, double aPercentageForHigherState) {
             throw new IllegalStateException("Dead person's state cannot be changed!");
         }
 
