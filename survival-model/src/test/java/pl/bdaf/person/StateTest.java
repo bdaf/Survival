@@ -5,8 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Random;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static pl.bdaf.person.State.*;
@@ -99,7 +98,7 @@ public class StateTest {
         person.setWorseState();
         assertEquals(SICK, person.getState().toString());
 
-        when(randomize.nextDouble()).thenReturn(0.45);
+
         person.eat();
         assertEquals(SICK, person.getState().toString());
 
@@ -132,4 +131,50 @@ public class StateTest {
 
     }
 
+    @Test
+    void drinkingAndEatingShouldGiveStrengthAndSatietyAndCheerfulnessAndHydrationPoints() {
+        assertEquals(HEALTHY, person.getState().toString());
+
+        when(randomize.nextDouble()).thenReturn(0.95);
+
+        person.drink();
+        assertEquals(14, person.getStrength());
+        assertEquals(11, person.getCheerfulness());
+        assertEquals(11, person.getSatietyPoints());
+        assertEquals(15, person.getHydrationPoints());
+
+        person.eat();
+        assertEquals(27, person.getStrength());
+        assertEquals(14, person.getCheerfulness());
+        assertEquals(18, person.getSatietyPoints());
+        assertEquals(16, person.getHydrationPoints());
+
+        person = new Person(10, new State.Medium(randomize));
+
+        person.drink();
+        assertEquals(13, person.getStrength());
+        assertEquals(11, person.getCheerfulness());
+        assertEquals(11, person.getSatietyPoints());
+        assertEquals(15, person.getHydrationPoints());
+
+        person.eat();
+        assertEquals(23, person.getStrength());
+        assertEquals(14, person.getCheerfulness());
+        assertEquals(18, person.getSatietyPoints());
+        assertEquals(16, person.getHydrationPoints());
+
+        person = new Person(10, new State.Sick(randomize));
+
+        person.drink();
+        assertEquals(13, person.getStrength());
+        assertEquals(11, person.getCheerfulness());
+        assertEquals(11, person.getSatietyPoints());
+        assertEquals(15, person.getHydrationPoints());
+
+        person.eat();
+        assertEquals(23, person.getStrength());
+        assertEquals(14, person.getCheerfulness());
+        assertEquals(18, person.getSatietyPoints());
+        assertEquals(16, person.getHydrationPoints());
+    }
 }

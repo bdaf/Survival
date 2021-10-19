@@ -22,9 +22,19 @@ public abstract class State {
 
     abstract void goOutsideFindFood(Person aPerson);
 
-    abstract void drink(Person aPerson);
+    void drink(Person aPerson){
+        aPerson.setStrength(aPerson.getStrength()+3);
+        aPerson.setCheerfulness(aPerson.getCheerfulness()+1);
+        aPerson.setSatietyPoints(aPerson.getSatietyPoints()+1);
+        aPerson.setHydrationPoints(aPerson.getHydrationPoints()+5);
+    }
 
-    abstract void eat(Person aPerson);
+    void eat(Person aPerson){
+        aPerson.setStrength(aPerson.getStrength()+10);
+        aPerson.setCheerfulness(aPerson.getCheerfulness()+3);
+        aPerson.setSatietyPoints(aPerson.getSatietyPoints()+7);
+        aPerson.setHydrationPoints(aPerson.getHydrationPoints()+1);
+    }
 
     abstract State getWorseState();
 
@@ -66,11 +76,13 @@ public abstract class State {
 
         @Override
         public void drink(Person aPerson) {
+            super.drink(aPerson);
             aPerson.setStrength(aPerson.getStrength() + 1);
         }
 
         @Override
         public void eat(Person aPerson) {
+            super.eat(aPerson);
             aPerson.setStrength(aPerson.getStrength() + 3);
         }
 
@@ -114,11 +126,13 @@ public abstract class State {
 
         @Override
         public void drink(Person aPerson) {
+            super.drink(aPerson);
             changeStateRandomly(aPerson,0.0, 0.8);
         }
 
         @Override
         public void eat(Person aPerson) {
+            super.eat(aPerson);
             changeStateRandomly(aPerson,0.0, 0.6);
         }
 
@@ -164,11 +178,13 @@ public abstract class State {
 
         @Override
         public void drink(Person aPerson) {
+            super.drink(aPerson);
             changeStateRandomly(aPerson, 0.2, 0.6);
         }
 
         @Override
         public void eat(Person aPerson) {
+            super.eat(aPerson);
             changeStateRandomly(aPerson,0.35, 0.45);
         }
 
