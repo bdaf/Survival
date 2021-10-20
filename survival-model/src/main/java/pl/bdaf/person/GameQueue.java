@@ -25,24 +25,37 @@ public class GameQueue {
             alivePeople.remove(person);
         }
         queue.addAll(alivePeople);
-        next();
+        if(queue.isEmpty()){
+            endOfGame();
+        } else {
+            notifyObservers();
+            next();
+        }
     }
 
-    private void next() {
+    void next() {
         if(queue.isEmpty())
             init();
         else activePerson = queue.poll();
     }
 
-    void addObserver(GameEngine aObserver){
+    private void endOfGame() {
+        observers.forEach(gm -> gm.endOfGame());
+    }
+
+    Person getActivePerson() {
+        return activePerson;
+    }
+
+    private void addObserver(GameEngine aObserver){
         observers.add(aObserver);
     }
 
-    void removeObserver(GameEngine aObserver){
+    private void removeObserver(GameEngine aObserver){
         observers.remove(aObserver);
     }
 
-    void notifyObservers(){
+    private void notifyObservers(){
         observers.forEach(gm -> gm.nextDay());
     }
 }
