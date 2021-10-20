@@ -6,24 +6,26 @@ class GameQueue {
     private final List<Person> peopleToDelete;
     private final Set<GameEngine> observers;
     private final List<Person> alivePeople;
+    private final List<Person> deadPeople;
     private final Queue<Person> queue;
     private Person activePerson;
 
     GameQueue(List<Person> aPersonList) {
         observers = new HashSet<>();
         alivePeople = aPersonList;
+        deadPeople = new LinkedList();
         peopleToDelete = new LinkedList();
         queue = new LinkedList();
         init();
     }
 
     private void init() {
+        notifyObservers();
         makeStarvingDead();
         queue.addAll(alivePeople);
         if (queue.isEmpty()) {
             endOfGame();
         } else { // make new day
-            notifyObservers();
             next();
         }
     }
@@ -36,12 +38,14 @@ class GameQueue {
 
     private void makeStarvingDead() {
         for (Person alivePerson : alivePeople) {
-            if(alivePerson.getHydrationPoints() < 0 || alivePerson.getSatietyPoints() < 0 || !alivePerson.isAlive()){
+            if(!alivePerson.isAlive()){
                 alivePerson.setState(new State.Dead());
                 peopleToDelete.add(alivePerson);
             }
         }
+        observers.forEach(gm -> gm.setDeadDayFor(peopleToDelete));
         for (Person person : peopleToDelete) {
+            deadPeople.add(person);
             alivePeople.remove(person);
         }
         peopleToDelete.clear();
@@ -64,6 +68,14 @@ class GameQueue {
     }
 
     void notifyObservers() {
-        observers.forEach(gm -> gm.nextDay());
+
+    }
+
+    List<Person> getAlivePeople() {
+        return List.copyOf(alivePeople);
+    }
+
+    List<Person> getDeadPeople() {
+        return List.copyOf(deadPeople);
     }
 }

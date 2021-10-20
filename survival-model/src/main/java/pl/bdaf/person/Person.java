@@ -4,15 +4,16 @@ import static pl.bdaf.person.State.DEAD;
 
 public class Person {
 
-    public int strength;
-    public int hydrationPoints;
-    public int satietyPoints;
-
+    String name;
+    int strength;
+    int hydrationPoints;
+    int satietyPoints;
     public int cheerfulness;
-
     private State state;
+    private int deadDay;
 
     Person(PersonStatistic aStats){
+        name = aStats.getName();
         strength = aStats.strength;
         cheerfulness = aStats.cheerfulness;
         satietyPoints = aStats.satietyPoints;
@@ -80,6 +81,18 @@ public class Person {
         cheerfulness = aCheerfulness;
     }
     public boolean isAlive(){
-        return !(getState().toString().equals(DEAD));
+        return !getState().toString().equals(DEAD) && getHydrationPoints() > 0 || getSatietyPoints() > 0 || getCheerfulness() > 0 ;
+    }
+
+    String getName() {
+        return name;
+    }
+
+    int getDeadDay() {
+        return deadDay;
+    }
+
+    void setDeadDay(int aDeadDay) {
+        deadDay = aDeadDay;
     }
 }

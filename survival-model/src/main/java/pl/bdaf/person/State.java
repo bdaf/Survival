@@ -11,6 +11,8 @@ public abstract class State {
 
     Random rand;
     private String name;
+    private final int MAX_HYDRATION = 4;
+    private final int MAX_SATIETY = 7;
 
     protected State() {
         this(new Random());
@@ -20,20 +22,24 @@ public abstract class State {
         rand = aRandom;
     }
 
-    abstract void goOutsideFindFood(Person aPerson);
+    void goOutsideFindFood(Person aPerson){
+        if(rand.nextDouble()*100 < aPerson.getStrength()*3){
+            //TODO
+        }
+    }
 
     void drink(Person aPerson){
         aPerson.setStrength(aPerson.getStrength()+3);
         aPerson.setCheerfulness(aPerson.getCheerfulness()+1);
-        aPerson.setSatietyPoints(aPerson.getSatietyPoints()+1);
-        aPerson.setHydrationPoints(aPerson.getHydrationPoints()+4);
+        aPerson.setSatietyPoints(Integer.max(aPerson.getSatietyPoints()+1,MAX_SATIETY));
+        aPerson.setHydrationPoints(MAX_HYDRATION);
     }
 
     void eat(Person aPerson){
         aPerson.setStrength(aPerson.getStrength()+10);
         aPerson.setCheerfulness(aPerson.getCheerfulness()+3);
-        aPerson.setSatietyPoints(aPerson.getSatietyPoints()+7);
-        aPerson.setHydrationPoints(aPerson.getHydrationPoints()+1);
+        aPerson.setSatietyPoints(MAX_SATIETY);
+        aPerson.setHydrationPoints(Integer.max(aPerson.getHydrationPoints()+1,MAX_HYDRATION);
     }
 
     abstract State getWorseState();
@@ -56,6 +62,8 @@ public abstract class State {
         State state = (State) obj;
         return getName().equals(state.getName());
     }
+
+    abstract String getDescribe();
 
 
     static class Healthy extends State {
@@ -98,6 +106,11 @@ public abstract class State {
 
         @Override
         void changeStateRandomly(Person aPerson, double aPercentageForHigherTwoStates, double aPercentageForHigherState) {
+        }
+
+        @Override
+        String getDescribe() {
+            return " is completely healthy!\n";
         }
 
         @Override
@@ -151,6 +164,11 @@ public abstract class State {
             if (rand.nextDouble() < aPercentageForHigherState) {
                 aPerson.setBetterState();
             }
+        }
+
+        @Override
+        String getDescribe() {
+            return " is coughing a little and has a runny nose!\n";
         }
 
         @Override
@@ -209,6 +227,11 @@ public abstract class State {
         }
 
         @Override
+        String getDescribe() {
+            return " has a high fever and pneumonia!\n";
+        }
+
+        @Override
         public String toString() {
             return getName();
         }
@@ -254,6 +277,11 @@ public abstract class State {
         @Override
         void changeStateRandomly(Person aPerson, double aPercentageForHigherTwoStates, double aPercentageForHigherState) {
             throw new IllegalStateException("Dead person's state cannot be changed!");
+        }
+
+        @Override
+        String getDescribe() {
+            return " has left in day ";
         }
 
         @Override
