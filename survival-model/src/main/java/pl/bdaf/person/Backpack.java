@@ -34,6 +34,8 @@ public class Backpack {
     }
 
     int getAmountOf(String aResource){
+        if(!aResource.equalsIgnoreCase(TOMATO_SOUP) && !aResource.equalsIgnoreCase(WATER_BOTTLE))
+            throw new IllegalArgumentException("Argument should be \"Tomato soup\" or \"Water bottle\"!");
         return (int) content.stream().filter(r -> r.equalsIgnoreCase(aResource)).count();
     }
 
