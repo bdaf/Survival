@@ -4,10 +4,10 @@ import java.util.List;
 
 public class GameEngine {
 
-    private final GameQueue queue;
-    private int day;
-    private boolean endOfGame;
     private final Backpack backpack;
+    private final GameQueue queue;
+    private boolean endOfGame;
+    private int day;
 
     GameEngine(List<Person> aPersonList) {
         this(aPersonList,new Backpack());
