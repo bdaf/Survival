@@ -3,8 +3,10 @@ package pl.bdaf.person;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.LinkedList;
 import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static pl.bdaf.person.PersonStatistic.*;
 
 public class GameTest {
@@ -14,6 +16,7 @@ public class GameTest {
     private Person timmy;
     private Person berta;
     private GameQueue gameQueue;
+    private GameEngine engine;
 
     @BeforeEach
     void init() {
@@ -21,7 +24,9 @@ public class GameTest {
         dolores = new Person(DOLORES);
         timmy = new Person(TIMMY);
         berta = new Person(BERTA);
-        gameQueue = new GameQueue(List.of(ted, dolores, timmy, berta));
+        List<Person> list = new LinkedList<>(List.of(ted, dolores, timmy, berta));
+        gameQueue = new GameQueue(list);
+        engine = new GameEngine(list);
     }
 
     @Test
@@ -35,5 +40,71 @@ public class GameTest {
         assertEquals(berta, gameQueue.getActivePerson());
         gameQueue.next();
         assertEquals(ted, gameQueue.getActivePerson());
+    }
+
+    @Test
+    void afterAllQueueEngineShouldMakeDayHigher() {
+        assertEquals(1, engine.getCurrentDay());
+        assertEquals(ted, engine.getActivePerson());
+        engine.pass();
+        assertEquals(dolores, engine.getActivePerson());
+        engine.pass();
+        assertEquals(timmy, engine.getActivePerson());
+        engine.pass();
+        assertEquals(1, engine.getCurrentDay());
+        assertEquals(berta, engine.getActivePerson());
+        engine.pass();
+        assertEquals(2, engine.getCurrentDay());
+        assertEquals(ted, engine.getActivePerson());
+    }
+
+    @Test
+    void QueueInEngineShouldBeSmallerAfterSomeDeaths() {
+        assertEquals(1, engine.getCurrentDay());
+        assertEquals(ted, engine.getActivePerson());
+        engine.pass();
+        ted.setState(new State.Dead());
+        assertEquals(dolores, engine.getActivePerson());
+        engine.pass();
+        assertEquals(timmy, engine.getActivePerson());
+        engine.pass();
+        assertEquals(berta, engine.getActivePerson());
+        engine.pass();
+        assertEquals(2, engine.getCurrentDay());
+        assertEquals(dolores, engine.getActivePerson());
+        engine.pass();
+        assertEquals(timmy, engine.getActivePerson());
+        timmy.setState(new State.Dead());
+        engine.pass();
+        assertEquals(berta, engine.getActivePerson());
+        engine.pass();
+        assertEquals(3, engine.getCurrentDay());
+        assertEquals(dolores, engine.getActivePerson());
+        engine.pass();
+        assertEquals(berta, engine.getActivePerson());
+        engine.pass();
+        assertEquals(4, engine.getCurrentDay());
+    }
+
+    @Test
+    void gameEngineShouldSetWhenIsEndOfGame() {
+        assertEquals(1, engine.getCurrentDay());
+        assertEquals(ted, engine.getActivePerson());
+        engine.pass();
+        ted.setState(new State.Dead());
+        dolores.setState(new State.Dead());
+        berta.setState(new State.Dead());
+        assertEquals(dolores, engine.getActivePerson());
+        engine.pass();
+        assertEquals(timmy, engine.getActivePerson());
+        engine.pass();
+        assertEquals(berta, engine.getActivePerson());
+        engine.pass();
+        assertEquals(2, engine.getCurrentDay());
+        assertEquals(timmy, engine.getActivePerson());
+        timmy.setState(new State.Dead());
+        engine.pass();
+        assertEquals(2, engine.getCurrentDay());
+        assertTrue(engine.isEndOfGame());
     }
 }

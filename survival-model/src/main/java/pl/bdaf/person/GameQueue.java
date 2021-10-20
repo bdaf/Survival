@@ -2,12 +2,12 @@ package pl.bdaf.person;
 
 import java.util.*;
 
-public class GameQueue {
+class GameQueue {
     private final List<Person> peopleToDelete;
+    private final Set<GameEngine> observers;
     private final List<Person> alivePeople;
     private final Queue<Person> queue;
     private Person activePerson;
-    private Set<GameEngine> observers;
 
     GameQueue(List<Person> aPersonList) {
         observers = new HashSet<>();
@@ -18,25 +18,33 @@ public class GameQueue {
     }
 
     private void init() {
-        for (Person alivePerson : alivePeople) {
-            if(!alivePerson.isAlive()) peopleToDelete.add(alivePerson);
-        }
-        for (Person person : peopleToDelete) {
-            alivePeople.remove(person);
-        }
+        makeStarvingDead();
         queue.addAll(alivePeople);
-        if(queue.isEmpty()){
+        if (queue.isEmpty()) {
             endOfGame();
-        } else {
+        } else { // make new day
             notifyObservers();
             next();
         }
     }
 
     void next() {
-        if(queue.isEmpty())
+        if (queue.isEmpty())
             init();
         else activePerson = queue.poll();
+    }
+
+    private void makeStarvingDead() {
+        for (Person alivePerson : alivePeople) {
+            if(alivePerson.getHydrationPoints() < 0 || alivePerson.getSatietyPoints() < 0 || !alivePerson.isAlive()){
+                alivePerson.setState(new State.Dead());
+                peopleToDelete.add(alivePerson);
+            }
+        }
+        for (Person person : peopleToDelete) {
+            alivePeople.remove(person);
+        }
+        peopleToDelete.clear();
     }
 
     private void endOfGame() {
@@ -47,15 +55,15 @@ public class GameQueue {
         return activePerson;
     }
 
-    private void addObserver(GameEngine aObserver){
+    void addObserver(GameEngine aObserver) {
         observers.add(aObserver);
     }
 
-    private void removeObserver(GameEngine aObserver){
+    void removeObserver(GameEngine aObserver) {
         observers.remove(aObserver);
     }
 
-    private void notifyObservers(){
+    void notifyObservers() {
         observers.forEach(gm -> gm.nextDay());
     }
 }

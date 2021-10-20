@@ -80,6 +80,6 @@ public class Person {
         cheerfulness = aCheerfulness;
     }
     public boolean isAlive(){
-        return !(getState().equals(DEAD));
+        return !(getState().toString().equals(DEAD));
     }
 }
