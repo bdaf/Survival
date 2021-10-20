@@ -7,10 +7,16 @@ public class GameEngine {
     private final GameQueue queue;
     private int day;
     private boolean endOfGame;
+    private final Backpack backpack;
 
-    public GameEngine(List<Person> aPersonList) {
+    GameEngine(List<Person> aPersonList) {
+        this(aPersonList,new Backpack());
+    }
+
+    public GameEngine(List<Person> aPersonList, Backpack aBackpack) {
         queue = new GameQueue(aPersonList);
         queue.addObserver(this);
+        backpack = aBackpack;
         day = 1;
     }
 
