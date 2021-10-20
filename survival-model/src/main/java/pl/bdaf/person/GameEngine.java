@@ -1,15 +1,13 @@
 package pl.bdaf.person;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class GameEngine {
 
     private final Backpack backpack;
-    private final Map<Integer, String> diary = new HashMap<>();
     private final GameQueue queue;
     private boolean endOfGame;
+    private String dailyDescribe;
     private int day;
 
     GameEngine(List<Person> aPersonList) {
@@ -23,7 +21,7 @@ public class GameEngine {
         day = 1;
     }
 
-    String nextDay() {
+    void nextDay() {
         day++;
         String currentDayDiary = "Day " + day + "\n";
         for (Person p : queue.getAlivePeople()) {
@@ -36,7 +34,7 @@ public class GameEngine {
         for (Person p : queue.getDeadPeople()) {
             currentDayDiary += DiaryWriter.describeDeadPerson(p);
         }
-        return currentDayDiary;
+        dailyDescribe = currentDayDiary;
     }
 
     public void pass() {
@@ -72,5 +70,13 @@ public class GameEngine {
 
     void eat() {
         getActivePerson().eat();
+    }
+
+    void goForExpedition(){
+        getActivePerson().goForExpedition(backpack);
+    }
+
+    String getDailyDescribe() {
+        return dailyDescribe;
     }
 }

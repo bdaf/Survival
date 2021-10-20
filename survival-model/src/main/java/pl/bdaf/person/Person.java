@@ -53,8 +53,8 @@ public class Person {
         state = state.getBetterState();
     }
 
-    void goOutsideFindFood() {
-        state.goOutsideFindFood(this);
+    void goForExpedition(Backpack aBackpack) {
+        state.goForExpedition(this, aBackpack);
     }
 
     int getHydrationPoints() {

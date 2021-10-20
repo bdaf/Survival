@@ -2,6 +2,9 @@ package pl.bdaf.person;
 
 import java.util.Random;
 
+import static pl.bdaf.person.Backpack.TOMATO_SOUP;
+import static pl.bdaf.person.Backpack.WATER_BOTTLE;
+
 public abstract class State {
 
     public static final String HEALTHY = "Healthy";
@@ -24,9 +27,23 @@ public abstract class State {
         rand = aRandom;
     }
 
-    void goOutsideFindFood(Person aPerson){
-        if(rand.nextDouble()*100 < aPerson.getStrength()*3){
-            //TODO
+    void goForExpedition(Person aPerson, Backpack aBackpack){
+        int difficultOfExpedition = (int) (rand.nextDouble()*100);
+        int strengthOfPerson = aPerson.getStrength()*3;
+        if(difficultOfExpedition < strengthOfPerson){
+            int amountOfTriesToGetSupplies = (strengthOfPerson - difficultOfExpedition)/10+1;
+            for (int i = 0; i < amountOfTriesToGetSupplies; i++) {
+                if(rand.nextBoolean()) aBackpack.getContent().add(WATER_BOTTLE);
+                if(rand.nextBoolean()) aBackpack.getContent().add(TOMATO_SOUP);
+                if(rand.nextInt(difficultOfExpedition) > 50 + strengthOfPerson/4){ // very little chance
+                    getWorseState();
+                }
+            }
+        } else {
+            int chanceToGetWorstState = (difficultOfExpedition - strengthOfPerson)+1;
+            if(chanceToGetWorstState > rand.nextInt(100)){
+                getWorseState();
+            }
         }
     }
 
@@ -79,7 +96,7 @@ public abstract class State {
         }
 
         @Override
-        void goOutsideFindFood(Person aPerson) {
+        void goForExpedition(Person aPerson, Backpack aBackpack) {
             //TODO
         }
 
@@ -134,7 +151,7 @@ public abstract class State {
         }
 
         @Override
-        public void goOutsideFindFood(Person aPerson) {
+        public void goForExpedition(Person aPerson, Backpack aBackpack) {
             //TODO
         }
 
@@ -191,7 +208,7 @@ public abstract class State {
         }
 
         @Override
-        public void goOutsideFindFood(Person aPerson) {
+        public void goForExpedition(Person aPerson, Backpack aBackpack) {
             //TODO
         }
 
@@ -251,7 +268,7 @@ public abstract class State {
         }
 
         @Override
-        public void goOutsideFindFood(Person aPerson) {
+        public void goForExpedition(Person aPerson, Backpack aBackpack) {
             throw new IllegalStateException("Dead person's state cannot go out, he's dead!");
         }
 
