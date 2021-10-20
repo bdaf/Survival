@@ -81,7 +81,7 @@ public class Person {
         cheerfulness = aCheerfulness;
     }
     public boolean isAlive(){
-        return !getState().toString().equals(DEAD) && getHydrationPoints() > 0 || getSatietyPoints() > 0 || getCheerfulness() > 0 ;
+        return !getState().toString().equals(DEAD) && getHydrationPoints() > 0 && getSatietyPoints() > 0 && getCheerfulness() > 0 ;
     }
 
     String getName() {
@@ -94,5 +94,10 @@ public class Person {
 
     void setDeadDay(int aDeadDay) {
         deadDay = aDeadDay;
+    }
+
+    @Override
+    public String toString() {
+        return name;
     }
 }

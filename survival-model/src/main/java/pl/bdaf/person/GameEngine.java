@@ -65,4 +65,12 @@ public class GameEngine {
             person.setDeadDay(day);
         }
     }
+
+    void drink() {
+        getActivePerson().drink();
+    }
+
+    void eat() {
+        getActivePerson().eat();
+    }
 }

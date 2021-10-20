@@ -68,7 +68,7 @@ class GameQueue {
     }
 
     void notifyObservers() {
-
+        observers.forEach(GameEngine::nextDay);
     }
 
     List<Person> getAlivePeople() {

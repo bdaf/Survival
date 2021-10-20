@@ -2,6 +2,8 @@ package pl.bdaf.person;
 
 public enum PersonStatistic{
     TO_TEST(10,10,10,10,"TestName"),
+    TO_TEST_MIN(1,1,1,1,"TestNameMin"),
+
     TED(30,5,7,20, "Ted"),
     DOLORES(22, 4,6, 15, "Dolores"),
     TIMMY(15, 4, 5, 10, "Timmy"),

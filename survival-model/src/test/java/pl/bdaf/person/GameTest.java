@@ -72,11 +72,15 @@ public class GameTest {
         engine.pass();
         assertEquals(2, engine.getCurrentDay());
         assertEquals(dolores, engine.getActivePerson());
+        engine.drink();
+        engine.eat();
         engine.pass();
         assertEquals(timmy, engine.getActivePerson());
         timmy.setState(new State.Dead());
         engine.pass();
         assertEquals(berta, engine.getActivePerson());
+        engine.drink();
+        engine.eat();
         engine.pass();
         assertEquals(3, engine.getCurrentDay());
         assertEquals(dolores, engine.getActivePerson());
@@ -104,7 +108,7 @@ public class GameTest {
         assertEquals(timmy, engine.getActivePerson());
         timmy.setState(new State.Dead());
         engine.pass();
-        assertEquals(2, engine.getCurrentDay());
+        assertEquals(3, engine.getCurrentDay());
         assertTrue(engine.isEndOfGame());
     }
 }

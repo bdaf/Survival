@@ -9,10 +9,12 @@ public abstract class State {
     public static final String DEAD = "Dead";
     public static final String MEDIUM = "Medium";
 
+    public static final int MAX_STRENGTH = 33;
+    private static final int MAX_HYDRATION = 4;
+    private static final int MAX_SATIETY = 7;
+
     Random rand;
     private String name;
-    private final int MAX_HYDRATION = 4;
-    private final int MAX_SATIETY = 7;
 
     protected State() {
         this(new Random());
@@ -29,17 +31,16 @@ public abstract class State {
     }
 
     void drink(Person aPerson){
-        aPerson.setStrength(aPerson.getStrength()+3);
+        aPerson.setStrength(Integer.min(aPerson.getStrength()+3, MAX_STRENGTH));
         aPerson.setCheerfulness(aPerson.getCheerfulness()+1);
-        aPerson.setSatietyPoints(Integer.max(aPerson.getSatietyPoints()+1,MAX_SATIETY));
         aPerson.setHydrationPoints(MAX_HYDRATION);
     }
 
     void eat(Person aPerson){
-        aPerson.setStrength(aPerson.getStrength()+10);
+        aPerson.setStrength(Integer.min(aPerson.getStrength()+6, MAX_STRENGTH));
         aPerson.setCheerfulness(aPerson.getCheerfulness()+3);
         aPerson.setSatietyPoints(MAX_SATIETY);
-        aPerson.setHydrationPoints(Integer.max(aPerson.getHydrationPoints()+1,MAX_HYDRATION);
+        aPerson.setHydrationPoints(Integer.min(aPerson.getHydrationPoints()+1,MAX_HYDRATION));
     }
 
     abstract State getWorseState();
@@ -91,7 +92,7 @@ public abstract class State {
         @Override
         public void eat(Person aPerson) {
             super.eat(aPerson);
-            aPerson.setStrength(aPerson.getStrength() + 3);
+            aPerson.setStrength(aPerson.getStrength() + 1);
         }
 
         @Override
