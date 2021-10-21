@@ -127,6 +127,7 @@ public class StateTest {
         assertEquals(person.getState(), person.getState().getWorseState());
         assertEquals(SICK, person.getState().getBetterState().toString());
 
+        Backpack backpack = new Backpack();
         assertThrows(IllegalStateException.class, () -> person.goForExpedition(backpack));
         assertThrows(IllegalStateException.class, () -> person.drink());
         assertThrows(IllegalStateException.class, () -> person.eat());

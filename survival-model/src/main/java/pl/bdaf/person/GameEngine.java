@@ -23,18 +23,18 @@ public class GameEngine {
 
     void nextDay() {
         day++;
-        String currentDayDiary = "Day " + day + "\n";
+        StringBuilder currentDayDiary = new StringBuilder("Day " + day + "\n");
         for (Person p : queue.getAlivePeople()) {
             p.setStrength(p.getStrength() + 1);
             p.setHydrationPoints(p.getHydrationPoints() - 1);
             p.setSatietyPoints(p.getHydrationPoints() - 1);
             p.setCheerfulness(p.getCheerfulness() - 1);
-            currentDayDiary += DiaryWriter.describe(p);
+            currentDayDiary.append(DiaryWriter.describe(p));
         }
         for (Person p : queue.getDeadPeople()) {
-            currentDayDiary += DiaryWriter.describeDeadPerson(p);
+            currentDayDiary.append(DiaryWriter.describeDeadPerson(p));
         }
-        dailyDescribe = currentDayDiary;
+        dailyDescribe = currentDayDiary.toString();
     }
 
     public void pass() {
