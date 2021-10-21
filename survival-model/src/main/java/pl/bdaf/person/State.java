@@ -33,8 +33,8 @@ public abstract class State {
         if(difficultOfExpedition < strengthOfPerson){
             int amountOfTriesToGetSupplies = (strengthOfPerson - difficultOfExpedition)/10+1;
             for (int i = 0; i < amountOfTriesToGetSupplies; i++) {
-                if(rand.nextBoolean()) aBackpack.getContent().add(WATER_BOTTLE);
-                if(rand.nextBoolean()) aBackpack.getContent().add(TOMATO_SOUP);
+                if(rand.nextBoolean()) aBackpack.addSupply(WATER_BOTTLE);
+                if(rand.nextBoolean()) aBackpack.addSupply(TOMATO_SOUP);
                 if(rand.nextInt(difficultOfExpedition) > 50 + strengthOfPerson/4){ // very little chance
                     getWorseState();
                 }

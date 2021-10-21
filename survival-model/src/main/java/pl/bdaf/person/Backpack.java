@@ -33,16 +33,31 @@ public class Backpack {
         return List.copyOf(content);
     }
 
-    int getAmountOf(String aResource){
-        if(!aResource.equalsIgnoreCase(TOMATO_SOUP) && !aResource.equalsIgnoreCase(WATER_BOTTLE))
-            throw new IllegalArgumentException("Argument should be \"Tomato soup\" or \"Water bottle\"!");
-        return (int) content.stream().filter(r -> r.equalsIgnoreCase(aResource)).count();
-    }
-
     private void addRandomAmountOf(String aResource, int aMinBorder, int aMaxBorder) {
         for (int i = 0; i < rand.nextInt(aMaxBorder-aMinBorder) + aMinBorder; i++) {
             content.add(aResource);
         }
     }
 
+    int getAmountOf(String aResource){
+        throwExceptionIfStringIsNotProperty(aResource);
+        return (int) content.stream().filter(r -> r.equalsIgnoreCase(aResource)).count();
+    }
+
+    void remove(String aResource, int aAmountOfSupply) {
+        throwExceptionIfStringIsNotProperty(aResource);
+        for (int i = 0; i < aAmountOfSupply; i++) {
+            content.remove(aResource);
+        }
+    }
+
+    private void throwExceptionIfStringIsNotProperty(String aResource) {
+        if(!aResource.equalsIgnoreCase(TOMATO_SOUP) && !aResource.equalsIgnoreCase(WATER_BOTTLE))
+            throw new IllegalArgumentException("Argument should be \"Tomato soup\" or \"Water bottle\"!");
+    }
+
+    void addSupply(String sResource) {
+        throwExceptionIfStringIsNotProperty(sResource);
+        content.add(sResource);
+    }
 }

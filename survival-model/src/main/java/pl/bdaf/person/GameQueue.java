@@ -1,6 +1,7 @@
 package pl.bdaf.person;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 class GameQueue {
     private final List<Person> peopleToDelete;
@@ -12,7 +13,7 @@ class GameQueue {
 
     GameQueue(List<Person> aPersonList) {
         observers = new HashSet<>();
-        alivePeople = aPersonList;
+        alivePeople = new LinkedList<>(aPersonList);
         deadPeople = new LinkedList();
         peopleToDelete = new LinkedList();
         queue = new LinkedList();
@@ -22,7 +23,7 @@ class GameQueue {
     private void init() {
         notifyObservers();
         makeStarvingDead();
-        queue.addAll(alivePeople);
+        queue.addAll(alivePeople.stream().filter(p -> p.getExpeditionDaysLeft() <= 0).collect(Collectors.toList()));
         if (queue.isEmpty()) {
             endOfGame();
         } else { // make new day

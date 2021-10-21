@@ -2,8 +2,13 @@ package pl.bdaf.person;
 
 import java.util.List;
 
+import static pl.bdaf.person.Backpack.TOMATO_SOUP;
+import static pl.bdaf.person.Backpack.WATER_BOTTLE;
+
 public class GameEngine {
 
+    private static final int MIN_EXPEDITION_DAYS = 1;
+    private static final int MAX_EXPEDITION_DAYS = 3;
     private final Backpack backpack;
     private final GameQueue queue;
     private boolean endOfGame;
@@ -62,16 +67,29 @@ public class GameEngine {
         //TODO
     }
 
-    void drink() {
-        getActivePerson().drink();
+    public void drink(){drink(1);}
+
+    public void drink(int aAmountOfSupply) {
+        if(reduceNumberOfSupply(aAmountOfSupply, WATER_BOTTLE)){
+            getActivePerson().drink();
+            return;
+        }
+        throw new IllegalStateException("There is no that many water bottles in backpack!");
     }
 
-    void eat() {
-        getActivePerson().eat();
+    public void eat(){eat(1);}
+
+    public void eat(int aAmountOfSupply) {
+        if(reduceNumberOfSupply(aAmountOfSupply, TOMATO_SOUP)){
+            getActivePerson().eat();
+            return;
+        }
+        throw new IllegalStateException("There is no that many tomato soups in backpack!");
     }
 
     void goForExpedition(){ // from 1 day to 3 days on expedition
-        getActivePerson().setExpeditionDaysLeft(getActivePerson().getState().getRand().nextInt(3)+1);
+        getActivePerson().setExpeditionDaysLeft(getActivePerson().getState().getRand()
+                .nextInt(MAX_EXPEDITION_DAYS-MIN_EXPEDITION_DAYS+1)+MIN_EXPEDITION_DAYS);
     }
 
     String getDailyDescribe() {
@@ -94,5 +112,19 @@ public class GameEngine {
             aPerson.setExpeditionDaysLeft(0);
         }
         return aPerson.getExpeditionDaysLeft();
+    }
+
+
+    int getAmountOf(String aWaterBottle) {
+        return backpack.getAmountOf(aWaterBottle);
+    }
+
+    // returns whether there was supply in backpack to remove
+    private boolean reduceNumberOfSupply(int aAmountOfSupply, String aAWaterBottle) {
+        if (backpack.getAmountOf(aAWaterBottle) >= aAmountOfSupply) {
+            backpack.remove(aAWaterBottle, aAmountOfSupply);
+            return true;
+        }
+        return false;
     }
 }

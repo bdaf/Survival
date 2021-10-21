@@ -25,7 +25,7 @@ public class BackpackTest {
     }
 
     @Test
-    void backpackShouldContain10WaterBottlesAnd6SoupsAndAfterItPlus3() {
+    void backpackShouldContain10WaterBottlesAnd6SoupsAndAfterNewRandomizePlus3() {
         assertEquals(10, backpack.getAmountOf(Backpack.WATER_BOTTLE));
         assertEquals(6, backpack.getAmountOf(Backpack.TOMATO_SOUP));
         when(randomize.nextInt(anyInt())).thenReturn(3);
@@ -37,5 +37,6 @@ public class BackpackTest {
     @Test
     void shouldThrowIllegalArgumentExceptionWhenYouGetAmountOfNoWaterAndNoSoup() {
         assertThrows(IllegalArgumentException.class, () -> backpack.getAmountOf("Tomato_soup"));
+        assertThrows(IllegalArgumentException.class, () -> backpack.getAmountOf("Water_bottle"));
     }
 }
