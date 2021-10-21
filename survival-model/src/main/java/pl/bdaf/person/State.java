@@ -30,19 +30,19 @@ public abstract class State {
     void goForExpedition(Person aPerson, Backpack aBackpack){
         int difficultOfExpedition = (int) (rand.nextDouble()*100);
         int strengthOfPerson = aPerson.getStrength()*3;
-        if(difficultOfExpedition < strengthOfPerson){
+        if(difficultOfExpedition <= strengthOfPerson){
             int amountOfTriesToGetSupplies = (strengthOfPerson - difficultOfExpedition)/10+1;
             for (int i = 0; i < amountOfTriesToGetSupplies; i++) {
                 if(rand.nextBoolean()) aBackpack.addSupply(WATER_BOTTLE);
                 if(rand.nextBoolean()) aBackpack.addSupply(TOMATO_SOUP);
                 if(rand.nextInt(difficultOfExpedition) > 50 + strengthOfPerson/4){ // very little chance
-                    getWorseState();
+                    aPerson.setWorseState();
                 }
             }
         } else {
-            int chanceToGetWorstState = (difficultOfExpedition - strengthOfPerson)+1;
+            int chanceToGetWorstState = (difficultOfExpedition - strengthOfPerson);
             if(chanceToGetWorstState > rand.nextInt(100)){
-                getWorseState();
+                aPerson.setWorseState();
             }
         }
     }
@@ -88,13 +88,13 @@ public abstract class State {
     }
 
 
-    static class Unhealthy extends State {
+    static class Healthy extends State {
 
-        protected Unhealthy() {
+        protected Healthy() {
             this(new Random());
         }
 
-        protected Unhealthy(Random aRandom) {
+        protected Healthy(Random aRandom) {
             rand = aRandom;
             setName(HEALTHY);
         }
@@ -113,7 +113,7 @@ public abstract class State {
 
         @Override
         State getWorseState() {
-            return new Medium(rand);
+            return new Unhealthy(rand);
         }
 
         @Override
@@ -138,13 +138,13 @@ public abstract class State {
     }
 
 
-    static class Medium extends State {
+    static class Unhealthy extends State {
 
-        protected Medium() {
+        protected Unhealthy() {
             this(new Random());
         }
 
-        protected Medium(Random aRandom) {
+        protected Unhealthy(Random aRandom) {
             rand = aRandom;
             setName(UNHEALTHY);
         }
@@ -168,7 +168,7 @@ public abstract class State {
 
         @Override
         State getBetterState() {
-            return new Unhealthy(rand);
+            return new Healthy(rand);
         }
 
         @Override
@@ -220,7 +220,7 @@ public abstract class State {
 
         @Override
         State getBetterState() {
-            return new Medium(rand);
+            return new Unhealthy(rand);
         }
 
         @Override

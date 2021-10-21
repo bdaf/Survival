@@ -15,7 +15,7 @@ import static org.mockito.Mockito.when;
 import static pl.bdaf.person.Backpack.TOMATO_SOUP;
 import static pl.bdaf.person.Backpack.WATER_BOTTLE;
 import static pl.bdaf.person.PersonStatistic.*;
-import static pl.bdaf.person.State.HEALTHY;
+import static pl.bdaf.person.State.*;
 
 public class ExpeditionTest {
 
@@ -32,19 +32,18 @@ public class ExpeditionTest {
         assertEquals(3, backpack.getAmountOf(Backpack.WATER_BOTTLE));
         assertEquals(3, backpack.getAmountOf(Backpack.TOMATO_SOUP));
         ted = new Person(TED);
-        ted.setState(new State.Unhealthy(randomize));
+        ted.setState(new State.Healthy(randomize));
         List<Person> people = new LinkedList<>();
         people.addAll(List.of(ted, new Person(DOLORES),new Person(TIMMY),new Person(BERTA)));
         engine = new GameEngine(people,backpack);
     }
 
     @Test
-    void tedShouldGoForExpeditionFor2DaysAndGain3WaterBottlesAnd3TomatoSoupsAndReturnHealthy(){
+    void tedShouldGoForExpeditionFor2DaysAndGain3WaterBottlesAnd3TomatoSoupsAndReturnHealthyAndThrowExceptionIfTryToDrinkOrEatIfThereAreNoneSupplies(){
         assertEquals(1, engine.getCurrentDay());
         assertEquals(TED.getName(), engine.getActivePerson().getName());
         when(randomize.nextInt(anyInt())).thenReturn(1);
-        engine.goForExpedition();
-        engine.pass();
+        engine.goForExpeditionAndPass();
         assertEquals(DOLORES.getName(), engine.getActivePerson().getName());
         engine.pass();
         assertEquals(TIMMY.getName(), engine.getActivePerson().getName());
@@ -70,8 +69,6 @@ public class ExpeditionTest {
         assertEquals(30, ted.getStrength());
         when(randomize.nextDouble()).thenReturn(0.7);
         when(randomize.nextBoolean()).thenReturn(true);
-        when(randomize.nextInt(anyInt())).thenReturn(1);
-        when(randomize.nextInt(anyInt())).thenReturn(1);
         engine.pass();
         // 3th day starts, ted returns
         assertEquals(TED.getName(), engine.getActivePerson().getName());
@@ -90,42 +87,60 @@ public class ExpeditionTest {
     void tedShouldGoForExpeditionFor1DayAndGain1WaterBottleAnd1TomatoSoupAndReturnUnhealthy(){
         assertEquals(1, engine.getCurrentDay());
         assertEquals(TED.getName(), engine.getActivePerson().getName());
-        when(randomize.nextInt(anyInt())).thenReturn(1);
-        engine.goForExpedition();
-        engine.pass();
+        when(randomize.nextInt(anyInt())).thenReturn(0);
+        engine.goForExpeditionAndPass();
         assertEquals(DOLORES.getName(), engine.getActivePerson().getName());
         engine.pass();
         assertEquals(TIMMY.getName(), engine.getActivePerson().getName());
         engine.pass();
         assertEquals(BERTA.getName(), engine.getActivePerson().getName());
+        assertEquals(HEALTHY, ted.getState().toString());
+        assertEquals(3, engine.getAmountOf(WATER_BOTTLE));
+        assertEquals(3, engine.getAmountOf(TOMATO_SOUP));
+        assertEquals(30, ted.getStrength());
+        when(randomize.nextDouble()).thenReturn(0.90);
+        when(randomize.nextBoolean()).thenReturn(true);
+        when(randomize.nextInt(anyInt())).thenReturn(89);
         engine.pass();
         // 2th day starts
+        assertEquals(UNHEALTHY, ted.getState().toString());
+        assertEquals(TED.getName(), engine.getActivePerson().getName());
+        assertEquals(4, engine.getAmountOf(WATER_BOTTLE));
+        assertEquals(4, engine.getAmountOf(TOMATO_SOUP));
+        engine.pass();
         assertEquals(DOLORES.getName(), engine.getActivePerson().getName());
-        engine.drink();
-        engine.eat();
         engine.pass();
         assertEquals(TIMMY.getName(), engine.getActivePerson().getName());
-        engine.drink();
-        engine.eat();
         engine.pass();
         assertEquals(BERTA.getName(), engine.getActivePerson().getName());
-        engine.drink();
-        engine.eat();
-        assertEquals(0, engine.getAmountOf(WATER_BOTTLE));
-        assertEquals(0, engine.getAmountOf(TOMATO_SOUP));
-        assertThrows(IllegalStateException.class, () -> engine.drink());
-        assertThrows(IllegalStateException.class, () -> engine.eat());
-        assertEquals(30, ted.getStrength());
-        when(randomize.nextDouble()).thenReturn(0.7);
-        when(randomize.nextBoolean()).thenReturn(true);
-        when(randomize.nextInt(anyInt())).thenReturn(1);
-        when(randomize.nextInt(anyInt())).thenReturn(1);
+    }
+
+    @Test
+    void tedShouldGoForExpeditionFor1DayAndGainNothingAndReturnSickBecauseHeWasAlreadyUnhealthy(){
+        assertEquals(1, engine.getCurrentDay());
+        ted.setWorseState();
+        assertEquals(UNHEALTHY, ted.getState().toString());
+        assertEquals(TED.getName(), engine.getActivePerson().getName());
+        when(randomize.nextInt(anyInt())).thenReturn(0);
+        engine.goForExpeditionAndPass();
+        assertEquals(DOLORES.getName(), engine.getActivePerson().getName());
         engine.pass();
-        // 3th day starts, ted returns
+        assertEquals(TIMMY.getName(), engine.getActivePerson().getName());
+        engine.pass();
+        assertEquals(BERTA.getName(), engine.getActivePerson().getName());
+        assertEquals(UNHEALTHY, ted.getState().toString());
+        assertEquals(3, engine.getAmountOf(WATER_BOTTLE));
+        assertEquals(3, engine.getAmountOf(TOMATO_SOUP));
+        assertEquals(30, ted.getStrength());
+        when(randomize.nextDouble()).thenReturn(0.91);
+        when(randomize.nextBoolean()).thenReturn(true);
+        when(randomize.nextInt(anyInt())).thenReturn(0);
+        engine.pass();
+        // 2th day starts
+        assertEquals(SICK, ted.getState().toString());
         assertEquals(TED.getName(), engine.getActivePerson().getName());
         assertEquals(3, engine.getAmountOf(WATER_BOTTLE));
         assertEquals(3, engine.getAmountOf(TOMATO_SOUP));
-        assertEquals(HEALTHY, ted.getState().toString());
         engine.pass();
         assertEquals(DOLORES.getName(), engine.getActivePerson().getName());
         engine.pass();

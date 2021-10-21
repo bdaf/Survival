@@ -20,7 +20,7 @@ public class StateTest {
     void init() {
         randomize = new Random();
         randomize = mock(Random.class);
-        state = new Unhealthy(randomize);
+        state = new Healthy(randomize);
         person = new Person(PersonStatistic.TO_TEST);
         person.setState(state);
     }
@@ -160,7 +160,7 @@ public class StateTest {
     void drinkingShouldGive3StrengthAndMaxOfHydrationIs4PlusEatingShouldGive6StrengthAnd3CheerfulnessInMediumState() {
 
         person = new Person(PersonStatistic.TO_TEST_MIN);
-        person.setState(new State.Medium(randomize));
+        person.setState(new Unhealthy(randomize));
         assertEquals(UNHEALTHY, person.getState().toString());
         when(randomize.nextDouble()).thenReturn(0.8);
 
