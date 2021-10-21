@@ -8,9 +8,9 @@ import static pl.bdaf.person.Backpack.WATER_BOTTLE;
 public abstract class State {
 
     public static final String HEALTHY = "Healthy";
+    public static final String UNHEALTHY = "Unhealthy";
     public static final String SICK = "Sick";
     public static final String DEAD = "Dead";
-    public static final String MEDIUM = "Medium";
 
     public static final int MAX_STRENGTH = 33;
     private static final int MAX_HYDRATION = 4;
@@ -88,13 +88,13 @@ public abstract class State {
     }
 
 
-    static class Healthy extends State {
+    static class Unhealthy extends State {
 
-        protected Healthy() {
+        protected Unhealthy() {
             this(new Random());
         }
 
-        protected Healthy(Random aRandom) {
+        protected Unhealthy(Random aRandom) {
             rand = aRandom;
             setName(HEALTHY);
         }
@@ -146,7 +146,7 @@ public abstract class State {
 
         protected Medium(Random aRandom) {
             rand = aRandom;
-            setName(MEDIUM);
+            setName(UNHEALTHY);
         }
 
         @Override
@@ -168,7 +168,7 @@ public abstract class State {
 
         @Override
         State getBetterState() {
-            return new Healthy(rand);
+            return new Unhealthy(rand);
         }
 
         @Override

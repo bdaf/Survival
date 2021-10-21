@@ -20,7 +20,7 @@ public class StateTest {
     void init() {
         randomize = new Random();
         randomize = mock(Random.class);
-        state = new State.Healthy(randomize);
+        state = new Unhealthy(randomize);
         person = new Person(PersonStatistic.TO_TEST);
         person.setState(state);
     }
@@ -50,10 +50,10 @@ public class StateTest {
     @Test
     void personInMediumStateShouldBecameHealthyByDrinking() {
         person.setWorseState();
-        assertEquals(MEDIUM, person.getState().toString());
+        assertEquals(UNHEALTHY, person.getState().toString());
         when(randomize.nextDouble()).thenReturn(0.8);
         person.drink();
-        assertEquals(MEDIUM, person.getState().toString());
+        assertEquals(UNHEALTHY, person.getState().toString());
 
         when(randomize.nextDouble()).thenReturn(0.79);
         person.drink();
@@ -63,10 +63,10 @@ public class StateTest {
     @Test
     void personInMediumStateShouldBecameHealthyByEating() {
         person.setWorseState();
-        assertEquals(MEDIUM, person.getState().toString());
+        assertEquals(UNHEALTHY, person.getState().toString());
         when(randomize.nextDouble()).thenReturn(0.6);
         person.eat();
-        assertEquals(MEDIUM, person.getState().toString());
+        assertEquals(UNHEALTHY, person.getState().toString());
 
         when(randomize.nextDouble()).thenReturn(0.5);
         person.eat();
@@ -85,7 +85,7 @@ public class StateTest {
 
         when(randomize.nextDouble()).thenReturn(0.5);
         person.drink();
-        assertEquals(MEDIUM, person.getState().toString());
+        assertEquals(UNHEALTHY, person.getState().toString());
 
         person.setWorseState();
         assertEquals(SICK, person.getState().toString());
@@ -107,7 +107,7 @@ public class StateTest {
 
         when(randomize.nextDouble()).thenReturn(0.44);
         person.eat();
-        assertEquals(MEDIUM, person.getState().toString());
+        assertEquals(UNHEALTHY, person.getState().toString());
 
         person.setWorseState();
         assertEquals(SICK, person.getState().toString());
@@ -161,7 +161,7 @@ public class StateTest {
 
         person = new Person(PersonStatistic.TO_TEST_MIN);
         person.setState(new State.Medium(randomize));
-        assertEquals(MEDIUM, person.getState().toString());
+        assertEquals(UNHEALTHY, person.getState().toString());
         when(randomize.nextDouble()).thenReturn(0.8);
 
         person.eat();
@@ -176,7 +176,7 @@ public class StateTest {
         assertEquals(7, person.getSatietyPoints());
         assertEquals(4, person.getHydrationPoints());
 
-        assertEquals(MEDIUM, person.getState().toString());
+        assertEquals(UNHEALTHY, person.getState().toString());
     }
 
     @Test

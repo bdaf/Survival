@@ -14,7 +14,7 @@ public class Person {
     private int deadDay;
 
     Person(PersonStatistic aStats){
-        state = new State.Healthy();
+        state = new State.Unhealthy();
         expeditionDaysLeft = 0;
         name = aStats.getName();
         strength = aStats.strength;
