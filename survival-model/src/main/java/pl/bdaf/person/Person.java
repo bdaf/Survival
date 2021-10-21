@@ -4,21 +4,23 @@ import static pl.bdaf.person.State.DEAD;
 
 public class Person {
 
-    String name;
-    int strength;
-    int hydrationPoints;
-    int satietyPoints;
-    public int cheerfulness;
+    private int expeditionDaysLeft;
+    private int hydrationPoints;
+    private int satietyPoints;
+    private int cheerfulness;
+    private int strength;
+    private String name;
     private State state;
     private int deadDay;
 
     Person(PersonStatistic aStats){
+        state = new State.Healthy();
+        expeditionDaysLeft = 0;
         name = aStats.getName();
         strength = aStats.strength;
         cheerfulness = aStats.cheerfulness;
         satietyPoints = aStats.satietyPoints;
         hydrationPoints = aStats.hydrationPoints;
-        state = new State.Healthy();
     }
 
     public State getState() {
@@ -94,6 +96,14 @@ public class Person {
 
     void setDeadDay(int aDeadDay) {
         deadDay = aDeadDay;
+    }
+
+    int getExpeditionDaysLeft() {
+        return expeditionDaysLeft;
+    }
+
+    void setExpeditionDaysLeft(int aExpeditionDaysLeft) {
+        expeditionDaysLeft = aExpeditionDaysLeft;
     }
 
     @Override

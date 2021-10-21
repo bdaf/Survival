@@ -72,7 +72,13 @@ public abstract class State {
         return name;
     }
 
+    Random getRand() {
+        return rand;
+    }
+
     abstract void changeStateRandomly(Person aPerson, double aPercentageForHigherTwoStates, double aPercentageForHigherState);
+
+    abstract String getDescribe();
 
     @Override
     public boolean equals(Object obj) {
@@ -80,8 +86,6 @@ public abstract class State {
         State state = (State) obj;
         return getName().equals(state.getName());
     }
-
-    abstract String getDescribe();
 
 
     static class Healthy extends State {
@@ -93,11 +97,6 @@ public abstract class State {
         protected Healthy(Random aRandom) {
             rand = aRandom;
             setName(HEALTHY);
-        }
-
-        @Override
-        void goForExpedition(Person aPerson, Backpack aBackpack) {
-            //TODO
         }
 
         @Override
@@ -151,11 +150,6 @@ public abstract class State {
         }
 
         @Override
-        public void goForExpedition(Person aPerson, Backpack aBackpack) {
-            //TODO
-        }
-
-        @Override
         public void drink(Person aPerson) {
             super.drink(aPerson);
             changeStateRandomly(aPerson,0.0, 0.8);
@@ -205,11 +199,6 @@ public abstract class State {
         protected Sick(Random aRandom) {
             rand = aRandom;
             setName(SICK);
-        }
-
-        @Override
-        public void goForExpedition(Person aPerson, Backpack aBackpack) {
-            //TODO
         }
 
         @Override
@@ -274,7 +263,7 @@ public abstract class State {
 
         @Override
         public void drink(Person aPerson) {
-            throw new IllegalStateException("Dead person's state cannot drink!");
+            throw new IllegalStateException("Dead person cannot drink!");
         }
 
         @Override

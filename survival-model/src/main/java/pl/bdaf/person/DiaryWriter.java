@@ -19,4 +19,8 @@ public class DiaryWriter {
             return null;
         return aDeadPerson.getName() + aDeadPerson.getState().getDescribe()+aDeadPerson.getDeadDay()+"...";
     }
+
+    static String describeExpeditionDay(Person aPerson) {
+        return aPerson.getName() + " is on expedition.";
+    }
 }

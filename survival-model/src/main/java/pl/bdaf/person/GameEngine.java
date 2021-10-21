@@ -25,11 +25,15 @@ public class GameEngine {
         day++;
         StringBuilder currentDayDiary = new StringBuilder("Day " + day + "\n");
         for (Person p : queue.getAlivePeople()) {
-            p.setStrength(p.getStrength() + 1);
-            p.setHydrationPoints(p.getHydrationPoints() - 1);
-            p.setSatietyPoints(p.getHydrationPoints() - 1);
-            p.setCheerfulness(p.getCheerfulness() - 1);
-            currentDayDiary.append(DiaryWriter.describe(p));
+            if(expeditionDayLeft(p) <= 0){
+                p.setStrength(p.getStrength() + 1);
+                p.setHydrationPoints(p.getHydrationPoints() - 1);
+                p.setSatietyPoints(p.getHydrationPoints() - 1);
+                p.setCheerfulness(p.getCheerfulness() - 1);
+                currentDayDiary.append(DiaryWriter.describe(p));
+            } else {
+                currentDayDiary.append(DiaryWriter.describeExpeditionDay(p));
+            }
         }
         for (Person p : queue.getDeadPeople()) {
             currentDayDiary.append(DiaryWriter.describeDeadPerson(p));
@@ -58,12 +62,6 @@ public class GameEngine {
         //TODO
     }
 
-    void setDeadDayFor(List<Person> aPeopleJustDied) {
-        for (Person person : aPeopleJustDied) {
-            person.setDeadDay(day);
-        }
-    }
-
     void drink() {
         getActivePerson().drink();
     }
@@ -72,11 +70,29 @@ public class GameEngine {
         getActivePerson().eat();
     }
 
-    void goForExpedition(){
-        getActivePerson().goForExpedition(backpack);
+    void goForExpedition(){ // from 1 day to 3 days on expedition
+        getActivePerson().setExpeditionDaysLeft(getActivePerson().getState().getRand().nextInt(3)+1);
     }
 
     String getDailyDescribe() {
         return dailyDescribe;
+    }
+
+    void setDeadDayFor(List<Person> aPeopleJustDied) {
+        for (Person person : aPeopleJustDied) {
+            person.setDeadDay(day);
+        }
+    }
+
+    private int expeditionDayLeft(Person aPerson) { // returns how many expedition days left
+        int expeditionDaysLeft = aPerson.getExpeditionDaysLeft();
+        if(expeditionDaysLeft == 1){ // he has just returned from expedition
+            aPerson.goForExpedition(backpack); // do random action with expedition
+        }
+        aPerson.setExpeditionDaysLeft(aPerson.getExpeditionDaysLeft()-1);
+        if(aPerson.getExpeditionDaysLeft()<=0){
+            aPerson.setExpeditionDaysLeft(0);
+        }
+        return aPerson.getExpeditionDaysLeft();
     }
 }
