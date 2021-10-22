@@ -1,10 +1,7 @@
 package pl.bdaf.gui;
 
 import com.googlecode.lanterna.gui2.*;
-import com.googlecode.lanterna.gui2.dialogs.ActionListDialogBuilder;
-import com.googlecode.lanterna.gui2.dialogs.DialogWindow;
-import com.googlecode.lanterna.gui2.dialogs.MessageDialogBuilder;
-import com.googlecode.lanterna.gui2.dialogs.TextInputDialogBuilder;
+import com.googlecode.lanterna.gui2.dialogs.*;
 import com.googlecode.lanterna.screen.Screen;
 import com.googlecode.lanterna.screen.TerminalScreen;
 import com.googlecode.lanterna.terminal.DefaultTerminalFactory;
@@ -23,24 +20,22 @@ public class MainWindow {
 
         // Create gui and start gui
         MultiWindowTextGUI gui = new MultiWindowTextGUI(screen);
+        MessageDialog.showMessageDialog(gui, "Survival Game", "Incredible challenge waits for you!");
 
-        new MessageDialogBuilder()
-                .setTitle("Survival Game")
-                .setText("Incredible challenge waits for you!")
-                .build()
-                .showDialog(gui);
+        String nameOfUser = getNameFromTextInputDialog(gui);
 
+        while (true){
+            getMenu(screen, nameOfUser).showDialog(gui);
+        }
+    }
 
-        String nameOfUser = new TextInputDialogBuilder()
+    private static String getNameFromTextInputDialog(MultiWindowTextGUI gui) {
+        return new TextInputDialogBuilder()
                 .setTitle("Hello")
                 .setDescription("Welcome in Survival Game.\nType your name and let's go!")
                 .setValidationPattern(Pattern.compile("[a-zA-Z0-9_]{2,10}+"), "Name shall contain from 2 to 10 letters and numbers!")
                 .build()
                 .showDialog(gui);
-
-        while (true){
-            getMenu(screen, nameOfUser).showDialog(gui);
-        }
     }
 
     private static DialogWindow getMenu(Screen screen, String aNameOfUser) {
