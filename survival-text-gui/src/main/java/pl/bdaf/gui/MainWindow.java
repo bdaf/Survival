@@ -1,6 +1,9 @@
 package pl.bdaf.gui;
 
 import com.googlecode.lanterna.gui2.*;
+import com.googlecode.lanterna.gui2.dialogs.ActionListDialogBuilder;
+import com.googlecode.lanterna.gui2.dialogs.DialogWindow;
+import com.googlecode.lanterna.gui2.dialogs.MessageDialogBuilder;
 import com.googlecode.lanterna.gui2.dialogs.TextInputDialogBuilder;
 import com.googlecode.lanterna.screen.Screen;
 import com.googlecode.lanterna.screen.TerminalScreen;
@@ -20,12 +23,46 @@ public class MainWindow {
 
         // Create gui and start gui
         MultiWindowTextGUI gui = new MultiWindowTextGUI(screen);
-        new TextInputDialogBuilder()
-                .setTitle("Hello")
-                .setDescription("Welcome in Survival Game.\nType your name and let's go!")
-                .setValidationPattern(Pattern.compile("[a-zA-Z0-9_]+"), "You have to type name, but without special characters!")
+
+        new MessageDialogBuilder()
+                .setTitle("Survival Game")
+                .setText("Incredible challenge waits for you!")
                 .build()
                 .showDialog(gui);
-        screen.stopScreen();
+
+
+        String nameOfUser = new TextInputDialogBuilder()
+                .setTitle("Hello")
+                .setDescription("Welcome in Survival Game.\nType your name and let's go!")
+                .setValidationPattern(Pattern.compile("[a-zA-Z0-9_]{2,10}+"), "Name shall contain from 2 to 10 letters and numbers!")
+                .build()
+                .showDialog(gui);
+
+        while (true){
+            getMenu(screen, nameOfUser).showDialog(gui);
+        }
+    }
+
+    private static DialogWindow getMenu(Screen screen, String aNameOfUser) {
+        return new ActionListDialogBuilder()
+              .setTitle("Menu")
+              .setDescription(aNameOfUser+", choose action!")
+                .setCanCancel(false)
+              .addAction("Play Game", () -> {
+                  // Do 1st thing...
+              })
+              .addAction("Instruction", () -> {
+                  // Do 2nd thing...
+              })
+              .addAction("Quit game", () -> closeScreen(screen))
+              .build();
+    }
+
+    private static void closeScreen(Screen screen) {
+        try {
+            screen.stopScreen();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
