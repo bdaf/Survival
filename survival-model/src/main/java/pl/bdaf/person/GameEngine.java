@@ -15,7 +15,7 @@ public class GameEngine {
     private String dailyDescribe;
     private int day;
 
-    GameEngine(List<Person> aPersonList) {
+    public GameEngine(List<Person> aPersonList) {
         this(aPersonList, new Backpack());
     }
 
@@ -24,11 +24,21 @@ public class GameEngine {
         queue.addObserver(this);
         backpack = aBackpack;
         day = 1;
+        dailyDescribe = getDescriptionOfAlivePeople();
     }
 
     void nextDay() {
         day++;
         StringBuilder currentDayDiary = new StringBuilder("Day " + day + "\n");
+        currentDayDiary.append(getDescriptionOfAlivePeople());
+        for (Person p : queue.getDeadPeople()) {
+            currentDayDiary.append(DiaryWriter.describeDeadPerson(p));
+        }
+        dailyDescribe = currentDayDiary.toString();
+    }
+
+    private String getDescriptionOfAlivePeople() {
+        StringBuilder currentDayDiary = new StringBuilder();
         for (Person p : queue.getAlivePeople()) {
             if(expeditionDayLeft(p) <= 0){
                 p.setStrength(p.getStrength() + 1);
@@ -40,10 +50,7 @@ public class GameEngine {
                 currentDayDiary.append(DiaryWriter.describeExpeditionDay(p));
             }
         }
-        for (Person p : queue.getDeadPeople()) {
-            currentDayDiary.append(DiaryWriter.describeDeadPerson(p));
-        }
-        dailyDescribe = currentDayDiary.toString();
+        return currentDayDiary.toString();
     }
 
     public void pass() {
@@ -93,7 +100,7 @@ public class GameEngine {
         pass();
     }
 
-    String getDailyDescribe() {
+    public String getDailyDescribe() {
         return dailyDescribe;
     }
 
@@ -116,14 +123,14 @@ public class GameEngine {
     }
 
 
-    int getAmountOf(String aWaterBottle) {
+    public int getAmountOf(String aWaterBottle) {
         return backpack.getAmountOf(aWaterBottle);
     }
 
     // returns whether there was supply in backpack to remove
-    private boolean reduceNumberOfSupply(int aAmountOfSupply, String aAWaterBottle) {
-        if (backpack.getAmountOf(aAWaterBottle) >= aAmountOfSupply) {
-            backpack.remove(aAWaterBottle, aAmountOfSupply);
+    private boolean reduceNumberOfSupply(int aAmountOfSupply, String aWaterBottle) {
+        if (backpack.getAmountOf(aWaterBottle) >= aAmountOfSupply) {
+            backpack.remove(aWaterBottle, aAmountOfSupply);
             return true;
         }
         return false;
