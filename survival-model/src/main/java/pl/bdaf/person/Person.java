@@ -1,5 +1,7 @@
 package pl.bdaf.person;
 
+import static pl.bdaf.person.Backpack.TOMATO_SOUP;
+import static pl.bdaf.person.Backpack.WATER_BOTTLE;
 import static pl.bdaf.person.State.DEAD;
 
 public class Person {
@@ -109,5 +111,19 @@ public class Person {
     @Override
     public String toString() {
         return name;
+    }
+
+    public void takeSupply(String aSupply, int aAmountOfSupply) {
+        if(aAmountOfSupply > 0){
+            if(aSupply.equalsIgnoreCase(WATER_BOTTLE)){
+                drink();
+            }
+            else if(aSupply.equalsIgnoreCase(TOMATO_SOUP)){
+                eat();
+            } else {
+                throw new IllegalArgumentException("Name of supply is neither water bottle or tomato soup.");
+            }
+            takeSupply(aSupply,aAmountOfSupply-1);
+        }
     }
 }

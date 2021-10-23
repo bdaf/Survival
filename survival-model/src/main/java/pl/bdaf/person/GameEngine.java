@@ -12,24 +12,15 @@ public class GameEngine {
 
     private static final int MIN_EXPEDITION_DAYS = 1;
     private static final int MAX_EXPEDITION_DAYS = 3;
+    public static final String PERSON_PASSES = "PERSON_PASSES";
+    public static final String END_OF_GAME = "END_OF_GAME";
+    public static final String DAY_PASSES = "DAY_PASSES";
+    public static final String EATEN = "EATEN";
     private final Backpack backpack;
     private final GameQueue queue;
-    private boolean endOfGame;
     private String dailyDescribe;
     private int day;
     private PropertyChangeSupport observers;
-
-    public void addObserver(String aNameOfProperty, PropertyChangeListener aListener){
-        observers.addPropertyChangeListener(aNameOfProperty, aListener);
-    }
-
-    public void removeObserver(String aNameOfProperty, PropertyChangeListener aListener){
-        observers.removePropertyChangeListener(aNameOfProperty, aListener);
-    }
-
-    public void notifyObservers(PropertyChangeEvent aPropertyChangeEvent){
-        observers.firePropertyChange(aPropertyChangeEvent);
-    }
 
     public GameEngine(List<Person> aPersonList) {
         this(aPersonList, new Backpack());
@@ -40,27 +31,72 @@ public class GameEngine {
         queue.addObserver(this);
         backpack = aBackpack;
         day = 1;
-        dailyDescribe = getDescriptionOfAlivePeople();
+        dailyDescribe = getDescriptionOfAlivePeopleAndMakeDayChangesAbout(0);
+    }
+
+    public void pass() {
+        Person oldPerson = getActivePerson();
+        queue.next();
+        notifyObservers(new PropertyChangeEvent(this, PERSON_PASSES, oldPerson, getActivePerson()));
+    }
+
+    public void drink() {
+        drink(1);
+    }
+
+    public void drink(int aAmountOfSupply) {
+        consumeSupply(aAmountOfSupply, WATER_BOTTLE);
+    }
+
+    public void eat() {
+        eat(1);
+    }
+
+    public void eat(int aAmountOfSupply) {
+        consumeSupply(aAmountOfSupply, TOMATO_SOUP);
+    }
+
+    public int getCurrentDay() {
+        return day;
+    }
+
+    public Person getActivePerson() {
+        return queue.getActivePerson();
+    }
+
+    public String getDailyDescribe() {
+        return dailyDescribe;
+    }
+
+    public int getAmountOf(String aWaterBottle) {
+        return backpack.getAmountOf(aWaterBottle);
     }
 
     void nextDay() {
         day++;
         StringBuilder currentDayDiary = new StringBuilder("Day " + day + "\n");
-        currentDayDiary.append(getDescriptionOfAlivePeople());
+        currentDayDiary.append(getDescriptionOfAlivePeopleAndMakeDayChangesAbout(1));
         for (Person p : queue.getDeadPeople()) {
             currentDayDiary.append(DiaryWriter.describeDeadPerson(p));
         }
         dailyDescribe = currentDayDiary.toString();
+        notifyObservers(new PropertyChangeEvent(this, DAY_PASSES, day - 1, day));
     }
 
-    private String getDescriptionOfAlivePeople() {
+    void goForExpeditionAndPass() { // from 1 day to 3 days on expedition
+        getActivePerson().setExpeditionDaysLeft(getActivePerson().getState().getRand()
+                .nextInt(MAX_EXPEDITION_DAYS - MIN_EXPEDITION_DAYS + 1) + MIN_EXPEDITION_DAYS);
+        pass();
+    }
+
+    private String getDescriptionOfAlivePeopleAndMakeDayChangesAbout(int aFactorOfChanges) {
         StringBuilder currentDayDiary = new StringBuilder();
         for (Person p : queue.getAlivePeople()) {
-            if(expeditionDayLeft(p) <= 0){
-                p.setStrength(p.getStrength() + 1);
-                p.setHydrationPoints(p.getHydrationPoints() - 1);
-                p.setSatietyPoints(p.getHydrationPoints() - 1);
-                p.setCheerfulness(p.getCheerfulness() - 1);
+            if (expeditionDayLeft(p) <= 0) {
+                p.setStrength(p.getStrength() + aFactorOfChanges);
+                p.setHydrationPoints(p.getHydrationPoints() - aFactorOfChanges);
+                p.setSatietyPoints(p.getHydrationPoints() - aFactorOfChanges);
+                p.setCheerfulness(p.getCheerfulness() - aFactorOfChanges);
                 currentDayDiary.append(DiaryWriter.describe(p));
             } else {
                 currentDayDiary.append(DiaryWriter.describeExpeditionDay(p));
@@ -69,78 +105,16 @@ public class GameEngine {
         return currentDayDiary.toString();
     }
 
-    public void pass() {
-        queue.next();
-    }
-
-    int getCurrentDay() {
-        return day;
-    }
-
-    Person getActivePerson() {
-        return queue.getActivePerson();
-    }
-
-    public boolean isEndOfGame() {
-        return endOfGame;
-    }
-
-    void endOfGame() {
-        endOfGame = true;
-        //TODO
-    }
-
-    public void drink(){drink(1);}
-
-    public void drink(int aAmountOfSupply) {
-        if(reduceNumberOfSupply(aAmountOfSupply, WATER_BOTTLE)){
-            getActivePerson().drink();
-            return;
-        }
-        throw new IllegalStateException("There is no that many water bottles in backpack!");
-    }
-
-    public void eat(){eat(1);}
-
-    public void eat(int aAmountOfSupply) {
-        if(reduceNumberOfSupply(aAmountOfSupply, TOMATO_SOUP)){
-            getActivePerson().eat();
-            return;
-        }
-        throw new IllegalStateException("There is no that many tomato soups in backpack!");
-    }
-
-    void goForExpeditionAndPass(){ // from 1 day to 3 days on expedition
-        getActivePerson().setExpeditionDaysLeft(getActivePerson().getState().getRand()
-                .nextInt(MAX_EXPEDITION_DAYS-MIN_EXPEDITION_DAYS+1)+MIN_EXPEDITION_DAYS);
-        pass();
-    }
-
-    public String getDailyDescribe() {
-        return dailyDescribe;
-    }
-
-    void setDeadDayFor(List<Person> aPeopleJustDied) {
-        for (Person person : aPeopleJustDied) {
-            person.setDeadDay(day);
-        }
-    }
-
     private int expeditionDayLeft(Person aPerson) { // returns how many expedition days left
         int expeditionDaysLeft = aPerson.getExpeditionDaysLeft();
-        if(expeditionDaysLeft == 1){ // he has just returned from expedition
+        if (expeditionDaysLeft == 1) { // he has just returned from expedition
             aPerson.goForExpedition(backpack); // do random action with expedition
         }
-        aPerson.setExpeditionDaysLeft(aPerson.getExpeditionDaysLeft()-1);
-        if(aPerson.getExpeditionDaysLeft()<=0){
+        aPerson.setExpeditionDaysLeft(aPerson.getExpeditionDaysLeft() - 1);
+        if (aPerson.getExpeditionDaysLeft() <= 0) {
             aPerson.setExpeditionDaysLeft(0);
         }
         return aPerson.getExpeditionDaysLeft();
-    }
-
-
-    public int getAmountOf(String aWaterBottle) {
-        return backpack.getAmountOf(aWaterBottle);
     }
 
     // returns whether there was supply in backpack to remove
@@ -150,5 +124,39 @@ public class GameEngine {
             return true;
         }
         return false;
+    }
+
+    private void consumeSupply(int aAmountOfSupply, String waterBottle) {
+        if (aAmountOfSupply > 0 && reduceNumberOfSupply(aAmountOfSupply, waterBottle)) {
+            getActivePerson().takeSupply(waterBottle, aAmountOfSupply);
+            int numberOfSupply = backpack.getAmountOf(waterBottle);
+            notifyObservers(new PropertyChangeEvent(this, waterBottle + EATEN, numberOfSupply - aAmountOfSupply, numberOfSupply));
+            return;
+        } else if (aAmountOfSupply <= 0) {
+            throw new IllegalStateException("You can only take positive value of number of supply: " + waterBottle);
+        }
+        throw new IllegalStateException("There is no that many " + waterBottle + " in backpack!");
+    }
+
+    void setDeadDayFor(List<Person> aPeopleJustDied) {
+        for (Person person : aPeopleJustDied) {
+            person.setDeadDay(day);
+        }
+    }
+
+    public void addObserver(String aNameOfProperty, PropertyChangeListener aListener) {
+        observers.addPropertyChangeListener(aNameOfProperty, aListener);
+    }
+
+    public void removeObserver(String aNameOfProperty, PropertyChangeListener aListener) {
+        observers.removePropertyChangeListener(aNameOfProperty, aListener);
+    }
+
+    public void notifyObservers(PropertyChangeEvent aPropertyChangeEvent) {
+        observers.firePropertyChange(aPropertyChangeEvent);
+    }
+
+    void endOfGame() {
+        notifyObservers(new PropertyChangeEvent(this, END_OF_GAME, null, null));
     }
 }

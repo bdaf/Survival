@@ -8,6 +8,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.List;
 
+import static pl.bdaf.person.GameEngine.PERSON_PASSES;
 import static pl.bdaf.person.PersonStatistic.*;
 
 public class GameController implements PropertyChangeListener {
@@ -22,7 +23,7 @@ public class GameController implements PropertyChangeListener {
     }
 
     private void init() {
-        
+        engine.addObserver(PERSON_PASSES,this);
     }
 
     @Override
