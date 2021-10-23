@@ -1,5 +1,8 @@
 package pl.bdaf.person;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.util.List;
 
 import static pl.bdaf.person.Backpack.TOMATO_SOUP;
@@ -14,6 +17,19 @@ public class GameEngine {
     private boolean endOfGame;
     private String dailyDescribe;
     private int day;
+    private PropertyChangeSupport observers;
+
+    public void addObserver(String aNameOfProperty, PropertyChangeListener aListener){
+        observers.addPropertyChangeListener(aNameOfProperty, aListener);
+    }
+
+    public void removeObserver(String aNameOfProperty, PropertyChangeListener aListener){
+        observers.removePropertyChangeListener(aNameOfProperty, aListener);
+    }
+
+    public void notifyObservers(PropertyChangeEvent aPropertyChangeEvent){
+        observers.firePropertyChange(aPropertyChangeEvent);
+    }
 
     public GameEngine(List<Person> aPersonList) {
         this(aPersonList, new Backpack());

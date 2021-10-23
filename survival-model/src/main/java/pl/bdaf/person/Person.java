@@ -13,7 +13,7 @@ public class Person {
     private State state;
     private int deadDay;
 
-    Person(PersonStatistic aStats){
+    public Person(PersonStatistic aStats){
         state = new State.Healthy();
         expeditionDaysLeft = 0;
         name = aStats.getName();
