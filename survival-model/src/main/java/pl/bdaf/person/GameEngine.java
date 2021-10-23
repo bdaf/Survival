@@ -12,8 +12,8 @@ public class GameEngine {
 
     private static final int MIN_EXPEDITION_DAYS = 1;
     private static final int MAX_EXPEDITION_DAYS = 3;
+    public static final String END_OF_THE_GAME = "End Of the Game";
     public static final String PERSON_PASSES = "PERSON_PASSES";
-    public static final String END_OF_GAME = "END_OF_GAME";
     public static final String DAY_PASSES = "DAY_PASSES";
     public static final String EATEN = "EATEN";
     private final Backpack backpack;
@@ -31,6 +31,7 @@ public class GameEngine {
         queue.addObserver(this);
         backpack = aBackpack;
         day = 1;
+        observers = new PropertyChangeSupport(this);
         dailyDescribe = getDescriptionOfAlivePeopleAndMakeDayChangesAbout(0);
     }
 
@@ -157,6 +158,8 @@ public class GameEngine {
     }
 
     void endOfGame() {
-        notifyObservers(new PropertyChangeEvent(this, END_OF_GAME, null, null));
+        String endOfGameDescribe = END_OF_THE_GAME + " - your score is " +getCurrentDay()+" day!";
+        dailyDescribe += endOfGameDescribe;
+        notifyObservers(new PropertyChangeEvent(this, END_OF_THE_GAME, null, endOfGameDescribe));
     }
 }

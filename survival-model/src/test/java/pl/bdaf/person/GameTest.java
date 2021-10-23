@@ -7,6 +7,7 @@ import java.util.LinkedList;
 import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static pl.bdaf.person.GameEngine.END_OF_THE_GAME;
 import static pl.bdaf.person.PersonStatistic.*;
 
 public class GameTest {
@@ -109,6 +110,6 @@ public class GameTest {
         timmy.setState(new State.Dead());
         engine.pass();
         assertEquals(3, engine.getCurrentDay());
-        assertTrue(engine.isEndOfGame());
+        assertTrue(engine.getDailyDescribe().contains(END_OF_THE_GAME));
     }
 }
