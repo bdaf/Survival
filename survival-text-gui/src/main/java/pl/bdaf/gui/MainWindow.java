@@ -5,8 +5,12 @@ import com.googlecode.lanterna.gui2.dialogs.*;
 import com.googlecode.lanterna.screen.TerminalScreen;
 import com.googlecode.lanterna.terminal.DefaultTerminalFactory;
 import com.googlecode.lanterna.terminal.Terminal;
+import jaco.mp3.player.MP3Player;
 
+
+import java.io.File;
 import java.io.IOException;
+import java.util.Collections;
 import java.util.regex.Pattern;
 
 public class MainWindow {
@@ -15,6 +19,11 @@ public class MainWindow {
     private static TerminalScreen screen;
 
     public static void main(String[] args) throws IOException {
+        //Music
+        MP3Player mp3player = new MP3Player(new File("survival-text-gui/src/main/resources/mp3/st.mp3"));
+        mp3player.play();
+
+
 
         // Setup terminal and screen layers
         Terminal terminal = new DefaultTerminalFactory().createTerminal();
@@ -27,16 +36,36 @@ public class MainWindow {
         // Dialogs appear
         MessageDialog.showMessageDialog(gui, "Survival Game", "Incredible challenge waits for you!\nUse arrows and \"enter\" button to move through menu.");
         nameOfUser = getNameFromTextInputDialog(gui);
-        if(nameOfUser==null) nameOfUser = "Anonymous" ;
-        //getMenu(screen, nameOfUser).showDialog(gui);
-        gui.addWindowAndWait(getMenu());
+        if (nameOfUser == null) nameOfUser = "Anonymous";
+        //
+        //
+        BasicWindow window = new BasicWindow();
+        Panel mainPanel = new Panel();
+        Panel panel1 = new Panel();
+        Panel panel2 = new Panel();
+
+        window.setComponent(mainPanel);
+        window.setHints(Collections.singletonList(Window.Hint.CENTERED));
+
+        mainPanel.addComponent(panel1);
+        mainPanel.addComponent(panel2);
+        mainPanel.setLayoutManager(new LinearLayout(Direction.VERTICAL));
+
+        panel1.addComponent(new Label(getAsciArtString()));
+        panel2.addComponent(new Button("Play Game", () -> new GameController(gui)));
+        panel2.addComponent(new Button("Instruction", () -> MessageDialog.showMessageDialog(gui, "Instruction", getInstructionString())));
+        panel2.addComponent(new Button("Quit game", () -> closeScreen()));
+
+        gui.addWindowAndWait(window);
     }
+
 
     static DialogWindow getMenu() {
         return new ActionListDialogBuilder()
                 .setTitle("Menu")
-                .setDescription(nameOfUser+ ", choose action!")
+                .setDescription(nameOfUser + ", choose action!")
                 .setCanCancel(false)
+                .addAction(getAsciArtString(), () -> new GameController(gui))
                 .addAction("Play Game", () -> {
                     new GameController(gui);
                     getMenu().showDialog(gui);
@@ -76,5 +105,15 @@ public class MainWindow {
         } catch (IOException aE) {
             aE.printStackTrace();
         }
+    }
+
+    private static String getAsciArtString() {
+        return "\r" +
+                "  _________                  .__              .__   \n" +
+                " /   _____/__ ____________  _|__|__  _______  |  |  \n" +
+                " \\_____  \\|  |  \\_  __ \\  \\/ /  \\  \\/ /\\__  \\ |  |  \n" +
+                " /        \\  |  /|  | \\/\\   /|  |\\   /  / __ \\|  |__\n" +
+                "/_______  /____/ |__|    \\_/ |__| \\_/  (____  /____/\n" +
+                "        \\/                                  \\/      ";
     }
 }

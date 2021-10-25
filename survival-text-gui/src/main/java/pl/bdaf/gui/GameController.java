@@ -50,12 +50,10 @@ public class GameController implements PropertyChangeListener {
     private void makingPanels() {
         window = new BasicWindow();
         window.setTitle("Survival");
-
         containerPanel = new Panel();
         mainPanel = new Panel();
         mainPanel.setLayoutManager(new LinearLayout(Direction.HORIZONTAL));
         preparingPanels();
-
         gui.addWindowAndWait(window);
     }
 
@@ -103,9 +101,7 @@ public class GameController implements PropertyChangeListener {
     }
 
     private void goBackToMenu() {
-        MainWindow.getScreen().clear();
         window.close();
-        gui.addWindowAndWait(getMenu());
     }
 
     private void updateAmountsOfSupplies() {
