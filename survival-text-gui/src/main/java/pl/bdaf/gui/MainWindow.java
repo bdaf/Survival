@@ -24,10 +24,11 @@ public class MainWindow {
         gui = new MultiWindowTextGUI(screen);
 
         // Dialogs appear
-        MessageDialog.showMessageDialog(gui, "Survival Game", "Incredible challenge waits for you!\nUse arrays and \"enter\" button to move through menu.");
+        MessageDialog.showMessageDialog(gui, "Survival Game", "Incredible challenge waits for you!\nUse arrows and \"enter\" button to move through menu.");
         String nameOfUser = getNameFromTextInputDialog(gui);
         if(nameOfUser==null) nameOfUser = "Anonymous" ;
-        getMenu(screen, nameOfUser).showDialog(gui);
+        //getMenu(screen, nameOfUser).showDialog(gui);
+        gui.addWindowAndWait(getMenu(screen, nameOfUser));
     }
 
     private static DialogWindow getMenu(Screen screen, String aNameOfUser) {

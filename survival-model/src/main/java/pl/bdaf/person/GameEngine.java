@@ -84,7 +84,7 @@ public class GameEngine {
         notifyObservers(new PropertyChangeEvent(this, DAY_PASSES, day - 1, day));
     }
 
-    void goForExpeditionAndPass() { // from 1 day to 3 days on expedition
+    public void goForExpeditionAndPass() { // from 1 day to 3 days on expedition
         getActivePerson().setExpeditionDaysLeft(getActivePerson().getState().getRand()
                 .nextInt(MAX_EXPEDITION_DAYS - MIN_EXPEDITION_DAYS + 1) + MIN_EXPEDITION_DAYS);
         pass();
