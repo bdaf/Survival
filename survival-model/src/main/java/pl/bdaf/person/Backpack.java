@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Random;
 
 public class Backpack {
-    public static final String TOMATO_SOUP = "soup";
+    public static final String TOMATO_SOUP = "tomato soup";
     public static final String WATER_BOTTLE = "water";
     public static final int MAX_OF_WATER = 20;
     public static final int MIN_OF_WATER = 10;

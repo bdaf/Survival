@@ -108,7 +108,7 @@ public class GameController implements PropertyChangeListener {
             updateAmountsOfSupplies();
         }
         if(aEvent.getPropertyName().equals(SEND_MESSAGE)){
-            MessageDialog.showMessageDialog(gui, "Forbidden action", aEvent.getNewValue().toString());
+            MessageDialog.showMessageDialog(gui, aEvent.getOldValue().toString(), aEvent.getNewValue().toString());
         }
     }
 
