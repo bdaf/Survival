@@ -29,6 +29,10 @@ public class Backpack {
         addRandomAmountOf(TOMATO_SOUP,MIN_OF_SOUP,MAX_OF_SOUP);
     }
 
+    public Backpack(Backpack aBackpack) {
+        content = aBackpack.getContent();
+    }
+
     List<String> getContent() {
         return List.copyOf(content);
     }

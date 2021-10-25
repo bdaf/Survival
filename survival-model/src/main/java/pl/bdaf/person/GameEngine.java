@@ -16,6 +16,7 @@ public class GameEngine {
     public static final String PERSON_PASSES = "PERSON_PASSES";
     public static final String DAY_PASSES = "DAY_PASSES";
     public static final String EATEN = "EATEN";
+    public static final String RETURN_FROM_EXPEDITION = "RETURN_FROM_EXPETITION";
     private final Backpack backpack;
     private final GameQueue queue;
     private String dailyDescribe;
@@ -93,7 +94,7 @@ public class GameEngine {
     private String getDescriptionOfAlivePeopleAndMakeDayChangesAbout(int aFactorOfChanges) {
         StringBuilder currentDayDiary = new StringBuilder();
         for (Person p : queue.getAlivePeople()) {
-            if (expeditionDayLeft(p) <= 0) {
+            if (expeditionDayLeft(p, currentDayDiary) <= 0) {
                 p.setStrength(p.getStrength() + aFactorOfChanges);
                 p.setHydrationPoints(p.getHydrationPoints() - aFactorOfChanges);
                 p.setSatietyPoints(p.getSatietyPoints() - aFactorOfChanges);
@@ -106,10 +107,15 @@ public class GameEngine {
         return currentDayDiary.toString();
     }
 
-    private int expeditionDayLeft(Person aPerson) { // returns how many expedition days left
+    private int expeditionDayLeft(Person aPerson, StringBuilder aCurrentDayDiary) { // returns how many expedition days left
         int expeditionDaysLeft = aPerson.getExpeditionDaysLeft();
         if (expeditionDaysLeft == 1) { // he has just returned from expedition
+            Backpack oldBackpack = new Backpack(backpack);
             aPerson.goForExpedition(backpack); // do random action with expedition
+            int amountOfWater = backpack.getAmountOf(WATER_BOTTLE) - oldBackpack.getAmountOf(WATER_BOTTLE);
+            int amountOfSoup = backpack.getAmountOf(TOMATO_SOUP) - oldBackpack.getAmountOf(TOMATO_SOUP);
+            aCurrentDayDiary.append( aPerson + " came back from expedition with " + amountOfWater + " water bottles and " + amountOfSoup + " tomato soups.\n");
+            notifyObservers(new PropertyChangeEvent(this, RETURN_FROM_EXPEDITION, oldBackpack, backpack));
         }
         aPerson.setExpeditionDaysLeft(aPerson.getExpeditionDaysLeft() - 1);
         if (aPerson.getExpeditionDaysLeft() <= 0) {
@@ -131,7 +137,7 @@ public class GameEngine {
         if (aAmountOfSupply > 0 && reduceNumberOfSupply(aAmountOfSupply, aNameOfSupply)) {
             getActivePerson().takeSupply(aNameOfSupply, aAmountOfSupply);
             int numberOfSupply = backpack.getAmountOf(aNameOfSupply);
-            dailyDescribe += getActivePerson().getName()+" is so delighted to consume some "+aNameOfSupply+".\n";
+            dailyDescribe += getActivePerson().getName() + " is so delighted to consume some " + aNameOfSupply + ".\n";
             notifyObservers(new PropertyChangeEvent(this, aNameOfSupply + EATEN, numberOfSupply - aAmountOfSupply, numberOfSupply));
             return;
         } else if (aAmountOfSupply <= 0) {
@@ -171,7 +177,7 @@ public class GameEngine {
     }
 
     public void passWholeDay() {
-        while (!isActiveCreatureLastInQueue()){
+        while (!isActiveCreatureLastInQueue()) {
             pass();
         }
         pass();

@@ -25,7 +25,7 @@ public class DiaryWriter {
     }
 
     static String describeExpeditionDay(Person aPerson) {
-        return aPerson.getName() + " is on expedition.";
+        return aPerson.getName() + " is on expedition.\n";
     }
 
 
