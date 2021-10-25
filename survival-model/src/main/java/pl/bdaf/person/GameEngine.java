@@ -14,7 +14,7 @@ public class GameEngine {
     private static final int MAX_EXPEDITION_DAYS = 3;
     public static final String END_OF_THE_GAME = "End Of the Game";
     public static final String PERSON_PASSES = "PERSON_PASSES";
-    public static final String DAY_PASSES = "DAY_PASSES";
+    public static final String UPDATE_DIARY = "UPDATE_DIARY";
     public static final String EATEN = "EATEN";
     public static final String RETURN_FROM_EXPEDITION = "RETURN_FROM_EXPEDITION";
     public static final String SEND_MESSAGE = "SEND_MESSAGE";
@@ -83,7 +83,7 @@ public class GameEngine {
             currentDayDiary.append(DiaryWriter.describeDeadPerson(p));
         }
         dailyDescribe = currentDayDiary.toString();
-        notifyObservers(new PropertyChangeEvent(this, DAY_PASSES, day - 1, day));
+        notifyObservers(new PropertyChangeEvent(this, UPDATE_DIARY, null, null));
     }
 
     public void goForExpeditionAndPass() { // from 1 day to 3 days on expedition
@@ -142,7 +142,6 @@ public class GameEngine {
         if (aAmountOfSupply > 0 && reduceNumberOfSupply(aAmountOfSupply, aNameOfSupply)) {
             getActivePerson().takeSupply(aNameOfSupply, aAmountOfSupply);
             int numberOfSupply = backpack.getAmountOf(aNameOfSupply);
-            dailyDescribe += getActivePerson().getName() + DiaryWriter.describeConsuming() + aNameOfSupply + ".\n";
             notifyObservers(new PropertyChangeEvent(this, aNameOfSupply + EATEN, numberOfSupply - aAmountOfSupply, numberOfSupply));
             notifyObservers(new PropertyChangeEvent(this, SEND_MESSAGE, "Successfully consumed", getActivePerson().getName()+" consumed "+aNameOfSupply+"."));
             return;
@@ -186,5 +185,11 @@ public class GameEngine {
 
     private boolean isActiveCreatureLastInQueue() {
         return queue.isActiveCreatureTheLast();
+    }
+
+    public void clearDiaryDescribe() {
+        dailyDescribe = "";
+        notifyObservers(new PropertyChangeEvent(this, UPDATE_DIARY, null, null));
+        notifyObservers(new PropertyChangeEvent(this, SEND_MESSAGE, "Diary cleaned successfully", "Daily describe of this day has been cleared!"));
     }
 }

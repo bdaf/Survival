@@ -41,7 +41,7 @@ public class GameController implements PropertyChangeListener {
         engine.addObserver(SEND_MESSAGE, this);
         engine.addObserver(END_OF_THE_GAME, this);
         engine.addObserver(PERSON_PASSES, this);
-        engine.addObserver(DAY_PASSES, this);
+        engine.addObserver(UPDATE_DIARY, this);
         makingPanels();
     }
 
@@ -52,7 +52,6 @@ public class GameController implements PropertyChangeListener {
         containerPanel = new Panel();
         mainPanel = new Panel();
         mainPanel.setLayoutManager(new LinearLayout(Direction.HORIZONTAL));
-
         preparingPanels();
 
         gui.addWindowAndWait(window);
@@ -78,7 +77,7 @@ public class GameController implements PropertyChangeListener {
         if (botLeftPanel == null) botLeftPanel = new Panel();
         botLeftPanel.removeAllComponents();
         botLeftPanel.addComponent(new Label("Water: " + engine.getAmountOf(WATER_BOTTLE)));
-        botLeftPanel.addComponent(new Label("Tomato soup: " + engine.getAmountOf(TOMATO_SOUP)));
+        botLeftPanel.addComponent(new Label("Soups: " + engine.getAmountOf(TOMATO_SOUP)));
     }
 
     private void setActionsTo(ActionListBox aActionListBox) {
@@ -87,7 +86,13 @@ public class GameController implements PropertyChangeListener {
         aActionListBox.addItem("Expedition!", () -> engine.goForExpeditionAndPass());
         aActionListBox.addItem("Next person", () -> engine.pass());
         aActionListBox.addItem("Next day", () -> engine.passWholeDay());
+        aActionListBox.addItem("Clear diary", () -> engine.clearDiaryDescribe());
         aActionListBox.addItem("Back to menu", () -> goBackToMenu());
+    }
+
+    private void setDiaryDescribe(String aDailyDescribe) {
+        rightPanel.removeAllComponents();
+        new Label(aDailyDescribe).addTo(rightPanel);
     }
 
     @Override
@@ -98,16 +103,11 @@ public class GameController implements PropertyChangeListener {
         } else if (aEvent.getPropertyName().equals(PERSON_PASSES)) {
             containerPanel.removeAllComponents();
             containerPanel.addComponent(mainPanel.withBorder(Borders.singleLine("Day " + engine.getCurrentDay() + " - " + engine.getActivePerson().getName())));
-        }
-        if (aEvent.getPropertyName().equals(DAY_PASSES) || aEvent.getPropertyName().contains(EATEN))  {
-            rightPanel.removeAllComponents();
-            new Label(engine.getDailyDescribe()).addTo(rightPanel);
-        }
-        if (aEvent.getPropertyName().contains(EATEN) || aEvent.getPropertyName().equals(RETURN_FROM_EXPEDITION)) {
-            botLeftPanel.removeAllComponents();
+        } else if (aEvent.getPropertyName().equals(UPDATE_DIARY)) {
+            setDiaryDescribe(engine.getDailyDescribe());
+        } else if (aEvent.getPropertyName().contains(EATEN) || aEvent.getPropertyName().equals(RETURN_FROM_EXPEDITION)) {
             updateAmountsOfSupplies();
-        }
-        if(aEvent.getPropertyName().equals(SEND_MESSAGE)){
+        } else if (aEvent.getPropertyName().equals(SEND_MESSAGE)) {
             MessageDialog.showMessageDialog(gui, aEvent.getOldValue().toString(), aEvent.getNewValue().toString());
         }
     }
