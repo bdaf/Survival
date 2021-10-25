@@ -1,5 +1,6 @@
 package pl.bdaf.gui;
 
+import com.googlecode.lanterna.TerminalPosition;
 import com.googlecode.lanterna.TerminalSize;
 import com.googlecode.lanterna.gui2.*;
 import com.googlecode.lanterna.gui2.dialogs.MessageDialog;
@@ -22,11 +23,12 @@ public class GameController implements PropertyChangeListener {
     private final GameEngine engine;
     private final MultiWindowTextGUI gui;
     private Panel containerPanel;
-    private Panel rightPanel;
     private Panel mainPanel;
+    private Panel rightPanel;
+    private Panel midLeftPanel;
+    private Panel bottomLeftPanel;
     private Panel leftPanel;
     private BasicWindow window;
-    private Panel botLeftPanel;
 
     public GameController(MultiWindowTextGUI aGui) {
         engine = new GameEngine(List.of(new Person(TED), new Person(DOLORES), new Person(TIMMY), new Person(BERTA)));
@@ -67,19 +69,6 @@ public class GameController implements PropertyChangeListener {
         window.setHints(Collections.singletonList(Window.Hint.CENTERED));
     }
 
-    private void preparingRightPanel() {
-        rightPanel = new Panel();
-        new Label(engine.getDailyDescribe()).addTo(rightPanel);
-        rightPanel.setPreferredSize(new TerminalSize(70, 20));
-    }
-
-    private void updateAmountsOfSupplies() {
-        if (botLeftPanel == null) botLeftPanel = new Panel();
-        botLeftPanel.removeAllComponents();
-        botLeftPanel.addComponent(new Label("Water: " + engine.getAmountOf(WATER_BOTTLE)));
-        botLeftPanel.addComponent(new Label("Soups: " + engine.getAmountOf(TOMATO_SOUP)));
-    }
-
     private void setActionsTo(ActionListBox aActionListBox) {
         aActionListBox.addItem("Drink", () -> engine.drink());
         aActionListBox.addItem("Eat", () -> engine.eat());
@@ -103,6 +92,7 @@ public class GameController implements PropertyChangeListener {
         } else if (aEvent.getPropertyName().equals(PERSON_PASSES)) {
             containerPanel.removeAllComponents();
             containerPanel.addComponent(mainPanel.withBorder(Borders.singleLine("Day " + engine.getCurrentDay() + " - " + engine.getActivePerson().getName())));
+            updateCurrentPersonAndDay();
         } else if (aEvent.getPropertyName().equals(UPDATE_DIARY)) {
             setDiaryDescribe(engine.getDailyDescribe());
         } else if (aEvent.getPropertyName().contains(EATEN) || aEvent.getPropertyName().equals(RETURN_FROM_EXPEDITION)) {
@@ -118,14 +108,39 @@ public class GameController implements PropertyChangeListener {
         gui.addWindowAndWait(getMenu());
     }
 
+    private void updateAmountsOfSupplies() {
+        if (midLeftPanel == null) midLeftPanel = new Panel();
+        midLeftPanel.removeAllComponents();
+        midLeftPanel.addComponent(new Label("Water: " + engine.getAmountOf(WATER_BOTTLE)));
+        midLeftPanel.addComponent(new Label("Soups: " + engine.getAmountOf(TOMATO_SOUP)));
+    }
+
     private void preparingLeftPanel() {
         leftPanel = new Panel();
         leftPanel.setLayoutManager(new LinearLayout(Direction.VERTICAL));
-        ActionListBox actionListBox = new ActionListBox(new TerminalSize(14, 10));
+        ActionListBox actionListBox = new ActionListBox(new TerminalSize(14, 7));
         setActionsTo(actionListBox);
         Panel topLeftPanel = new Panel().addComponent(actionListBox);
         updateAmountsOfSupplies();
+        updateCurrentPersonAndDay();
+        midLeftPanel.setPreferredSize(new TerminalSize(15,2));
+        bottomLeftPanel.setPreferredSize(new TerminalSize(15,2));
         leftPanel.addComponent(topLeftPanel.withBorder(Borders.singleLine("Actions")));
-        leftPanel.addComponent(botLeftPanel.withBorder(Borders.singleLine("Supplies")));
+        leftPanel.addComponent(midLeftPanel.withBorder(Borders.singleLine("Supplies")));
+        leftPanel.addComponent(bottomLeftPanel.withBorder(Borders.singleLine("Currently")));
+    }
+
+    private void updateCurrentPersonAndDay() {
+        if (bottomLeftPanel == null) bottomLeftPanel = new Panel();
+        bottomLeftPanel.removeAllComponents();
+        bottomLeftPanel.addComponent(new Label("Person: "+engine.getActivePerson().getName()));
+        bottomLeftPanel.addComponent(new Label("Day: "+engine.getCurrentDay()));
+
+    }
+
+    private void preparingRightPanel() {
+        rightPanel = new Panel();
+        new Label(engine.getDailyDescribe()).addTo(rightPanel);
+        rightPanel.setPreferredSize(new TerminalSize(50, 15));
     }
 }
