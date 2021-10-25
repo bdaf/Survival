@@ -24,6 +24,7 @@ class GameQueue {
         notifyObservers();
         makeStarvingDead();
         queue.addAll(alivePeople.stream().filter(p -> p.getExpeditionDaysLeft() <= 0).collect(Collectors.toList()));
+
         if (queue.isEmpty()) {
             endOfGame();
         } else { // make new day
@@ -78,5 +79,9 @@ class GameQueue {
 
     List<Person> getDeadPeople() {
         return List.copyOf(deadPeople);
+    }
+
+    boolean isActiveCreatureTheLast() {
+        return queue.isEmpty();
     }
 }

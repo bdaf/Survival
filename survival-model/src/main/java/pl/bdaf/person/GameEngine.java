@@ -75,7 +75,7 @@ public class GameEngine {
 
     void nextDay() {
         day++;
-        StringBuilder currentDayDiary = new StringBuilder("Day " + day + "\n");
+        StringBuilder currentDayDiary = new StringBuilder();
         currentDayDiary.append(getDescriptionOfAlivePeopleAndMakeDayChangesAbout(1));
         for (Person p : queue.getDeadPeople()) {
             currentDayDiary.append(DiaryWriter.describeDeadPerson(p));
@@ -96,7 +96,7 @@ public class GameEngine {
             if (expeditionDayLeft(p) <= 0) {
                 p.setStrength(p.getStrength() + aFactorOfChanges);
                 p.setHydrationPoints(p.getHydrationPoints() - aFactorOfChanges);
-                p.setSatietyPoints(p.getHydrationPoints() - aFactorOfChanges);
+                p.setSatietyPoints(p.getSatietyPoints() - aFactorOfChanges);
                 p.setCheerfulness(p.getCheerfulness() - aFactorOfChanges);
                 currentDayDiary.append(DiaryWriter.describe(p));
             } else {
@@ -127,16 +127,19 @@ public class GameEngine {
         return false;
     }
 
-    private void consumeSupply(int aAmountOfSupply, String waterBottle) {
-        if (aAmountOfSupply > 0 && reduceNumberOfSupply(aAmountOfSupply, waterBottle)) {
-            getActivePerson().takeSupply(waterBottle, aAmountOfSupply);
-            int numberOfSupply = backpack.getAmountOf(waterBottle);
-            notifyObservers(new PropertyChangeEvent(this, waterBottle + EATEN, numberOfSupply - aAmountOfSupply, numberOfSupply));
+    private void consumeSupply(int aAmountOfSupply, String aNameOfSupply) {
+        if (aAmountOfSupply > 0 && reduceNumberOfSupply(aAmountOfSupply, aNameOfSupply)) {
+            getActivePerson().takeSupply(aNameOfSupply, aAmountOfSupply);
+            int numberOfSupply = backpack.getAmountOf(aNameOfSupply);
+            dailyDescribe += getActivePerson().getName()+" is so delighted to consume some "+aNameOfSupply+".\n";
+            notifyObservers(new PropertyChangeEvent(this, aNameOfSupply + EATEN, numberOfSupply - aAmountOfSupply, numberOfSupply));
             return;
         } else if (aAmountOfSupply <= 0) {
-            throw new IllegalStateException("You can only take positive value of number of supply: " + waterBottle);
+            throw new IllegalStateException("You can only take positive value of number of supply: " + aNameOfSupply);
+        } else {
+            dailyDescribe += "There is no " + aNameOfSupply + " left in backpack!" + "\n";
+            notifyObservers(new PropertyChangeEvent(this, aNameOfSupply + EATEN, null, null));
         }
-        throw new IllegalStateException("There is no that many " + waterBottle + " in backpack!");
     }
 
     void setDeadDayFor(List<Person> aPeopleJustDied) {
@@ -158,8 +161,19 @@ public class GameEngine {
     }
 
     void endOfGame() {
-        String endOfGameDescribe = END_OF_THE_GAME + " - your score is " +getCurrentDay()+" day!";
+        String endOfGameDescribe = END_OF_THE_GAME + " - your score is " + getCurrentDay() + " day!";
         dailyDescribe += endOfGameDescribe;
         notifyObservers(new PropertyChangeEvent(this, END_OF_THE_GAME, null, endOfGameDescribe));
+    }
+
+    public boolean isActiveCreatureLastInQueue() {
+        return queue.isActiveCreatureTheLast();
+    }
+
+    public void passWholeDay() {
+        while (!isActiveCreatureLastInQueue()){
+            pass();
+        }
+        pass();
     }
 }

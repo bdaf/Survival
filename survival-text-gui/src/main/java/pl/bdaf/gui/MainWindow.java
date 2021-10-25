@@ -2,7 +2,6 @@ package pl.bdaf.gui;
 
 import com.googlecode.lanterna.gui2.*;
 import com.googlecode.lanterna.gui2.dialogs.*;
-import com.googlecode.lanterna.screen.Screen;
 import com.googlecode.lanterna.screen.TerminalScreen;
 import com.googlecode.lanterna.terminal.DefaultTerminalFactory;
 import com.googlecode.lanterna.terminal.Terminal;
@@ -12,12 +11,14 @@ import java.util.regex.Pattern;
 
 public class MainWindow {
     private static MultiWindowTextGUI gui;
+    private static String nameOfUser;
+    private static TerminalScreen screen;
 
     public static void main(String[] args) throws IOException {
 
         // Setup terminal and screen layers
         Terminal terminal = new DefaultTerminalFactory().createTerminal();
-        Screen screen = new TerminalScreen(terminal);
+        screen = new TerminalScreen(terminal);
         screen.startScreen();
 
         // Create gui and start gui
@@ -25,26 +26,26 @@ public class MainWindow {
 
         // Dialogs appear
         MessageDialog.showMessageDialog(gui, "Survival Game", "Incredible challenge waits for you!\nUse arrows and \"enter\" button to move through menu.");
-        String nameOfUser = getNameFromTextInputDialog(gui);
+        nameOfUser = getNameFromTextInputDialog(gui);
         if(nameOfUser==null) nameOfUser = "Anonymous" ;
         //getMenu(screen, nameOfUser).showDialog(gui);
-        gui.addWindowAndWait(getMenu(screen, nameOfUser));
+        gui.addWindowAndWait(getMenu());
     }
 
-    private static DialogWindow getMenu(Screen screen, String aNameOfUser) {
+    static DialogWindow getMenu() {
         return new ActionListDialogBuilder()
                 .setTitle("Menu")
-                .setDescription(aNameOfUser+", choose action!")
+                .setDescription(nameOfUser+ ", choose action!")
                 .setCanCancel(false)
                 .addAction("Play Game", () -> {
                     new GameController(gui);
-                    getMenu(screen,aNameOfUser).showDialog(gui);
+                    getMenu().showDialog(gui);
                 })
                 .addAction("Instruction", () -> {
                     MessageDialog.showMessageDialog(gui, "Instruction", getInstructionString());
-                    getMenu(screen,aNameOfUser).showDialog(gui);
+                    getMenu().showDialog(gui);
                 })
-                .addAction("Quit game", () -> closeScreen(screen))
+                .addAction("Quit game", () -> closeScreen())
                 .build();
     }
 
@@ -65,11 +66,15 @@ public class MainWindow {
                 .showDialog(gui);
     }
 
-    private static void closeScreen(Screen screen) {
+    static TerminalScreen getScreen() {
+        return screen;
+    }
+
+    private static void closeScreen() {
         try {
-            screen.stopScreen();
-        } catch (IOException e) {
-            e.printStackTrace();
+            screen.close();
+        } catch (IOException aE) {
+            aE.printStackTrace();
         }
     }
 }

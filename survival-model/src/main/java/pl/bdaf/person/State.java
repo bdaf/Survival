@@ -127,7 +127,7 @@ public abstract class State {
 
         @Override
         String getDescribe() {
-            return " is completely healthy!\n";
+            return " is completely healthy.\n";
         }
 
         @Override
@@ -180,7 +180,7 @@ public abstract class State {
 
         @Override
         String getDescribe() {
-            return " is coughing a little and has a runny nose!\n";
+            return " is coughing a little and has a runny nose.\n";
         }
 
         @Override
