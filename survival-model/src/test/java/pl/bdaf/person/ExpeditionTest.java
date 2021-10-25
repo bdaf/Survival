@@ -19,6 +19,7 @@ import static pl.bdaf.person.State.*;
 
 public class ExpeditionTest {
 
+    public static final int BEGINNING_TED_STRENGTH = 30;
     private Random randomize;
     private Backpack backpack;
     private GameEngine engine;
@@ -39,9 +40,10 @@ public class ExpeditionTest {
     }
 
     @Test
-    void tedShouldGoForExpeditionFor2DaysAndGain3WaterBottlesAnd3TomatoSoupsAndReturnHealthyAndThrowExceptionIfTryToDrinkOrEatIfThereAreNoneSupplies(){
+    void tedShouldGoForExpeditionFor2DaysAndGain3WaterBottlesAnd3TomatoSoupsAndReturnHealthy(){
         assertEquals(1, engine.getCurrentDay());
         assertEquals(TED.getName(), engine.getActivePerson().getName());
+        assertEquals(BEGINNING_TED_STRENGTH, engine.getActivePerson().getStrength());
         when(randomize.nextInt(anyInt())).thenReturn(1);
         engine.goForExpeditionAndPass();
         assertEquals(DOLORES.getName(), engine.getActivePerson().getName());
@@ -64,14 +66,13 @@ public class ExpeditionTest {
         engine.eat();
         assertEquals(0, engine.getAmountOf(WATER_BOTTLE));
         assertEquals(0, engine.getAmountOf(TOMATO_SOUP));
-        assertThrows(IllegalStateException.class, () -> engine.drink());
-        assertThrows(IllegalStateException.class, () -> engine.eat());
         assertEquals(30, ted.getStrength());
         when(randomize.nextDouble()).thenReturn(0.7);
         when(randomize.nextBoolean()).thenReturn(true);
         engine.pass();
-        // 3th day starts, ted returns
-        assertEquals(TED.getName(), engine.getActivePerson().getName());
+        // 3th day starts, Ted returns
+        assertEquals(TED.getName(), engine.getActivePerson().getName()); // +1 because of regeneration
+        assertEquals(BEGINNING_TED_STRENGTH *3/10-2+1, engine.getActivePerson().getStrength());
         assertEquals(3, engine.getAmountOf(WATER_BOTTLE));
         assertEquals(3, engine.getAmountOf(TOMATO_SOUP));
         assertEquals(HEALTHY, ted.getState().toString());

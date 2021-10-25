@@ -198,10 +198,4 @@ public class StateTest {
         assertEquals(7, person.getSatietyPoints());
         assertEquals(3, person.getHydrationPoints());
     }
-
-
-    @Test
-    void personShouldGoOutAndFindOneWater(){
-
-    }
 }

@@ -16,7 +16,8 @@ public class GameEngine {
     public static final String PERSON_PASSES = "PERSON_PASSES";
     public static final String DAY_PASSES = "DAY_PASSES";
     public static final String EATEN = "EATEN";
-    public static final String RETURN_FROM_EXPEDITION = "RETURN_FROM_EXPETITION";
+    public static final String RETURN_FROM_EXPEDITION = "RETURN_FROM_EXPEDITION";
+    public static final String SEND_MESSAGE = "SEND_MESSAGE";
     private final Backpack backpack;
     private final GameQueue queue;
     private String dailyDescribe;
@@ -86,9 +87,13 @@ public class GameEngine {
     }
 
     public void goForExpeditionAndPass() { // from 1 day to 3 days on expedition
-        getActivePerson().setExpeditionDaysLeft(getActivePerson().getState().getRand()
-                .nextInt(MAX_EXPEDITION_DAYS - MIN_EXPEDITION_DAYS + 1) + MIN_EXPEDITION_DAYS);
-        pass();
+        if(queue.getAlivePeople().stream().filter(p -> p.getExpeditionDaysLeft() > 0).count() > 0){
+            notifyObservers(new PropertyChangeEvent(this, SEND_MESSAGE, null, "Somebody else is on expedition!"));
+        } else {
+            getActivePerson().setExpeditionDaysLeft(getActivePerson().getState().getRand()
+                    .nextInt(MAX_EXPEDITION_DAYS - MIN_EXPEDITION_DAYS + 1) + MIN_EXPEDITION_DAYS);
+            pass();
+        }
     }
 
     private String getDescriptionOfAlivePeopleAndMakeDayChangesAbout(int aFactorOfChanges) {
@@ -172,14 +177,14 @@ public class GameEngine {
         notifyObservers(new PropertyChangeEvent(this, END_OF_THE_GAME, null, endOfGameDescribe));
     }
 
-    public boolean isActiveCreatureLastInQueue() {
-        return queue.isActiveCreatureTheLast();
-    }
-
     public void passWholeDay() {
         while (!isActiveCreatureLastInQueue()) {
             pass();
         }
         pass();
+    }
+
+    private boolean isActiveCreatureLastInQueue() {
+        return queue.isActiveCreatureTheLast();
     }
 }

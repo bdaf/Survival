@@ -1,6 +1,5 @@
 package pl.bdaf.gui;
 
-import com.googlecode.lanterna.TerminalPosition;
 import com.googlecode.lanterna.TerminalSize;
 import com.googlecode.lanterna.gui2.*;
 import com.googlecode.lanterna.gui2.dialogs.MessageDialog;
@@ -27,7 +26,6 @@ public class GameController implements PropertyChangeListener {
     private Panel mainPanel;
     private Panel leftPanel;
     private BasicWindow window;
-    private String endOfTurnOrPassLabel;
     private Panel botLeftPanel;
 
     public GameController(MultiWindowTextGUI aGui) {
@@ -40,6 +38,7 @@ public class GameController implements PropertyChangeListener {
         engine.addObserver(WATER_BOTTLE + EATEN, this);
         engine.addObserver(TOMATO_SOUP + EATEN, this);
         engine.addObserver(RETURN_FROM_EXPEDITION, this);
+        engine.addObserver(SEND_MESSAGE, this);
         engine.addObserver(END_OF_THE_GAME, this);
         engine.addObserver(PERSON_PASSES, this);
         engine.addObserver(DAY_PASSES, this);
@@ -54,28 +53,25 @@ public class GameController implements PropertyChangeListener {
         mainPanel = new Panel();
         mainPanel.setLayoutManager(new LinearLayout(Direction.HORIZONTAL));
 
-        preparingLabels();
+        preparingPanels();
 
         gui.addWindowAndWait(window);
     }
 
-    private void preparingLabels() {
-        leftPanel = new Panel();
-        leftPanel.setLayoutManager(new LinearLayout(Direction.VERTICAL));
-        ActionListBox actionListBox = new ActionListBox(new TerminalSize(14, 10));
-        setActionsTo(actionListBox);
-        Panel topLeftPanel = new Panel().addComponent(actionListBox);
-        updateAmountsOfSupplies();
-        leftPanel.addComponent(topLeftPanel.withBorder(Borders.singleLine("Actions")));
-        leftPanel.addComponent(botLeftPanel.withBorder(Borders.singleLine("Supplies")));
+    private void preparingPanels() {
+        preparingLeftPanel();
         mainPanel.addComponent(leftPanel);
-        rightPanel = new Panel();
-        new Label(engine.getDailyDescribe()).addTo(rightPanel);
-        rightPanel.setPreferredSize(new TerminalSize(70, 20));
+        preparingRightPanel();
         mainPanel.addComponent(rightPanel.withBorder(Borders.singleLine("Daily diary")));
         containerPanel.addComponent(mainPanel.withBorder(Borders.singleLine("Day " + engine.getCurrentDay() + " - " + engine.getActivePerson().getName())));
         window.setComponent(containerPanel);
         window.setHints(Collections.singletonList(Window.Hint.CENTERED));
+    }
+
+    private void preparingRightPanel() {
+        rightPanel = new Panel();
+        new Label(engine.getDailyDescribe()).addTo(rightPanel);
+        rightPanel.setPreferredSize(new TerminalSize(70, 20));
     }
 
     private void updateAmountsOfSupplies() {
@@ -111,11 +107,25 @@ public class GameController implements PropertyChangeListener {
             botLeftPanel.removeAllComponents();
             updateAmountsOfSupplies();
         }
+        if(aEvent.getPropertyName().equals(SEND_MESSAGE)){
+            MessageDialog.showMessageDialog(gui, "Forbidden action", aEvent.getNewValue().toString());
+        }
     }
 
     private void goBackToMenu() {
         MainWindow.getScreen().clear();
         window.close();
         gui.addWindowAndWait(getMenu());
+    }
+
+    private void preparingLeftPanel() {
+        leftPanel = new Panel();
+        leftPanel.setLayoutManager(new LinearLayout(Direction.VERTICAL));
+        ActionListBox actionListBox = new ActionListBox(new TerminalSize(14, 10));
+        setActionsTo(actionListBox);
+        Panel topLeftPanel = new Panel().addComponent(actionListBox);
+        updateAmountsOfSupplies();
+        leftPanel.addComponent(topLeftPanel.withBorder(Borders.singleLine("Actions")));
+        leftPanel.addComponent(botLeftPanel.withBorder(Borders.singleLine("Supplies")));
     }
 }

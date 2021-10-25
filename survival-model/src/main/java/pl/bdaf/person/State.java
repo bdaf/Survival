@@ -30,6 +30,7 @@ public abstract class State {
     void goForExpedition(Person aPerson, Backpack aBackpack){
         int difficultOfExpedition = (int) (rand.nextDouble()*100);
         int strengthOfPerson = aPerson.getStrength()*3;
+        aPerson.setStrength(Integer.max(strengthOfPerson/10-2,0));
         if(difficultOfExpedition <= strengthOfPerson){
             int amountOfTriesToGetSupplies = (strengthOfPerson - difficultOfExpedition)/10+1;
             for (int i = 0; i < amountOfTriesToGetSupplies; i++) {
