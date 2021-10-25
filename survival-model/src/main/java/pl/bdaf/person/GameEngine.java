@@ -137,7 +137,7 @@ public class GameEngine {
         if (aAmountOfSupply > 0 && reduceNumberOfSupply(aAmountOfSupply, aNameOfSupply)) {
             getActivePerson().takeSupply(aNameOfSupply, aAmountOfSupply);
             int numberOfSupply = backpack.getAmountOf(aNameOfSupply);
-            dailyDescribe += getActivePerson().getName() + " is so delighted to consume some " + aNameOfSupply + ".\n";
+            dailyDescribe += getActivePerson().getName() + DiaryWriter.describeConsuming() + aNameOfSupply + ".\n";
             notifyObservers(new PropertyChangeEvent(this, aNameOfSupply + EATEN, numberOfSupply - aAmountOfSupply, numberOfSupply));
             return;
         } else if (aAmountOfSupply <= 0) {

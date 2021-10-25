@@ -35,4 +35,8 @@ public class DiaryWriter {
         else if(numberToRandom == 1) return aS2;
         return aS3;
     }
+
+    static String describeConsuming() {
+        return randomThreeStrings(" is so delighted to consume some "," finally got what was needed - "," feels great because of some ");
+    }
 }
