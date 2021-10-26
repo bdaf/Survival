@@ -5,11 +5,11 @@ import com.googlecode.lanterna.gui2.dialogs.*;
 import com.googlecode.lanterna.screen.TerminalScreen;
 import com.googlecode.lanterna.terminal.DefaultTerminalFactory;
 import com.googlecode.lanterna.terminal.Terminal;
-import jaco.mp3.player.MP3Player;
+import javazoom.jl.decoder.JavaLayerException;
 
 
-import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.Collections;
 import java.util.regex.Pattern;
 
@@ -17,13 +17,11 @@ public class MainWindow {
     private static MultiWindowTextGUI gui;
     private static String nameOfUser;
     private static TerminalScreen screen;
+    private static MusicPlayer musicPlayer;
 
     public static void main(String[] args) throws IOException {
         //Music
-        MP3Player mp3player = new MP3Player(new File("survival-text-gui/src/main/resources/mp3/st.mp3"));
-        mp3player.play();
-
-
+        playMusic("st.mp3");
 
         // Setup terminal and screen layers
         Terminal terminal = new DefaultTerminalFactory().createTerminal();
@@ -102,6 +100,7 @@ public class MainWindow {
     private static void closeScreen() {
         try {
             screen.close();
+            musicPlayer.stop();
         } catch (IOException aE) {
             aE.printStackTrace();
         }
@@ -115,5 +114,19 @@ public class MainWindow {
                 " /        \\  |  /|  | \\/\\   /|  |\\   /  / __ \\|  |__\n" +
                 "/_______  /____/ |__|    \\_/ |__| \\_/  (____  /____/\n" +
                 "        \\/                                  \\/      ";
+    }
+
+    private static void playMusic(String aNameOfMusic) {
+        try {
+            musicPlayer = new MusicPlayer();
+            musicPlayer.setRepeat(true);
+            musicPlayer.play("/mp3/"+ aNameOfMusic);
+        } catch (JavaLayerException aE) {
+            System.out.println(aE);
+        } catch (IOException aE) {
+            System.out.println(aE);
+        } catch (URISyntaxException aE) {
+            System.out.println(aE);
+        }
     }
 }

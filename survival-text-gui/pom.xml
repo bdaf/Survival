@@ -23,8 +23,8 @@
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.openjfx</groupId>
-            <artifactId>javafx-media</artifactId>
+            <groupId>javazoom</groupId>
+            <artifactId>jlayer</artifactId>
         </dependency>
     </dependencies>
 
