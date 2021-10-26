@@ -1,6 +1,5 @@
 package pl.bdaf.gui;
 
-import com.googlecode.lanterna.TerminalPosition;
 import com.googlecode.lanterna.TerminalSize;
 import com.googlecode.lanterna.gui2.*;
 import com.googlecode.lanterna.gui2.dialogs.MessageDialog;
@@ -12,7 +11,6 @@ import java.beans.PropertyChangeListener;
 import java.util.Collections;
 import java.util.List;
 
-import static pl.bdaf.gui.MainWindow.getMenu;
 import static pl.bdaf.person.Backpack.TOMATO_SOUP;
 import static pl.bdaf.person.Backpack.WATER_BOTTLE;
 import static pl.bdaf.person.GameEngine.*;

@@ -1,5 +1,6 @@
 package pl.bdaf.gui;
 
+import com.googlecode.lanterna.TextColor;
 import com.googlecode.lanterna.gui2.*;
 import com.googlecode.lanterna.gui2.dialogs.*;
 import com.googlecode.lanterna.screen.TerminalScreen;
@@ -35,45 +36,28 @@ public class MainWindow {
         MessageDialog.showMessageDialog(gui, "Survival Game", "Incredible challenge waits for you!\nUse arrows and \"enter\" button to move through menu.");
         nameOfUser = getNameFromTextInputDialog(gui);
         if (nameOfUser == null) nameOfUser = "Anonymous";
-        //
-        //
+
         BasicWindow window = new BasicWindow();
         Panel mainPanel = new Panel();
         Panel panel1 = new Panel();
         Panel panel2 = new Panel();
 
         window.setComponent(mainPanel);
+        window.setTitle("Hello "+nameOfUser);
         window.setHints(Collections.singletonList(Window.Hint.CENTERED));
 
         mainPanel.addComponent(panel1);
         mainPanel.addComponent(panel2);
         mainPanel.setLayoutManager(new LinearLayout(Direction.VERTICAL));
-
-        panel1.addComponent(new Label(getAsciArtString()));
+        Label survival = new Label(getAsciArtString());
+        survival.setBackgroundColor(TextColor.ANSI.BLUE_BRIGHT);
+        survival.setForegroundColor(TextColor.ANSI.BLACK);
+        panel1.addComponent(survival);
         panel2.addComponent(new Button("Play Game", () -> new GameController(gui)));
         panel2.addComponent(new Button("Instruction", () -> MessageDialog.showMessageDialog(gui, "Instruction", getInstructionString())));
         panel2.addComponent(new Button("Quit game", () -> closeScreen()));
 
         gui.addWindowAndWait(window);
-    }
-
-
-    static DialogWindow getMenu() {
-        return new ActionListDialogBuilder()
-                .setTitle("Menu")
-                .setDescription(nameOfUser + ", choose action!")
-                .setCanCancel(false)
-                .addAction(getAsciArtString(), () -> new GameController(gui))
-                .addAction("Play Game", () -> {
-                    new GameController(gui);
-                    getMenu().showDialog(gui);
-                })
-                .addAction("Instruction", () -> {
-                    MessageDialog.showMessageDialog(gui, "Instruction", getInstructionString());
-                    getMenu().showDialog(gui);
-                })
-                .addAction("Quit game", () -> closeScreen())
-                .build();
     }
 
     private static String getInstructionString() {
@@ -91,10 +75,6 @@ public class MainWindow {
                 .setValidationPattern(Pattern.compile("[a-zA-Z0-9_]{2,10}+"), "Name shall contain from 2 to 10 letters and numbers!")
                 .build()
                 .showDialog(gui);
-    }
-
-    static TerminalScreen getScreen() {
-        return screen;
     }
 
     private static void closeScreen() {
