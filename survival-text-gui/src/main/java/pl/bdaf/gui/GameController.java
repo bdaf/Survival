@@ -14,7 +14,6 @@ import java.beans.PropertyChangeListener;
 import java.util.Collections;
 import java.util.List;
 
-import static com.googlecode.lanterna.TextColor.ANSI.*;
 import static pl.bdaf.person.Backpack.TOMATO_SOUP;
 import static pl.bdaf.person.Backpack.WATER_BOTTLE;
 import static pl.bdaf.person.GameEngine.*;
@@ -82,7 +81,7 @@ public class GameController implements PropertyChangeListener {
     private void updateAnimatedPerson(String aName) {
         if (rightMidPanel == null) rightMidPanel = new Panel();
         rightMidPanel.removeAllComponents();
-        rightMidPanel.addComponent(AnimatePeopleGenerator.getPersonAnimation(engine.getActivePerson().getName()));
+        rightMidPanel.addComponent(AnimateGenerator.getPersonAnimation(engine.getActivePerson().getName()));
         rightMidPanel.addTo(rightPanel);
     }
 
@@ -104,7 +103,8 @@ public class GameController implements PropertyChangeListener {
     @Override
     public void propertyChange(PropertyChangeEvent aEvent) {
         if (aEvent.getPropertyName().equals(END_OF_THE_GAME)) {
-            MessageDialog.showMessageDialog(gui, "End Of The Game!", "Your score is " + engine.getCurrentDay() + " days!");
+            setDiaryDescribe(engine.getDailyDescribe());
+            AnimateGenerator.getEndOfGameAnimation(gui, engine.getCurrentDay());
             goBackToMenu();
         } else if (aEvent.getPropertyName().equals(PERSON_PASSES)) {
             containerPanel.removeAllComponents();

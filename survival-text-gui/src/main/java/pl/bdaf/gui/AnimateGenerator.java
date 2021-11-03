@@ -2,17 +2,19 @@ package pl.bdaf.gui;
 
 import com.googlecode.lanterna.gui2.AnimatedLabel;
 import com.googlecode.lanterna.gui2.Label;
+import com.googlecode.lanterna.gui2.MultiWindowTextGUI;
+import com.googlecode.lanterna.gui2.dialogs.MessageDialog;
 
 import static com.googlecode.lanterna.TextColor.ANSI.*;
 import static com.googlecode.lanterna.TextColor.ANSI.BLUE_BRIGHT;
 import static pl.bdaf.person.PersonStatistic.*;
 import static pl.bdaf.person.PersonStatistic.BERTA;
 
-public class AnimatePeopleGenerator {
+public class AnimateGenerator {
 
     public static Label getPersonAnimation(String aName) {
         if (aName.equalsIgnoreCase(TED.getName())) {
-            return getAnimatedLabel(aName, WHITE_BRIGHT," \n" +
+            return getAnimatedLabel(aName, WHITE_BRIGHT, " \n" +
                     "           TED\n\n" +
                     "          /:\"\"|\n" +
                     "         |: -6|_ \n" +
@@ -26,7 +28,7 @@ public class AnimatePeopleGenerator {
                     "         || |#|");
         }
         if (aName.equalsIgnoreCase(DOLORES.getName())) {
-            return getAnimatedLabel(aName,CYAN_BRIGHT,"\n" +
+            return getAnimatedLabel(aName, CYAN_BRIGHT, "\n" +
                     "         DOLORES\n\n" +
                     "          .@@@@@,\n" +
                     "        @@@@@@@@,\n" +
@@ -88,7 +90,8 @@ public class AnimatePeopleGenerator {
     }
 
     private static void animateLabelInLoop(AnimatedLabel aLabel, int aAmount, String aMoveEvenPoints, String aMoveOddPoints, String aName) {
-        for (int i = 0; i < aAmount; i++) aLabel.addFrame(getDefaultFrameTextOfAnimate(aMoveEvenPoints, aMoveOddPoints, aName));
+        for (int i = 0; i < aAmount; i++)
+            aLabel.addFrame(getDefaultFrameTextOfAnimate(aMoveEvenPoints, aMoveOddPoints, aName));
     }
 
     private static String getDefaultFrameTextOfAnimate(String aMoveEvenPoints, String aMoveOddPoints, String aName) {
@@ -134,17 +137,33 @@ public class AnimatePeopleGenerator {
         if (aName.equalsIgnoreCase(BERTA.getName()))
             return "\n" +
                     aMoveOddPoints + "          BERTA\n\n" +
-                    aMoveEvenPoints +"        .@@@@,\n" +
+                    aMoveEvenPoints + "        .@@@@,\n" +
                     aMoveOddPoints + "         aa`@@@,\n" +
-                    aMoveEvenPoints +"         =  `@@@\n" +
+                    aMoveEvenPoints + "         =  `@@@\n" +
                     aMoveOddPoints + "           )_/`@'\n" +
-                    aMoveEvenPoints +"          / || @\n" +
+                    aMoveEvenPoints + "          / || @\n" +
                     aMoveOddPoints + "          | || @\n" +
-                    aMoveEvenPoints +"          /~|| \"`\n" +
+                    aMoveEvenPoints + "          /~|| \"`\n" +
                     aMoveOddPoints + "         /__W_\\\n" +
-                    aMoveEvenPoints +"           |||\n" +
+                    aMoveEvenPoints + "           |||\n" +
                     aMoveOddPoints + "          _|||\n" +
-                    aMoveEvenPoints +"        ((___)\n";
+                    aMoveEvenPoints + "        ((___)\n";
         else return null;
+    }
+
+    public static AnimatedLabel getEndOfGameAnimation(MultiWindowTextGUI aGui, int aCurrentDay) {
+        MessageDialog.showMessageDialog(aGui, "End Of The Game!", "(✖╭╮✖) (✖╭╮✖) (✖╭╮✖) (✖╭╮✖) (✖╭╮✖) (✖╭╮✖) (✖╭╮✖) (✖╭╮✖) (✖╭╮✖)\n\n" +
+                "(✖╭╮✖) (✖╭╮✖)              _.-'''''-._           (✖╭╮✖) (✖╭╮✖) \n " +
+                "                        .'   _   _   '.              \n" +
+                "(✖╭╮✖) (✖╭╮✖)           /   (*)   (*)   \\        (✖╭╮✖) (✖╭╮✖) \n" +
+                "                       |                |            \n" +
+                "(✖╭╮✖) (✖╭╮✖)          |  \\           / |        (✖╭╮✖) (✖╭╮✖) \n" +
+                "                        \\  '.       .'  /            \n" +
+                "(✖╭╮✖) (✖╭╮✖)            '.  `'---'`  .'         (✖╭╮✖) (✖╭╮✖) \n" +
+                "                           '-._____.-'                 \n" +
+                "(✖╭╮✖) (✖╭╮✖)                                    (✖╭╮✖) (✖╭╮✖) \n" +
+                "\n(✖╭╮✖) (✖╭╮✖)        Your score is " + aCurrentDay + " days!       (✖╭╮✖) (✖╭╮✖)" +
+                "\n\n(✖╭╮✖) (✖╭╮✖) (✖╭╮✖) (✖╭╮✖) (✖╭╮✖) (✖╭╮✖) (✖╭╮✖) (✖╭╮✖) (✖╭╮✖)");
+        return null;
     }
 }
