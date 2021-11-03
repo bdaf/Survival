@@ -1,5 +1,6 @@
 package pl.bdaf.gui;
 
+import com.googlecode.lanterna.TextColor;
 import com.googlecode.lanterna.gui2.AnimatedLabel;
 import com.googlecode.lanterna.gui2.Label;
 import com.googlecode.lanterna.gui2.MultiWindowTextGUI;
@@ -7,6 +8,7 @@ import com.googlecode.lanterna.gui2.dialogs.MessageDialog;
 
 import static com.googlecode.lanterna.TextColor.ANSI.*;
 import static com.googlecode.lanterna.TextColor.ANSI.BLUE_BRIGHT;
+import static pl.bdaf.person.Backpack.WATER_BOTTLE;
 import static pl.bdaf.person.PersonStatistic.*;
 import static pl.bdaf.person.PersonStatistic.BERTA;
 
@@ -165,5 +167,11 @@ public class AnimateGenerator {
                 "\n(✖╭╮✖) (✖╭╮✖)        Your score is " + aCurrentDay + " days!       (✖╭╮✖) (✖╭╮✖)" +
                 "\n\n(✖╭╮✖) (✖╭╮✖) (✖╭╮✖) (✖╭╮✖) (✖╭╮✖) (✖╭╮✖) (✖╭╮✖) (✖╭╮✖) (✖╭╮✖)");
         return null;
+    }
+
+    public static TextColor getColorAccordingToNumber(int aAmount) {
+        if(aAmount < 5) return RED_BRIGHT;
+        if(aAmount < 10) return YELLOW_BRIGHT;
+        return GREEN_BRIGHT;
     }
 }

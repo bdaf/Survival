@@ -127,8 +127,8 @@ public class GameController implements PropertyChangeListener {
     private void updateAmountsOfSupplies() {
         if (midLeftPanel == null) midLeftPanel = new Panel();
         midLeftPanel.removeAllComponents();
-        midLeftPanel.addComponent(new Label("Water: " + engine.getAmountOf(WATER_BOTTLE)));
-        midLeftPanel.addComponent(new Label("Soups: " + engine.getAmountOf(TOMATO_SOUP)));
+        midLeftPanel.addComponent(new Label("Water: " + engine.getAmountOf(WATER_BOTTLE)).setForegroundColor(AnimateGenerator.getColorAccordingToNumber(engine.getAmountOf(WATER_BOTTLE))));
+        midLeftPanel.addComponent(new Label("Soups: " + engine.getAmountOf(TOMATO_SOUP)).setForegroundColor(AnimateGenerator.getColorAccordingToNumber(engine.getAmountOf(TOMATO_SOUP))));
     }
 
     private void preparingLeftPanel() {
