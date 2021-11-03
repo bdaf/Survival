@@ -2,15 +2,20 @@ package pl.bdaf.gui;
 
 import com.googlecode.lanterna.TerminalSize;
 import com.googlecode.lanterna.gui2.*;
+import com.googlecode.lanterna.gui2.Label;
+import com.googlecode.lanterna.gui2.Panel;
+import com.googlecode.lanterna.gui2.Window;
 import com.googlecode.lanterna.gui2.dialogs.MessageDialog;
 import pl.bdaf.person.GameEngine;
 import pl.bdaf.person.Person;
 
+import java.awt.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.Collections;
 import java.util.List;
 
+import static com.googlecode.lanterna.TextColor.ANSI.*;
 import static pl.bdaf.person.Backpack.TOMATO_SOUP;
 import static pl.bdaf.person.Backpack.WATER_BOTTLE;
 import static pl.bdaf.person.GameEngine.*;
@@ -23,9 +28,11 @@ public class GameController implements PropertyChangeListener {
     private Panel containerPanel;
     private Panel mainPanel;
     private Panel rightPanel;
+    private Panel rightMidPanel;
+    private Panel midPanel;
+    private Panel leftPanel;
     private Panel midLeftPanel;
     private Panel bottomLeftPanel;
-    private Panel leftPanel;
     private BasicWindow window;
 
     public GameController(MultiWindowTextGUI aGui) {
@@ -58,11 +65,26 @@ public class GameController implements PropertyChangeListener {
     private void preparingPanels() {
         preparingLeftPanel();
         mainPanel.addComponent(leftPanel);
+        preparingMidPanel();
+        mainPanel.addComponent(midPanel.withBorder(Borders.singleLine("Daily diary")));
         preparingRightPanel();
-        mainPanel.addComponent(rightPanel.withBorder(Borders.singleLine("Daily diary")));
+        mainPanel.addComponent(rightPanel.withBorder(Borders.singleLine("Current person")));
         containerPanel.addComponent(mainPanel.withBorder(Borders.singleLine("Day " + engine.getCurrentDay() + " - " + engine.getActivePerson().getName())));
         window.setComponent(containerPanel);
         window.setHints(Collections.singletonList(Window.Hint.CENTERED));
+    }
+
+    private void preparingRightPanel() {
+        rightPanel = new Panel();
+        rightPanel.setPreferredSize(new TerminalSize(35, 15));
+        updateAnimatedPerson(engine.getActivePerson().getName());
+    }
+
+    private void updateAnimatedPerson(String aName) {
+        if(rightMidPanel == null) rightMidPanel = new Panel();
+        rightMidPanel.removeAllComponents();
+        rightMidPanel.addComponent(getAnimation(engine.getActivePerson().getName()));
+        rightMidPanel.addTo(rightPanel);
     }
 
     private void setActionsTo(ActionListBox aActionListBox) {
@@ -76,8 +98,8 @@ public class GameController implements PropertyChangeListener {
     }
 
     private void setDiaryDescribe(String aDailyDescribe) {
-        rightPanel.removeAllComponents();
-        new Label(aDailyDescribe).addTo(rightPanel);
+        midPanel.removeAllComponents();
+        new Label(aDailyDescribe).addTo(midPanel);
     }
 
     @Override
@@ -89,6 +111,7 @@ public class GameController implements PropertyChangeListener {
             containerPanel.removeAllComponents();
             containerPanel.addComponent(mainPanel.withBorder(Borders.singleLine("Day " + engine.getCurrentDay() + " - " + engine.getActivePerson().getName())));
             updateCurrentPersonAndDay();
+            updateAnimatedPerson(engine.getActivePerson().getName());
         } else if (aEvent.getPropertyName().equals(UPDATE_DIARY)) {
             setDiaryDescribe(engine.getDailyDescribe());
         } else if (aEvent.getPropertyName().contains(EATEN) || aEvent.getPropertyName().equals(RETURN_FROM_EXPEDITION)) {
@@ -117,8 +140,8 @@ public class GameController implements PropertyChangeListener {
         Panel topLeftPanel = new Panel().addComponent(actionListBox);
         updateAmountsOfSupplies();
         updateCurrentPersonAndDay();
-        midLeftPanel.setPreferredSize(new TerminalSize(15,2));
-        bottomLeftPanel.setPreferredSize(new TerminalSize(15,2));
+        midLeftPanel.setPreferredSize(new TerminalSize(15, 2));
+        bottomLeftPanel.setPreferredSize(new TerminalSize(15, 2));
         leftPanel.addComponent(topLeftPanel.withBorder(Borders.singleLine("Actions")));
         leftPanel.addComponent(midLeftPanel.withBorder(Borders.singleLine("Supplies")));
         leftPanel.addComponent(bottomLeftPanel.withBorder(Borders.singleLine("Currently")));
@@ -127,14 +150,74 @@ public class GameController implements PropertyChangeListener {
     private void updateCurrentPersonAndDay() {
         if (bottomLeftPanel == null) bottomLeftPanel = new Panel();
         bottomLeftPanel.removeAllComponents();
-        bottomLeftPanel.addComponent(new Label("Person: "+engine.getActivePerson().getName()));
-        bottomLeftPanel.addComponent(new Label("Day: "+engine.getCurrentDay()));
+        bottomLeftPanel.addComponent(new Label("Person: " + engine.getActivePerson().getName()));
+        bottomLeftPanel.addComponent(new Label("Day: " + engine.getCurrentDay()));
 
     }
 
-    private void preparingRightPanel() {
-        rightPanel = new Panel();
-        new Label(engine.getDailyDescribe()).addTo(rightPanel);
-        rightPanel.setPreferredSize(new TerminalSize(50, 15));
+    private void preparingMidPanel() {
+        midPanel = new Panel();
+        new Label(engine.getDailyDescribe()).addTo(midPanel);
+        midPanel.setPreferredSize(new TerminalSize(50, 15));
+    }
+
+    private Label getAnimation(String aName) {
+        if (aName.equalsIgnoreCase(TED.getName())) {
+            return new Label(" \n" +
+                    "          TED\n\n" +
+                    "         /:\"\"|\n" +
+                    "        |: 66|_ \n" +
+                    "        C     _)  \n" +
+                    "         \\ ._|\n" +
+                    "          ) /\n" +
+                    "         /`\\\\\n" +
+                    "        || |Y|\n" +
+                    "        || |#|\n" +
+                    "        || |#|\n" +
+                    "        || |#|").setForegroundColor(WHITE_BRIGHT);
+        }
+        if (aName.equalsIgnoreCase(DOLORES.getName())) {
+            return new Label("\n" +
+                    "         DOLORES\n\n" +
+                    "         .@@@@@,\n" +
+                    "        @@@@@@@@,\n" +
+                    "        aa`@@@@@@\n" +
+                    "        (_   ?@@@@\n" +
+                    "        =' @@@@\"\n" +
+                    "           \\(```\n" +
+                    "        //`\\    \n" +
+                    "       / | ||    \n" +
+                    "       \\ | ||  \n" +
+                    "       / | ||  \n").setForegroundColor(CYAN_BRIGHT);
+        }
+        if (aName.equalsIgnoreCase(TIMMY.getName())) {
+            return new Label("\n" +
+                    "          TIMMY\n\n" +
+                    "        .\"~~~~~\".\n" +
+                    "        |  .:.  |\n" +
+                    "     A  | /6 6\\ |\n" +
+                    "    |~|_|_\\ e /_|_   \n" +
+                    "    |_|)___`\"`___(8\n" +
+                    "       |~~~~~~~~~|\n" +
+                    "       \\_________/\n" +
+                    "        |/ /_\\ \\|\n" +
+                    "        ()/___\\()\n").setForegroundColor(GREEN_BRIGHT);
+        }
+        if (aName.equalsIgnoreCase(BERTA.getName())) {
+            return new Label("\n" +
+                    "          BERTA\n\n" +
+                    "         .@@@@,\n" +
+                    "         aa`@@@,\n" +
+                    "        =  `@@@\n" +
+                    "           )_/`@'\n" +
+                    "           / || @\n" +
+                    "          | || @\n" +
+                    "        /~|| \"`\n" +
+                    "       /__W_\\\n" +
+                    "         |||\n" +
+                    "        _|||\n" +
+                    "       ((___)\n").setForegroundColor(BLUE_BRIGHT);
+        }
+        return null;
     }
 }

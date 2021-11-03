@@ -49,9 +49,13 @@ public class MainWindow {
         mainPanel.addComponent(panel1);
         mainPanel.addComponent(panel2);
         mainPanel.setLayoutManager(new LinearLayout(Direction.VERTICAL));
-        Label survival = new Label(getAsciArtString());
+        AnimatedLabel survival = new AnimatedLabel(getAsciArtString1());
         survival.setBackgroundColor(TextColor.ANSI.BLUE_BRIGHT);
         survival.setForegroundColor(TextColor.ANSI.BLACK);
+        survival.addFrame(getAsciArtString2());
+        survival.addFrame(getAsciArtString1());
+        survival.addFrame(getAsciArtString3());
+        survival.startAnimation(100);
         panel1.addComponent(survival);
         panel2.addComponent(new Button("Play Game", () -> new GameController(gui)));
         panel2.addComponent(new Button("Instruction", () -> MessageDialog.showMessageDialog(gui, "Instruction", getInstructionString())));
@@ -86,7 +90,7 @@ public class MainWindow {
         }
     }
 
-    private static String getAsciArtString() {
+    private static String getAsciArtString1() {
         return "\r" +
                 "  _________                  .__              .__   \n" +
                 " /   _____/__ ____________  _|__|__  _______  |  |  \n" +
@@ -96,11 +100,32 @@ public class MainWindow {
                 "        \\/                                  \\/      ";
     }
 
+    private static String getAsciArtString2() {
+        return "\r" +
+                "   _________                  .__              .__   \n" +
+                " /   _____/__ ____________  _|__|__  _______  |  |  \n" +
+                "  \\_____  \\|  |  \\_  __ \\  \\/ /  \\  \\/ /\\__  \\ |  |  \n" +
+                " /        \\  |  /|  | \\/\\   /|  |\\   /  / __ \\|  |__\n" +
+                " /_______  /____/ |__|    \\_/ |__| \\_/  (____  /____/\n" +
+                "        \\/                                  \\/      ";
+    }
+
+    private static String getAsciArtString3() {
+        return "\r" +
+                "   _________                  .__              .__   \n" +
+                "/   _____/__ ____________  _|__|__  _______  |  |  \n" +
+                "  \\_____  \\|  |  \\_  __ \\  \\/ /  \\  \\/ /\\__  \\ |  |  \n" +
+                "/        \\  |  /|  | \\/\\   /|  |\\   /  / __ \\|  |__\n" +
+                " /_______  /____/ |__|    \\_/ |__| \\_/  (____  /____/\n" +
+                "       \\/                                  \\/      ";
+    }
+
     private static void playMusic(String aNameOfMusic) {
         try {
             musicPlayer = new MusicPlayer();
             musicPlayer.setRepeat(true);
             musicPlayer.play("/mp3/"+ aNameOfMusic);
+
         } catch (JavaLayerException aE) {
             System.out.println(aE);
         } catch (IOException aE) {

@@ -23,7 +23,7 @@ public enum PersonStatistic{
         name = aName;
     }
 
-    String getName() {
+    public String getName() {
         return name;
     }
 }
