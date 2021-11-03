@@ -11,7 +11,6 @@
 
     <artifactId>survival-text-gui</artifactId>
 
-
     <dependencies>
         <dependency>
             <groupId>com.googlecode.lanterna</groupId>

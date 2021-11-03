@@ -9,7 +9,6 @@ import com.googlecode.lanterna.gui2.dialogs.MessageDialog;
 import pl.bdaf.person.GameEngine;
 import pl.bdaf.person.Person;
 
-import java.awt.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.Collections;
@@ -81,7 +80,7 @@ public class GameController implements PropertyChangeListener {
     }
 
     private void updateAnimatedPerson(String aName) {
-        if(rightMidPanel == null) rightMidPanel = new Panel();
+        if (rightMidPanel == null) rightMidPanel = new Panel();
         rightMidPanel.removeAllComponents();
         rightMidPanel.addComponent(getAnimation(engine.getActivePerson().getName()));
         rightMidPanel.addTo(rightPanel);
@@ -163,10 +162,10 @@ public class GameController implements PropertyChangeListener {
 
     private Label getAnimation(String aName) {
         if (aName.equalsIgnoreCase(TED.getName())) {
-            return new Label(" \n" +
+            return getAnimatedLabel(aName, WHITE_BRIGHT," \n" +
                     "          TED\n\n" +
                     "         /:\"\"|\n" +
-                    "        |: 66|_ \n" +
+                    "        |: -6|_ \n" +
                     "        C     _)  \n" +
                     "         \\ ._|\n" +
                     "          ) /\n" +
@@ -174,50 +173,128 @@ public class GameController implements PropertyChangeListener {
                     "        || |Y|\n" +
                     "        || |#|\n" +
                     "        || |#|\n" +
-                    "        || |#|").setForegroundColor(WHITE_BRIGHT);
+                    "        || |#|");
         }
         if (aName.equalsIgnoreCase(DOLORES.getName())) {
-            return new Label("\n" +
+            return getAnimatedLabel(aName,CYAN_BRIGHT,"\n" +
                     "         DOLORES\n\n" +
-                    "         .@@@@@,\n" +
+                    "          .@@@@@,\n" +
                     "        @@@@@@@@,\n" +
-                    "        aa`@@@@@@\n" +
-                    "        (_   ?@@@@\n" +
-                    "        =' @@@@\"\n" +
+                    "         oo`@@@@@@\n" +
+                    "       ( -   ?@@@@\n" +
+                    "         =' @@@@\"\n" +
                     "           \\(```\n" +
-                    "        //`\\    \n" +
-                    "       / | ||    \n" +
-                    "       \\ | ||  \n" +
-                    "       / | ||  \n").setForegroundColor(CYAN_BRIGHT);
+                    "          //`\\    \n" +
+                    "        / | ||    \n" +
+                    "         \\ | ||  \n" +
+                    "        / | ||  \n");
         }
         if (aName.equalsIgnoreCase(TIMMY.getName())) {
-            return new Label("\n" +
-                    "          TIMMY\n\n" +
+            return getAnimatedLabel(aName, GREEN_BRIGHT, "\n" +
+                    "           TIMMY\n\n" +
                     "        .\"~~~~~\".\n" +
-                    "        |  .:.  |\n" +
-                    "     A  | /6 6\\ |\n" +
-                    "    |~|_|_\\ e /_|_   \n" +
+                    "         |  .:.  |\n" +
+                    "      A  | /= =\\ |\n" +
+                    "     |~|_|_\\ e /_|_   \n" +
                     "    |_|)___`\"`___(8\n" +
-                    "       |~~~~~~~~~|\n" +
+                    "        |~~~~~~~~~|\n" +
                     "       \\_________/\n" +
-                    "        |/ /_\\ \\|\n" +
-                    "        ()/___\\()\n").setForegroundColor(GREEN_BRIGHT);
+                    "         |/ /_\\ \\|\n" +
+                    "        ()/___\\()\n");
         }
         if (aName.equalsIgnoreCase(BERTA.getName())) {
-            return new Label("\n" +
-                    "          BERTA\n\n" +
+            return getAnimatedLabel(aName, BLUE_BRIGHT, "\n" +
+                    "           BERTA\n\n" +
                     "         .@@@@,\n" +
-                    "         aa`@@@,\n" +
-                    "        =  `@@@\n" +
-                    "           )_/`@'\n" +
+                    "          -0`@@@,\n" +
+                    "          =  `@@@\n" +
+                    "            )_/`@'\n" +
                     "           / || @\n" +
-                    "          | || @\n" +
-                    "        /~|| \"`\n" +
-                    "       /__W_\\\n" +
-                    "         |||\n" +
-                    "        _|||\n" +
-                    "       ((___)\n").setForegroundColor(BLUE_BRIGHT);
+                    "           | || @\n" +
+                    "           /~|| \"`\n" +
+                    "          /__W_\\\n" +
+                    "            |||\n" +
+                    "           _|||\n" +
+                    "          ((___)\n");
         }
         return null;
+    }
+
+    private Label getAnimatedLabel(String aName, ANSI aForegroundColor, String aExtraFrameString) {
+        AnimatedLabel person = (AnimatedLabel) new AnimatedLabel(getDefaultFrameTextOfAnimate("", "", aName)).setForegroundColor(aForegroundColor);
+        makeFramesOfAnimate(person, aName);
+        person.addFrame(aExtraFrameString);
+        person.startAnimation(300);
+        return person;
+    }
+
+    private void makeFramesOfAnimate(AnimatedLabel label, String aName) {
+        animateLabelInLoop(label, 1, " ", "", aName);
+        animateLabelInLoop(label, 5, "", "", aName);
+        animateLabelInLoop(label, 1, "", " ", aName);
+        animateLabelInLoop(label, 5, "", "", aName);
+        animateLabelInLoop(label, 1, " ", " ", aName);
+        animateLabelInLoop(label, 5, "", "", aName);
+    }
+
+    private void animateLabelInLoop(AnimatedLabel aLabel, int aAmount, String aMoveEvenPoints, String aMoveOddPoints, String aName) {
+        for (int i = 0; i < aAmount; i++) aLabel.addFrame(getDefaultFrameTextOfAnimate(aMoveEvenPoints, aMoveOddPoints, aName));
+    }
+
+    private String getDefaultFrameTextOfAnimate(String aMoveEvenPoints, String aMoveOddPoints, String aName) {
+        if (aName.equalsIgnoreCase(TED.getName()))
+            return " \n" +
+                    aMoveEvenPoints + "          TED\n\n" +
+                    aMoveOddPoints + "         /:\"\"|\n" +
+                    aMoveEvenPoints + "        |: 66|_ \n" +
+                    aMoveOddPoints + "        C     _)  \n" +
+                    aMoveEvenPoints + "         \\ ._|\n" +
+                    aMoveOddPoints + "          ) /\n" +
+                    aMoveEvenPoints + "         /`\\\\\n" +
+                    aMoveOddPoints + "        || |Y|\n" +
+                    aMoveEvenPoints + "        || |#|\n" +
+                    aMoveOddPoints + "        || |#|\n" +
+                    aMoveEvenPoints + "        || |#|";
+        if (aName.equalsIgnoreCase(DOLORES.getName()))
+            return "\n" +
+                    aMoveOddPoints + "         DOLORES\n\n" +
+                    aMoveOddPoints + "          .@@@@@,\n" +
+                    aMoveEvenPoints + "        @@@@@@@@,\n" +
+                    aMoveOddPoints + "         aa`@@@@@@\n" +
+                    aMoveEvenPoints + "        (_   ?@@@@\n" +
+                    aMoveOddPoints + "         =' @@@@\"\n" +
+                    aMoveEvenPoints + "           \\(```\n" +
+                    aMoveOddPoints + "          //`\\    \n" +
+                    aMoveEvenPoints + "        / | ||    \n" +
+                    aMoveOddPoints + "         \\ | ||  \n" +
+                    aMoveEvenPoints + "        / | ||  \n";
+        if (aName.equalsIgnoreCase(TIMMY.getName()))
+            return "\n" +
+                    aMoveOddPoints + "           TIMMY\n\n" +
+                    aMoveEvenPoints + "        .\"~~~~~\".\n" +
+                    aMoveOddPoints + "         |  .:.  |\n" +
+                    aMoveEvenPoints + "      A  | /6 6\\ |\n" +
+                    aMoveOddPoints + "     |~|_|_\\ e /_|_   \n" +
+                    aMoveEvenPoints + "    |_|)___`\"`___(8\n" +
+                    aMoveOddPoints + "        |~~~~~~~~~|\n" +
+                    aMoveEvenPoints + "       \\_________/\n" +
+                    aMoveOddPoints + "         |/ /_\\ \\|\n" +
+                    aMoveEvenPoints + "        ()/___\\()\n";
+
+        if (aName.equalsIgnoreCase(BERTA.getName()))
+            return "\n" +
+                    aMoveOddPoints + "           BERTA\n\n" +
+                    aMoveEvenPoints +"         .@@@@,\n" +
+                    aMoveOddPoints + "          aa`@@@,\n" +
+                    aMoveEvenPoints +"          =  `@@@\n" +
+                    aMoveOddPoints + "            )_/`@'\n" +
+                    aMoveEvenPoints +"           / || @\n" +
+                    aMoveOddPoints + "           | || @\n" +
+                    aMoveEvenPoints +"           /~|| \"`\n" +
+                    aMoveOddPoints + "          /__W_\\\n" +
+                    aMoveEvenPoints +"            |||\n" +
+                    aMoveOddPoints + "           _|||\n" +
+                    aMoveEvenPoints +"         ((___)\n";
+        else return null;
     }
 }
