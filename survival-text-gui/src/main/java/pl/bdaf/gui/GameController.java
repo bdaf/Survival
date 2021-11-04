@@ -1,7 +1,6 @@
 package pl.bdaf.gui;
 
 import com.googlecode.lanterna.TerminalSize;
-import com.googlecode.lanterna.TextColor;
 import com.googlecode.lanterna.gui2.*;
 import com.googlecode.lanterna.gui2.Label;
 import com.googlecode.lanterna.gui2.Panel;
@@ -17,6 +16,7 @@ import java.util.List;
 
 import static pl.bdaf.gui.AnimateGenerator.getColorAccordingToDay;
 import static pl.bdaf.gui.AnimateGenerator.getLogoString;
+import static pl.bdaf.gui.MainWindow.playMusic;
 import static pl.bdaf.person.Backpack.TOMATO_SOUP;
 import static pl.bdaf.person.Backpack.WATER_BOTTLE;
 import static pl.bdaf.person.GameEngine.*;
@@ -37,6 +37,7 @@ public class GameController implements PropertyChangeListener {
     private BasicWindow window;
 
     public GameController(MultiWindowTextGUI aGui) {
+        playMusic("soundtrack.mp3");
         engine = new GameEngine(List.of(new Person(TED), new Person(DOLORES), new Person(TIMMY), new Person(BERTA)));
         gui = aGui;
         init();
@@ -86,7 +87,8 @@ public class GameController implements PropertyChangeListener {
     private void updateAnimatedPerson(String aName) {
         if (rightMidPanel == null) rightMidPanel = new Panel();
         rightMidPanel.removeAllComponents();
-        rightMidPanel.addComponent(AnimateGenerator.getPersonAnimation(aName));
+        AnimatedLabel actualPersonAnimation = (AnimatedLabel) AnimateGenerator.getPersonAnimation(aName);
+        rightMidPanel.addComponent(actualPersonAnimation);
         rightMidPanel.addTo(rightPanel);
     }
 
@@ -108,8 +110,7 @@ public class GameController implements PropertyChangeListener {
     @Override
     public void propertyChange(PropertyChangeEvent aEvent) {
         if (aEvent.getPropertyName().equals(END_OF_THE_GAME)) {
-            setDiaryDescribe(engine.getDailyDescribe());
-            AnimateGenerator.getEndOfGameAnimation(gui, (Integer) aEvent.getNewValue());
+            AnimateGenerator.getEndOfGameLabel(gui, (Integer) aEvent.getNewValue());
             goBackToMenu();
         } else if (aEvent.getPropertyName().equals(PERSON_PASSES)) {
             containerPanel.removeAllComponents();
@@ -127,6 +128,7 @@ public class GameController implements PropertyChangeListener {
     }
 
     private void goBackToMenu() {
+        playMusic("st.mp3");
         window.close();
     }
 

@@ -40,7 +40,7 @@ public class GameEngine {
     public void pass() {
         Person oldPerson = getActivePerson();
         queue.next();
-        notifyObservers(new PropertyChangeEvent(this, PERSON_PASSES, oldPerson, getActivePerson()));
+        notifyObservers(new PropertyChangeEvent(this, PERSON_PASSES, oldPerson, null));
     }
 
     public void drink() {

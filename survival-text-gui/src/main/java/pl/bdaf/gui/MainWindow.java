@@ -1,7 +1,6 @@
 package pl.bdaf.gui;
 
 import com.googlecode.lanterna.TerminalSize;
-import com.googlecode.lanterna.TextColor;
 import com.googlecode.lanterna.gui2.*;
 import com.googlecode.lanterna.gui2.dialogs.*;
 import com.googlecode.lanterna.screen.TerminalScreen;
@@ -20,6 +19,7 @@ public class MainWindow {
     private static String nameOfUser;
     private static TerminalScreen screen;
     private static MusicPlayer musicPlayer;
+    private static AnimatedLabel survivalAnimatedLabel;
 
     public static void main(String[] args) throws IOException {
         //Music
@@ -50,14 +50,13 @@ public class MainWindow {
         mainPanel.addComponent(panelForSurvivalLabel);
         mainPanel.addComponent(panelForMenu);
         mainPanel.setLayoutManager(new LinearLayout(Direction.VERTICAL));
-        AnimatedLabel survival = new AnimatedLabel(getAsciArtString("",""));
-        //survival.setBackgroundColor(TextColor.ANSI.BLUE_BRIGHT);
-        survival.setForegroundColor(TextColor.ANSI.BLACK);
-        survival.addFrame(getAsciArtString(" ",""));
-        survival.addFrame(getAsciArtString("",""));
-        survival.addFrame(getAsciArtString(""," "));
-        survival.startAnimation(100);
-        panelForSurvivalLabel.addComponent(survival);
+        survivalAnimatedLabel = new AnimatedLabel(getAsciArtString("",""));
+        survivalAnimatedLabel.addFrame(getAsciArtString(" ",""));
+        survivalAnimatedLabel.addFrame(getAsciArtString("",""));
+        survivalAnimatedLabel.addFrame(getAsciArtString(""," "));
+        survivalAnimatedLabel.startAnimation(100);
+
+        panelForSurvivalLabel.addComponent(survivalAnimatedLabel);
         menuPanel.addComponent(new Button("Play Game", () -> new GameController(gui)));
         menuPanel.addComponent(new Button("Instruction", () -> MessageDialog.showMessageDialog(gui, "Instruction", getInstructionString())));
         menuPanel.addComponent(new Button("Quit game", () -> closeScreen()));
@@ -96,6 +95,7 @@ public class MainWindow {
 
     private static void closeScreen() {
         try {
+            survivalAnimatedLabel.stopAnimation();
             musicPlayer.stop();
             screen.close();
         } catch (IOException aE) {
@@ -114,11 +114,9 @@ public class MainWindow {
     }
 
 
-    private static void playMusic(String aNameOfMusic) {
+    static void playMusic(String aNameOfMusic) {
         try {
-            musicPlayer = new MusicPlayer();
-            musicPlayer.setRepeat(true);
-            musicPlayer.play("/mp3/"+ aNameOfMusic);
+            MusicPlayer.play("/mp3/"+ aNameOfMusic);
         } catch (JavaLayerException aE) {
             System.out.println(aE);
         } catch (IOException aE) {

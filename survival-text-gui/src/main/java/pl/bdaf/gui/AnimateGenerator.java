@@ -7,10 +7,7 @@ import com.googlecode.lanterna.gui2.MultiWindowTextGUI;
 import com.googlecode.lanterna.gui2.dialogs.MessageDialog;
 
 import static com.googlecode.lanterna.TextColor.ANSI.*;
-import static com.googlecode.lanterna.TextColor.ANSI.BLUE_BRIGHT;
-import static pl.bdaf.person.Backpack.WATER_BOTTLE;
 import static pl.bdaf.person.PersonStatistic.*;
-import static pl.bdaf.person.PersonStatistic.BERTA;
 
 public class AnimateGenerator {
 
@@ -153,7 +150,7 @@ public class AnimateGenerator {
         else return null;
     }
 
-    public static AnimatedLabel getEndOfGameAnimation(MultiWindowTextGUI aGui, int aCurrentDay) {
+    public static Label getEndOfGameLabel(MultiWindowTextGUI aGui, int aCurrentDay) {
         MessageDialog.showMessageDialog(aGui, "End Of The Game!", "(✖╭╮✖) (✖╭╮✖) (✖╭╮✖) (✖╭╮✖) (✖╭╮✖) (✖╭╮✖) (✖╭╮✖) (✖╭╮✖) (✖╭╮✖)\n\n" +
                 "(✖╭╮✖) (✖╭╮✖)              _.-'''''-._           (✖╭╮✖) (✖╭╮✖) \n " +
                 "                        .'   _   _   '.              \n" +

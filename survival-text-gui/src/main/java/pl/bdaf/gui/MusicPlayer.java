@@ -1,27 +1,26 @@
 package pl.bdaf.gui;
 
 
-import java.io.FileNotFoundException;
+import javazoom.jl.decoder.JavaLayerException;
+import javazoom.jl.player.Player;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URISyntaxException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javazoom.jl.decoder.JavaLayerException;
-import javazoom.jl.player.Player;
 
 public class MusicPlayer
 {
+    private static InputStream is;
 
-    private InputStream is;
+    private static Player player;
+    private static Thread thread;
+    private static boolean repeat = true;
 
-    private Player player;
-    private boolean repeat;
-    private Thread thread;
-
-    public void play( String musicFilePath ) throws JavaLayerException, IOException, URISyntaxException
-    {
-        is = this.getClass().getResourceAsStream( musicFilePath );
+    public static void play( String musicFilePath ) throws JavaLayerException, IOException, URISyntaxException {
+        stop();
+        is = MusicPlayer.class.getResourceAsStream( musicFilePath );
         player = new Player( is );
 
         thread = new Thread(() -> {
@@ -40,20 +39,11 @@ public class MusicPlayer
         thread.start();
     }
 
-    public void stop() {
+    static void stop() {
         if( null != player) {
             player.close();
             thread.stop();
         }
     }
-
-    public Thread getThread() {
-        return thread;
-    }
-
-    public void setRepeat(boolean repeat) {
-        this.repeat = repeat;
-    }
-
 }
 
