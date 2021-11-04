@@ -87,8 +87,10 @@ public class GameEngine {
     }
 
     public void goForExpeditionAndPass() { // from 1 day to 3 days on expedition
-        if(queue.getAlivePeople().stream().filter(p -> p.getExpeditionDaysLeft() > 0).count() > 0){
+        if (queue.getAlivePeople().stream().filter(p -> p.getExpeditionDaysLeft() > 0).count() > 0) {
             notifyObservers(new PropertyChangeEvent(this, SEND_MESSAGE, "Forbidden action", "Somebody else is on expedition!"));
+        } else if(queue.getAlivePeople().size() <= 1 ) {
+            notifyObservers(new PropertyChangeEvent(this, SEND_MESSAGE, "Forbidden action", "You cannot let shelter be empty!"));
         } else {
             getActivePerson().setExpeditionDaysLeft(getActivePerson().getState().getRand()
                     .nextInt(MAX_EXPEDITION_DAYS - MIN_EXPEDITION_DAYS + 1) + MIN_EXPEDITION_DAYS);
@@ -119,7 +121,7 @@ public class GameEngine {
             aPerson.goForExpedition(backpack); // do random action with expedition
             int amountOfWater = backpack.getAmountOf(WATER_BOTTLE) - oldBackpack.getAmountOf(WATER_BOTTLE);
             int amountOfSoup = backpack.getAmountOf(TOMATO_SOUP) - oldBackpack.getAmountOf(TOMATO_SOUP);
-            aCurrentDayDiary.append( aPerson + " came back from expedition with " + amountOfWater + " water bottles and " + amountOfSoup + " tomato soups.\n");
+            aCurrentDayDiary.append(aPerson + " came back from expedition with " + amountOfWater + " water bottles and " + amountOfSoup + " tomato soups.\n");
             notifyObservers(new PropertyChangeEvent(this, RETURN_FROM_EXPEDITION, oldBackpack, backpack));
         }
         aPerson.setExpeditionDaysLeft(aPerson.getExpeditionDaysLeft() - 1);
@@ -143,12 +145,12 @@ public class GameEngine {
             getActivePerson().takeSupply(aNameOfSupply, aAmountOfSupply);
             int numberOfSupply = backpack.getAmountOf(aNameOfSupply);
             notifyObservers(new PropertyChangeEvent(this, aNameOfSupply + EATEN, numberOfSupply - aAmountOfSupply, numberOfSupply));
-            notifyObservers(new PropertyChangeEvent(this, SEND_MESSAGE, "Successfully consumed", getActivePerson().getName()+" consumed "+aNameOfSupply+"."));
+            notifyObservers(new PropertyChangeEvent(this, SEND_MESSAGE, "Successfully consumed", getActivePerson().getName() + " consumed " + aNameOfSupply + "."));
             return;
         } else if (aAmountOfSupply <= 0) {
             throw new IllegalStateException("You can only take positive value of number of supply: " + aNameOfSupply);
         } else {
-            notifyObservers(new PropertyChangeEvent(this, SEND_MESSAGE, "Lack of "+aNameOfSupply, "You don't have this supply to consume!"));
+            notifyObservers(new PropertyChangeEvent(this, SEND_MESSAGE, "Lack of " + aNameOfSupply, "You don't have this supply to consume!"));
         }
     }
 
@@ -171,9 +173,9 @@ public class GameEngine {
     }
 
     void endOfGame() {
-        String endOfGameDescribe = END_OF_THE_GAME + " - your score is " + (getCurrentDay()-1) + " day!";
+        String endOfGameDescribe = END_OF_THE_GAME + " - your score is " + (getCurrentDay() - 1) + " day!";
         dailyDescribe += endOfGameDescribe;
-        notifyObservers(new PropertyChangeEvent(this, END_OF_THE_GAME, null, (getCurrentDay()-1)));
+        notifyObservers(new PropertyChangeEvent(this, END_OF_THE_GAME, null, (getCurrentDay() - 1)));
     }
 
     public void passWholeDay() {

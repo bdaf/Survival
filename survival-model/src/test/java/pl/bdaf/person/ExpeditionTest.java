@@ -40,6 +40,38 @@ public class ExpeditionTest {
     }
 
     @Test
+    void tedShouldCannotGoForExpeditionBecauseHeIsTheOnlyPersonInShelter(){
+        assertEquals(1, engine.getCurrentDay());
+        assertEquals(TED.getName(), engine.getActivePerson().getName());
+        engine.pass();
+        assertEquals(DOLORES.getName(), engine.getActivePerson().getName());
+        engine.getActivePerson().setWorseState();
+        engine.getActivePerson().setWorseState();
+        engine.getActivePerson().setWorseState();
+        assertEquals(DEAD, engine.getActivePerson().getState().getName());
+        engine.pass();
+        assertEquals(TIMMY.getName(), engine.getActivePerson().getName());
+        engine.getActivePerson().setWorseState();
+        engine.getActivePerson().setWorseState();
+        engine.getActivePerson().setWorseState();
+        assertEquals(DEAD, engine.getActivePerson().getState().getName());
+        engine.pass();
+        assertEquals(BERTA.getName(), engine.getActivePerson().getName());
+        engine.getActivePerson().setWorseState();
+        engine.getActivePerson().setWorseState();
+        engine.getActivePerson().setWorseState();
+        assertEquals(DEAD, engine.getActivePerson().getState().getName());
+        engine.pass();
+        assertEquals(TED.getName(), engine.getActivePerson().getName());
+        // 2 th day starts
+        when(randomize.nextInt(anyInt())).thenReturn(1);
+        engine.goForExpeditionAndPass();
+        // Ted is still active creature, nothing happened
+        assertEquals(TED.getName(), engine.getActivePerson().getName());
+        assertEquals(0, engine.getActivePerson().getExpeditionDaysLeft());
+    }
+
+    @Test
     void tedShouldGoForExpeditionFor2DaysAndGain3WaterBottlesAnd3TomatoSoupsAndReturnHealthy(){
         assertEquals(1, engine.getCurrentDay());
         assertEquals(TED.getName(), engine.getActivePerson().getName());
