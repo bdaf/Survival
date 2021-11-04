@@ -27,6 +27,24 @@ public abstract class State {
         rand = aRandom;
     }
 
+    abstract State getWorseState();
+
+    abstract State getBetterState();
+
+    void drink(Person aPerson){
+        aPerson.setStrength(Integer.min(aPerson.getStrength()+3, MAX_STRENGTH));
+        aPerson.setCheerfulness(aPerson.getCheerfulness()+1);
+        aPerson.setHydrationPoints(MAX_HYDRATION);
+    }
+
+    void eat(Person aPerson){
+        aPerson.setStrength(Integer.min(aPerson.getStrength()+6, MAX_STRENGTH));
+        aPerson.setCheerfulness(aPerson.getCheerfulness()+3);
+        aPerson.setSatietyPoints(MAX_SATIETY);
+        aPerson.setHydrationPoints(Integer.min(aPerson.getHydrationPoints()+1,MAX_HYDRATION));
+    }
+
+
     void goForExpedition(Person aPerson, Backpack aBackpack){
         int difficultOfExpedition = (int) (rand.nextDouble()*100);
         int strengthOfPerson = aPerson.getStrength()*3;
@@ -48,24 +66,7 @@ public abstract class State {
             }
         }
     }
-
-    void drink(Person aPerson){
-        aPerson.setStrength(Integer.min(aPerson.getStrength()+3, MAX_STRENGTH));
-        aPerson.setCheerfulness(aPerson.getCheerfulness()+1);
-        aPerson.setHydrationPoints(MAX_HYDRATION);
-    }
-
-    void eat(Person aPerson){
-        aPerson.setStrength(Integer.min(aPerson.getStrength()+6, MAX_STRENGTH));
-        aPerson.setCheerfulness(aPerson.getCheerfulness()+3);
-        aPerson.setSatietyPoints(MAX_SATIETY);
-        aPerson.setHydrationPoints(Integer.min(aPerson.getHydrationPoints()+1,MAX_HYDRATION));
-    }
-
-    abstract State getWorseState();
-
-    abstract State getBetterState();
-
+    
     void setName(String aName) {
         name = aName;
     }
@@ -84,8 +85,7 @@ public abstract class State {
 
     @Override
     public boolean equals(Object obj) {
-        if (!(obj instanceof State)) return false;
-        State state = (State) obj;
+        if (!(obj instanceof State state)) return false;
         return getName().equals(state.getName());
     }
 
@@ -142,10 +142,6 @@ public abstract class State {
 
     static class Unhealthy extends State {
 
-        protected Unhealthy() {
-            this(new Random());
-        }
-
         protected Unhealthy(Random aRandom) {
             rand = aRandom;
             setName(UNHEALTHY);
@@ -193,10 +189,6 @@ public abstract class State {
 
 
     static class Sick extends State {
-
-        protected Sick() {
-            this(new Random());
-        }
 
         protected Sick(Random aRandom) {
             rand = aRandom;

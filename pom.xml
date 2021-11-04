@@ -6,7 +6,7 @@
 
     <groupId>com.bdaf</groupId>
     <artifactId>Survival</artifactId>
-    <packaging>pom</packaging>
+    <packaging>jar</packaging>
     <version>1.0.0-SNAPSHOT</version>
     <modules>
         <module>survival-model</module>

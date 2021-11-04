@@ -163,15 +163,39 @@ public class AnimateGenerator {
                 "                        \\  '.       .'  /            \n" +
                 "(✖╭╮✖) (✖╭╮✖)            '.  `'---'`  .'         (✖╭╮✖) (✖╭╮✖) \n" +
                 "                           '-._____.-'                 \n" +
-                "(✖╭╮✖) (✖╭╮✖)                                    (✖╭╮✖) (✖╭╮✖) \n" +
+                "(✖╭╮✖) (✖╭╮✖)               Mr. Death            (✖╭╮✖) (✖╭╮✖) \n" +
                 "\n(✖╭╮✖) (✖╭╮✖)        Your score is " + aCurrentDay + " days!       (✖╭╮✖) (✖╭╮✖)" +
                 "\n\n(✖╭╮✖) (✖╭╮✖) (✖╭╮✖) (✖╭╮✖) (✖╭╮✖) (✖╭╮✖) (✖╭╮✖) (✖╭╮✖) (✖╭╮✖)");
         return null;
     }
 
     public static TextColor getColorAccordingToNumber(int aAmount) {
-        if(aAmount < 5) return RED_BRIGHT;
+        if(aAmount < 5) return RED;
         if(aAmount < 10) return YELLOW_BRIGHT;
-        return GREEN_BRIGHT;
+        return GREEN;
+    }
+
+    public static TextColor getColorAccordingPersonName(String aName) {
+        if(aName.equalsIgnoreCase(TED.getName())) return WHITE_BRIGHT;
+        if(aName.equalsIgnoreCase(DOLORES.getName())) return CYAN_BRIGHT;
+        if(aName.equalsIgnoreCase(TIMMY.getName())) return GREEN_BRIGHT;
+        if(aName.equalsIgnoreCase(BERTA.getName())) return BLUE_BRIGHT;
+        return null;
+    }
+
+    public static TextColor getColorAccordingToDay(int aDay) {
+        if(aDay % 2 == 0) return BLUE_BRIGHT;
+        return WHITE_BRIGHT;
+    }
+    public static String getLogoString() {
+        return "              ██████  █    ██  ██▀███   ██▒   █▓ ██▓ ██▒   █▓ ▄▄▄       ██▓    \n" +
+                "           ▒██    ▒  ██  ▓██▒▓██ ▒ ██▒▓██░   █▒▓██▒▓██░   █▒▒████▄    ▓██▒    \n" +
+                "           ░ ▓██▄   ▓██  ▒██░▓██ ░▄█ ▒ ▓██  █▒░▒██▒ ▓██  █▒░▒██  ▀█▄  ▒██░    \n" +
+                "             ▒   ██▒▓▓█  ░██░▒██▀▀█▄    ▒██ █░░░██░  ▒██ █░░░██▄▄▄▄██ ▒██░    \n" +
+                "           ▒██████▒▒▒▒█████▓ ░██▓ ▒██▒   ▒▀█░  ░██░   ▒▀█░   ▓█   ▓██▒░██████▒\n" +
+                "           ▒ ▒▓▒ ▒ ░░▒▓▒ ▒ ▒ ░ ▒▓ ░▒▓░   ░ ▐░  ░▓     ░ ▐░   ▒▒   ▓▒█░░ ▒░▓  ░\n" +
+                "           ░ ░▒  ░ ░░░▒░ ░ ░   ░▒ ░ ▒░   ░ ░░   ▒ ░   ░ ░░    ▒   ▒▒ ░░ ░ ▒  ░\n" +
+                "           ░  ░  ░   ░░░ ░ ░   ░░   ░      ░░   ▒ ░     ░░    ░   ▒     ░ ░   \n" +
+                "                 ░     ░        ░           ░   ░        ░        ░  ░    ░  ░";
     }
 }

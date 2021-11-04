@@ -1,6 +1,7 @@
 package pl.bdaf.gui;
 
 import com.googlecode.lanterna.TerminalSize;
+import com.googlecode.lanterna.TextColor;
 import com.googlecode.lanterna.gui2.*;
 import com.googlecode.lanterna.gui2.Label;
 import com.googlecode.lanterna.gui2.Panel;
@@ -14,6 +15,8 @@ import java.beans.PropertyChangeListener;
 import java.util.Collections;
 import java.util.List;
 
+import static pl.bdaf.gui.AnimateGenerator.getColorAccordingToDay;
+import static pl.bdaf.gui.AnimateGenerator.getLogoString;
 import static pl.bdaf.person.Backpack.TOMATO_SOUP;
 import static pl.bdaf.person.Backpack.WATER_BOTTLE;
 import static pl.bdaf.person.GameEngine.*;
@@ -54,6 +57,7 @@ public class GameController implements PropertyChangeListener {
         window = new BasicWindow();
         window.setTitle("Survival");
         containerPanel = new Panel();
+        containerPanel.setLayoutManager(new LinearLayout(Direction.VERTICAL));
         mainPanel = new Panel();
         mainPanel.setLayoutManager(new LinearLayout(Direction.HORIZONTAL));
         preparingPanels();
@@ -67,6 +71,7 @@ public class GameController implements PropertyChangeListener {
         mainPanel.addComponent(midPanel.withBorder(Borders.singleLine("Daily diary")));
         preparingRightPanel();
         mainPanel.addComponent(rightPanel.withBorder(Borders.singleLine("Current person")));
+        containerPanel.addComponent(new Label(getLogoString()));
         containerPanel.addComponent(mainPanel.withBorder(Borders.singleLine("Day " + engine.getCurrentDay() + " - " + engine.getActivePerson().getName())));
         window.setComponent(containerPanel);
         window.setHints(Collections.singletonList(Window.Hint.CENTERED));
@@ -81,7 +86,7 @@ public class GameController implements PropertyChangeListener {
     private void updateAnimatedPerson(String aName) {
         if (rightMidPanel == null) rightMidPanel = new Panel();
         rightMidPanel.removeAllComponents();
-        rightMidPanel.addComponent(AnimateGenerator.getPersonAnimation(engine.getActivePerson().getName()));
+        rightMidPanel.addComponent(AnimateGenerator.getPersonAnimation(aName));
         rightMidPanel.addTo(rightPanel);
     }
 
@@ -108,8 +113,9 @@ public class GameController implements PropertyChangeListener {
             goBackToMenu();
         } else if (aEvent.getPropertyName().equals(PERSON_PASSES)) {
             containerPanel.removeAllComponents();
+            containerPanel.addComponent(new Label(getLogoString()));
             containerPanel.addComponent(mainPanel.withBorder(Borders.singleLine("Day " + engine.getCurrentDay() + " - " + engine.getActivePerson().getName())));
-            updateCurrentPersonAndDay();
+            updateCurrentPersonAndDay(engine.getActivePerson().getName());
             updateAnimatedPerson(engine.getActivePerson().getName());
         } else if (aEvent.getPropertyName().equals(UPDATE_DIARY)) {
             setDiaryDescribe(engine.getDailyDescribe());
@@ -138,7 +144,7 @@ public class GameController implements PropertyChangeListener {
         setActionsTo(actionListBox);
         Panel topLeftPanel = new Panel().addComponent(actionListBox);
         updateAmountsOfSupplies();
-        updateCurrentPersonAndDay();
+        updateCurrentPersonAndDay(engine.getActivePerson().getName());
         midLeftPanel.setPreferredSize(new TerminalSize(15, 2));
         bottomLeftPanel.setPreferredSize(new TerminalSize(15, 2));
         leftPanel.addComponent(topLeftPanel.withBorder(Borders.singleLine("Actions")));
@@ -146,11 +152,11 @@ public class GameController implements PropertyChangeListener {
         leftPanel.addComponent(bottomLeftPanel.withBorder(Borders.singleLine("Currently")));
     }
 
-    private void updateCurrentPersonAndDay() {
+    private void updateCurrentPersonAndDay(String aName) {
         if (bottomLeftPanel == null) bottomLeftPanel = new Panel();
         bottomLeftPanel.removeAllComponents();
-        bottomLeftPanel.addComponent(new Label("Person: " + engine.getActivePerson().getName()));
-        bottomLeftPanel.addComponent(new Label("Day: " + engine.getCurrentDay()));
+        bottomLeftPanel.addComponent(new Label("Person: " + aName).setForegroundColor(AnimateGenerator.getColorAccordingPersonName(aName)));
+        bottomLeftPanel.addComponent(new Label("Day: " + engine.getCurrentDay()).setForegroundColor(getColorAccordingToDay(engine.getCurrentDay())));
 
     }
 

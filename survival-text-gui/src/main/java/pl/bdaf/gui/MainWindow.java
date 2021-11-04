@@ -1,5 +1,6 @@
 package pl.bdaf.gui;
 
+import com.googlecode.lanterna.TerminalSize;
 import com.googlecode.lanterna.TextColor;
 import com.googlecode.lanterna.gui2.*;
 import com.googlecode.lanterna.gui2.dialogs.*;
@@ -38,34 +39,46 @@ public class MainWindow {
         if (nameOfUser == null) nameOfUser = "Anonymous";
 
         BasicWindow window = new BasicWindow();
+        window.setHints(Collections.singletonList(Window.Hint.CENTERED));
         Panel mainPanel = new Panel();
-        Panel panel1 = new Panel();
-        Panel panel2 = new Panel();
+        Panel panelForSurvivalLabel = new Panel();
+        Panel panelForMenu = new Panel();
+        Panel menuPanel = new Panel();
 
         window.setComponent(mainPanel);
         window.setTitle("Hello "+nameOfUser);
-        window.setHints(Collections.singletonList(Window.Hint.CENTERED));
-
-        mainPanel.addComponent(panel1);
-        mainPanel.addComponent(panel2);
+        mainPanel.addComponent(panelForSurvivalLabel);
+        mainPanel.addComponent(panelForMenu);
         mainPanel.setLayoutManager(new LinearLayout(Direction.VERTICAL));
-        AnimatedLabel survival = new AnimatedLabel(getAsciArtString1());
-        survival.setBackgroundColor(TextColor.ANSI.BLUE_BRIGHT);
+        AnimatedLabel survival = new AnimatedLabel(getAsciArtString("",""));
+        //survival.setBackgroundColor(TextColor.ANSI.BLUE_BRIGHT);
         survival.setForegroundColor(TextColor.ANSI.BLACK);
-        survival.addFrame(getAsciArtString2());
-        survival.addFrame(getAsciArtString1());
-        survival.addFrame(getAsciArtString3());
+        survival.addFrame(getAsciArtString(" ",""));
+        survival.addFrame(getAsciArtString("",""));
+        survival.addFrame(getAsciArtString(""," "));
         survival.startAnimation(100);
-        panel1.addComponent(survival);
-        panel2.addComponent(new Button("Play Game", () -> new GameController(gui)));
-        panel2.addComponent(new Button("Instruction", () -> MessageDialog.showMessageDialog(gui, "Instruction", getInstructionString())));
-        panel2.addComponent(new Button("Quit game", () -> closeScreen()));
+        panelForSurvivalLabel.addComponent(survival);
+        menuPanel.addComponent(new Button("Play Game", () -> new GameController(gui)));
+        menuPanel.addComponent(new Button("Instruction", () -> MessageDialog.showMessageDialog(gui, "Instruction", getInstructionString())));
+        menuPanel.addComponent(new Button("Quit game", () -> closeScreen()));
+
+        panelForMenu.setLayoutManager(new LinearLayout(Direction.HORIZONTAL));
+        panelForMenu.addComponent(new EmptySpace(new TerminalSize(19,0)));
+        panelForMenu.addComponent(menuPanel);
+        panelForMenu.addComponent(new EmptySpace(new TerminalSize(19,0)));
 
         gui.addWindowAndWait(window);
     }
 
     private static String getInstructionString() {
-        return "In game you have 4 people (Ted, Dolores, Timmy and Berta)\n" +
+        return "  _    _  ______          __   _______ ____      _____  _           __     __\n" +
+                " | |  | |/ __ \\ \\        / /  |__   __/ __ \\    |  __ \\| |        /\\\\ \\   / /\n" +
+                " | |__| | |  | \\ \\  /\\  / /      | | | |  | |   | |__) | |       /  \\\\ \\_/ / \n" +
+                " |  __  | |  | |\\ \\/  \\/ /       | | | |  | |   |  ___/| |      / /\\ \\\\   /  \n" +
+                " | |  | | |__| | \\  /\\  /        | | | |__| |   | |    | |____ / ____ \\| |   \n" +
+                " |_|  |_|\\____/   \\/  \\/         |_|  \\____/    |_|    |______/_/    \\_\\_|   \n" +
+                "                                                                           \n\n" +
+                "In game you have 4 people (Ted, Dolores, Timmy and Berta)\n" +
                 "in shelter after atomic bomb explosion outside it. Your\n" +
                 "mission is to send them on expedition, feed and water them\n" +
                 "in a way that will make them alive as long as possible.\n" +
@@ -90,35 +103,16 @@ public class MainWindow {
         }
     }
 
-    private static String getAsciArtString1() {
+    private static String getAsciArtString(String aAddOddRow, String aAddToEvenRow) {
         return "\r" +
-                "  _________                  .__              .__   \n" +
-                " /   _____/__ ____________  _|__|__  _______  |  |  \n" +
-                " \\_____  \\|  |  \\_  __ \\  \\/ /  \\  \\/ /\\__  \\ |  |  \n" +
-                " /        \\  |  /|  | \\/\\   /|  |\\   /  / __ \\|  |__\n" +
-                "/_______  /____/ |__|    \\_/ |__| \\_/  (____  /____/\n" +
-                "        \\/                                  \\/      ";
+                aAddOddRow + "  _________                  .__              .__   \n" +
+                aAddToEvenRow + " /   _____/__ ____________  _|__|__  _______  |  |  \n" +
+                aAddOddRow + " \\_____  \\|  |  \\_  __ \\  \\/ /  \\  \\/ /\\__  \\ |  |  \n" +
+                aAddToEvenRow + " /        \\  |  /|  | \\/\\   /|  |\\   /  / __ \\|  |__\n" +
+                aAddOddRow + "/_______  /____/ |__|    \\_/ |__| \\_/  (____  /____/\n" +
+                aAddToEvenRow + "        \\/                                  \\/      ";
     }
 
-    private static String getAsciArtString2() {
-        return "\r" +
-                "   _________                  .__              .__   \n" +
-                " /   _____/__ ____________  _|__|__  _______  |  |  \n" +
-                "  \\_____  \\|  |  \\_  __ \\  \\/ /  \\  \\/ /\\__  \\ |  |  \n" +
-                " /        \\  |  /|  | \\/\\   /|  |\\   /  / __ \\|  |__\n" +
-                " /_______  /____/ |__|    \\_/ |__| \\_/  (____  /____/\n" +
-                "        \\/                                  \\/      ";
-    }
-
-    private static String getAsciArtString3() {
-        return "\r" +
-                "   _________                  .__              .__   \n" +
-                "/   _____/__ ____________  _|__|__  _______  |  |  \n" +
-                "  \\_____  \\|  |  \\_  __ \\  \\/ /  \\  \\/ /\\__  \\ |  |  \n" +
-                "/        \\  |  /|  | \\/\\   /|  |\\   /  / __ \\|  |__\n" +
-                " /_______  /____/ |__|    \\_/ |__| \\_/  (____  /____/\n" +
-                "       \\/                                  \\/      ";
-    }
 
     private static void playMusic(String aNameOfMusic) {
         try {
