@@ -171,9 +171,9 @@ public class GameEngine {
     }
 
     void endOfGame() {
-        String endOfGameDescribe = END_OF_THE_GAME + " - your score is " + getCurrentDay() + " day!";
+        String endOfGameDescribe = END_OF_THE_GAME + " - your score is " + (getCurrentDay()-1) + " day!";
         dailyDescribe += endOfGameDescribe;
-        notifyObservers(new PropertyChangeEvent(this, END_OF_THE_GAME, null, endOfGameDescribe));
+        notifyObservers(new PropertyChangeEvent(this, END_OF_THE_GAME, null, (getCurrentDay()-1)));
     }
 
     public void passWholeDay() {

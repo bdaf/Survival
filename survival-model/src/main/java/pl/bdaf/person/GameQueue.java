@@ -21,8 +21,8 @@ class GameQueue {
     }
 
     private void init() {
-        notifyObservers();
         makeStarvingDead();
+        notifyObservers();
         queue.addAll(alivePeople.stream().filter(p -> p.getExpeditionDaysLeft() <= 0).collect(Collectors.toList()));
 
         if (queue.isEmpty()) {
@@ -54,7 +54,7 @@ class GameQueue {
     }
 
     private void endOfGame() {
-        observers.forEach(gm -> gm.endOfGame());
+        observers.forEach(GameEngine::endOfGame);
     }
 
     Person getActivePerson() {

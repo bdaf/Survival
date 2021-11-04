@@ -109,7 +109,7 @@ public class GameController implements PropertyChangeListener {
     public void propertyChange(PropertyChangeEvent aEvent) {
         if (aEvent.getPropertyName().equals(END_OF_THE_GAME)) {
             setDiaryDescribe(engine.getDailyDescribe());
-            AnimateGenerator.getEndOfGameAnimation(gui, engine.getCurrentDay());
+            AnimateGenerator.getEndOfGameAnimation(gui, (Integer) aEvent.getNewValue());
             goBackToMenu();
         } else if (aEvent.getPropertyName().equals(PERSON_PASSES)) {
             containerPanel.removeAllComponents();

@@ -96,8 +96,8 @@ public class MainWindow {
 
     private static void closeScreen() {
         try {
-            screen.close();
             musicPlayer.stop();
+            screen.close();
         } catch (IOException aE) {
             aE.printStackTrace();
         }
@@ -119,7 +119,6 @@ public class MainWindow {
             musicPlayer = new MusicPlayer();
             musicPlayer.setRepeat(true);
             musicPlayer.play("/mp3/"+ aNameOfMusic);
-
         } catch (JavaLayerException aE) {
             System.out.println(aE);
         } catch (IOException aE) {
