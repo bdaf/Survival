@@ -85,7 +85,8 @@ public abstract class State {
 
     @Override
     public boolean equals(Object obj) {
-        if (!(obj instanceof State state)) return false;
+        if (!(obj instanceof State)) return false;
+        State state = (State) obj;
         return getName().equals(state.getName());
     }
 
