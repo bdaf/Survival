@@ -27,7 +27,7 @@ Similar game to sixty seconds, especially to the second part of it, a bit simple
 - Back to menu: go back to menu.
    
 ## How to install:
-Download <a href="https://drive.google.com/file/d/1k4a2m2OnsapoTq5xsqRHjpLXrXpihQ1h/view?usp=sharing">Survival.jar</a> and open it with java.
+Download <a href="https://drive.google.com/file/d/1zAnKsU7nlMkMBwUG4NMKeM41ZXdLIsMJ/view?usp=sharing">Survival.jar</a> and open it with java.
 
 # WARNING OF CLOSING
 Do NOT close game by direct closing terminal (for example by clicking in the "X" in up-right corner), don't do it!
