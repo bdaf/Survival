@@ -15,9 +15,9 @@ import java.util.Collections;
 import java.util.regex.Pattern;
 
 public class MainWindow {
-    private static MultiWindowTextGUI gui;
     private static String nameOfUser;
     private static TerminalScreen screen;
+    private static MultiWindowTextGUI gui;
     private static MusicPlayer musicPlayer;
     private static AnimatedLabel survivalAnimatedLabel;
 
@@ -59,6 +59,7 @@ public class MainWindow {
         panelForSurvivalLabel.addComponent(survivalAnimatedLabel);
         menuPanel.addComponent(new Button("Play Game", () -> new GameController(gui)));
         menuPanel.addComponent(new Button("Instruction", () -> MessageDialog.showMessageDialog(gui, "Instruction", getInstructionString())));
+        menuPanel.addComponent(new Button("Turn on/off music", () -> turnOnOrOffMusic()));
         menuPanel.addComponent(new Button("Quit game", () -> closeScreen()));
 
         panelForMenu.setLayoutManager(new LinearLayout(Direction.HORIZONTAL));
@@ -67,6 +68,17 @@ public class MainWindow {
         panelForMenu.addComponent(new EmptySpace(new TerminalSize(19,0)));
 
         gui.addWindowAndWait(window);
+    }
+
+    private static void turnOnOrOffMusic() {
+        if(MusicPlayer.isTurnOn){
+            MusicPlayer.stop();
+            MusicPlayer.isTurnOn = false;
+        }
+        else {
+            MusicPlayer.isTurnOn = true;
+            playMusic("st.mp3");
+        }
     }
 
     private static String getInstructionString() {

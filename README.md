@@ -24,10 +24,11 @@ Similar game to sixty seconds, especially to the second part of it, a bit simple
 - Next person: change person you are do actions on (if this is the last person in shelter - next day executes).
 - Next day: move on to the next day and update dialy diary.
 - Clear diary: if you don't want to know what is going on and increase your user's experience by surprise - go ahead!
+- Turn on/off music.
 - Back to menu: go back to menu.
    
 ## How to install:
-Download <a href="https://drive.google.com/file/d/1zAnKsU7nlMkMBwUG4NMKeM41ZXdLIsMJ/view?usp=sharing">Survival.jar</a> and open it with java.
+Download <a href="https://drive.google.com/file/d/15RokKFqIwwDeRT_Tpdd9G_d8dlHzk3yC/view?usp=sharing">Survival.jar</a> and open it with java.
 
 # WARNING OF CLOSING
 Do NOT close game by direct closing terminal (for example by clicking in the "X" in up-right corner), don't do it!
