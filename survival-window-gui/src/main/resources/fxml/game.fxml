@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.URL?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane fx:id="gameBackground" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="758.0" prefWidth="1060.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+    <stylesheets>
+        <URL value="@main.css" />
+    </stylesheets>
+   <top>
+      <Label text="Day 1" textAlignment="CENTER" BorderPane.alignment="CENTER">
+         <font>
+            <Font name="Agency FB" size="49.0" />
+         </font>
+         <BorderPane.margin>
+            <Insets top="20.0" />
+         </BorderPane.margin></Label>
+   </top>
+   <left>
+      <VBox alignment="CENTER" prefHeight="600.0" prefWidth="313.0" spacing="30.0" BorderPane.alignment="CENTER">
+         <children>
+            <Button fx:id="nextDayButton" mnemonicParsing="false" prefHeight="66.0" styleClass="buttonInGame" text="Next day">
+               <font>
+                  <Font name="Agency FB" size="12.0" />
+               </font>
+            </Button>
+            <Button fx:id="nextPersonButton" mnemonicParsing="false" styleClass="buttonInGame" text="Next person" />
+            <Button fx:id="goOnExpeditionButton" mnemonicParsing="false" styleClass="buttonInGame" text="Go on expedition" />
+            <Button fx:id="drinkButton" mnemonicParsing="false" styleClass="buttonInGame" text="Drink" />
+            <Button fx:id="eatButton" mnemonicParsing="false" styleClass="buttonInGame" text="Eat" />
+         </children>
+      </VBox>
+   </left>
+   <center>
+      <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="30.0" BorderPane.alignment="CENTER_LEFT">
+         <children>
+            <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../graphics/ted.png" />
+               </image>
+               <HBox.margin>
+                  <Insets left="40.0" />
+               </HBox.margin>
+            </ImageView>
+            <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../graphics/dolores.png" />
+               </image>
+               <HBox.margin>
+                  <Insets right="20.0" />
+               </HBox.margin>
+            </ImageView>
+            <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" scaleX="-1.0">
+               <image>
+                  <Image url="@../graphics/timmy.png" />
+               </image>
+               <HBox.margin>
+                  <Insets left="20.0" />
+               </HBox.margin>
+            </ImageView>
+            <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" scaleX="-1.0">
+               <image>
+                  <Image url="@../graphics/berta.png" />
+               </image>
+            </ImageView>
+         </children>
+         <padding>
+            <Insets top="50.0" />
+         </padding>
+      </HBox>
+   </center>
+   <right>
+      <VBox alignment="CENTER" spacing="30.0" BorderPane.alignment="CENTER">
+         <children>
+            <Button fx:id="menuButton" mnemonicParsing="false" prefHeight="66.0" styleClass="buttonInGame" text="Menu">
+               <font>
+                  <Font name="Agency FB" size="12.0" />
+               </font>
+            </Button>
+            <Button fx:id="exitButton" mnemonicParsing="false" prefHeight="66.0" styleClass="buttonInGame" text="Exit">
+               <font>
+                  <Font name="Agency FB" size="12.0" />
+               </font>
+            </Button>
+         </children>
+      </VBox>
+   </right>
+</BorderPane>

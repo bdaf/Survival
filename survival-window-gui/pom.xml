@@ -35,7 +35,7 @@
                     <artifactId>javafx-maven-plugin</artifactId>
                     <version>0.0.8</version>
                     <configuration>
-                        <mainClass>pl.bdaf.gui.HelloFX</mainClass>
+                        <mainClass>pl.bdaf.gui.LaunchWindowApp</mainClass>
                     </configuration>
                 </plugin>
             </plugins>

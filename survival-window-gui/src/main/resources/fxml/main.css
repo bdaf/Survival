@@ -1,0 +1,98 @@
+.button {
+    -fx-background-color:
+        #090a0c,
+        linear-gradient(#38424b 0%, #1f2429 20%, #191d22 100%),
+        linear-gradient(#20262b, #191d22),
+        radial-gradient(center 50% 0%, radius 100%, rgba(114,131,148,0.9), rgba(255,255,255,0));
+    -fx-background-radius: 5,4,3,5;
+    -fx-background-insets: 0,1,2,0;
+    -fx-text-fill: white;
+    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );
+    -fx-font-family: "Arial";
+    -fx-text-fill: linear-gradient(white, #d0d0d0);
+    -fx-font-size: 22px;
+    -fx-padding: 20 100 20 100;
+
+}
+.button Text {
+    -fx-effect: dropshadow( one-pass-box , rgba(0,0,0,0.9) , 1, 0.0 , 0 , 1 );
+}
+
+.button:hover {
+    -fx-background-color:
+        linear-gradient(from 0% 93% to 0% 100%, #000000 0%, #000000 100%),
+        #000000,
+        #000000,
+        radial-gradient(center 50% 50%, radius 100%, #B80000, #000000);
+}
+.button:pressed {
+    -fx-padding: 15 75 15 75;
+    -fx-background-insets: 2 0 0 0,2 0 3 0, 2 0 4 0, 2 0 5 0;
+}
+
+#quitButton {
+    -fx-padding: 17 75 17 75;
+}
+#quitButton:pressed {
+     -fx-padding: 13 60 13 60;
+     -fx-background-insets: 2 0 0 0,2 0 3 0, 2 0 4 0, 2 0 5 0;
+}
+
+.buttonInGame {
+    -fx-background-color:
+        #090a0c,
+        linear-gradient(#38424b 0%, #1f2429 20%, #191d22 100%),
+        linear-gradient(#20262b, #191d22),
+        radial-gradient(center 50% 0%, radius 100%, rgba(114,131,148,0.9), rgba(255,255,255,0));
+    -fx-background-radius: 5,4,3,5;
+    -fx-background-insets: 0,1,2,0;
+    -fx-text-fill: white;
+    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );
+    -fx-font-family: "Agency FB";
+    -fx-text-fill: linear-gradient(white, #d0d0d0);
+    -fx-font-size: 20px;
+    -fx-padding: 20 50 20 50;
+    -fx-pref-width: 250px;
+    -fx-pref-height: 20px;
+
+}
+.buttonInGame Text {
+    -fx-effect: dropshadow( one-pass-box , rgba(0,0,0,0.9) , 1, 0.0 , 0 , 1 );
+}
+
+.buttonInGame:hover {
+    -fx-background-color:
+        linear-gradient(from 0% 93% to 0% 100%, #000000 0%, #000000 100%),
+        #000000,
+        #000000,
+        radial-gradient(center 50% 50%, radius 100%, #B80000, #000000);
+}
+.buttonInGame:pressed {
+    -fx-padding: 15 75 15 75;
+    -fx-background-insets: 2 0 0 0,2 0 3 0, 2 0 4 0, 2 0 5 0;
+}
+
+#topTitleLabelnull{
+    -fx-background-image: url("/graphics/will_you_survive.png");
+    -fx-background-repeat: repeat-x;
+    -fx-background-size: auto;
+    -fx-background-position: top left;
+    -fx-effect: dropshadow(three-pass-box, black, 25, 0.5, 0, 0);
+}
+#leftPainForHero{
+    -fx-background-image: url("/graphics/heros/necropolisHero.png");
+    -fx-background-repeat: stretch;
+    -fx-background-position: center center;
+
+}
+#rightPainForHero{
+    -fx-background-image: url("/graphics/heros/castleHero.png");
+    -fx-background-repeat: stretch;
+    /*-fx-background-size: 900 506;*/
+    -fx-background-position: center center;
+}
+#gameBackground{
+    -fx-background-image: url("/graphics/basement.jpg");
+    -fx-background-repeat: stretch;
+    -fx-background-position: center center;
+}
