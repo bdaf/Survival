@@ -81,6 +81,7 @@ public class GameEngine {
         currentDayDiary.append(getDescriptionOfAlivePeopleAndMakeDayChangesAbout(1));
         for (Person p : queue.getDeadPeople()) {
             currentDayDiary.append(DiaryWriter.describeDeadPerson(p));
+            currentDayDiary.append("-");
         }
         dailyDescribe = currentDayDiary.toString();
         notifyObservers(new PropertyChangeEvent(this, UPDATE_DIARY, null, null));
@@ -107,6 +108,7 @@ public class GameEngine {
                 p.setSatietyPoints(p.getSatietyPoints() - aFactorOfChanges);
                 p.setCheerfulness(p.getCheerfulness() - aFactorOfChanges);
                 currentDayDiary.append(DiaryWriter.describe(p));
+                currentDayDiary.append("-");
             } else {
                 currentDayDiary.append(DiaryWriter.describeExpeditionDay(p));
             }

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+
+<BorderPane fx:id="diaryBackground" cacheShape="false" centerShape="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="694.0" prefWidth="1009.0" scaleShape="false" stylesheets="@main.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <bottom>
+      <Button fx:id="closeDiaryButton" mnemonicParsing="false" text="Close diary" BorderPane.alignment="CENTER">
+         <BorderPane.margin>
+            <Insets bottom="50.0" />
+         </BorderPane.margin>
+      </Button>
+   </bottom>
+   <left>
+      <VBox maxHeight="578.0" maxWidth="485.0" prefHeight="578.0" prefWidth="485.0" BorderPane.alignment="CENTER">
+         <children>
+            <Text fx:id="firstPageText" strokeType="OUTSIDE" strokeWidth="0.0" text="Timmy gets bored Timmy gets bored Timmy gets bored Timmy gets bored Timmy gets bored Timmy gets bored Timmy gets bored Timmy gets bored Timmy gets bored Timmy gets bored Timmy gets bored Timmy gets bored Timmy gets bored Timmy gets bored Timmy gets bored Timmy gets bored Timmy gets bored Timmy gets bored Timmy gets bored Timmy gets bored Timmy gets bored Timmy gets bored Timmy gets bored Timmy gets bored Timmy gets bored Timmy gets bored Timmy gets bored Timmy gets bored Timmy gets bored Timmy gets bored Timmy gets bored Timmy gets bored Timmy gets bored Timmy gets bored Timmy gets bored Timmy gets bored Timmy gets bored Timmy gets bored " wrappingWidth="353.599609375">
+               <font>
+                  <Font name="Curlz MT" size="20.0" />
+               </font>
+            </Text>
+         </children>
+         <padding>
+            <Insets left="130.0" top="70.0" />
+         </padding>
+      </VBox>
+   </left>
+   <right>
+      <VBox prefHeight="578.0" prefWidth="481.0" BorderPane.alignment="CENTER">
+         <children>
+            <Text fx:id="secondPageText" strokeType="OUTSIDE" strokeWidth="0.0" text="Tom too Tom too Tom too Tom too TTom too Tom too Tom too Tom too Tom too Tom too Tom too Tom too Tom too Tom too Tom too Tom too Tom too Tom too Tom too Tom too Tom too Tom too Tom too Tom too Tom too Tom too Tom too Tom too Tom too Tom too Tom too Tom too Tom too Tom too Tom too Tom too Tom too Tom too Tom too Tom too Tom too Tom too om too Tom too Tom too Tom too Tom too Tom too Tom too Tom too Tom too Tom too Tom too Tom too Tom too Tom too Tom too Tom too Tom too Tom too Tom too Tom too Tom too Tom too Tom too Tom too Tom too Tom too Tom too Tom too Tom too Tom too Tom too Tom too Tom too Tom too Tom Tom too Tom too Tom too Tom too Tom too Tom too Tom too Tom too Tom too Tom too Tom too Tom too Tom too Tom too too " wrappingWidth="350.47265625">
+               <font>
+                  <Font name="Curlz MT" size="20.0" />
+               </font>
+            </Text>
+         </children>
+         <padding>
+            <Insets right="130.0" top="60.0" />
+         </padding>
+      </VBox>
+   </right>
+</BorderPane>

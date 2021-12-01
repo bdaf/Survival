@@ -50,7 +50,7 @@ public class MenuController {
 
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getClassLoader().getResource("fxml/game.fxml"));
-        loader.setController(new GameController(stage));
+        loader.setController(new WindowGameController(stage));
 
         Scene scene = null;
         try {
@@ -58,7 +58,7 @@ public class MenuController {
         } catch (IOException aE) {
             aE.printStackTrace();
         }
-        stage.setTitle("Survival - choosing name");
+        stage.setTitle("Survival - game");
         stage.setResizable(false);
         stage.setScene(scene);
         stage.initOwner(quitButton.getScene().getWindow());

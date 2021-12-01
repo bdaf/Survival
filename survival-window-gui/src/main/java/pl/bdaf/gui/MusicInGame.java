@@ -7,8 +7,8 @@ import javafx.scene.media.MediaPlayer;
 import java.net.URL;
 
 public enum MusicInGame {
-    MUSIC_IN_MENU("audio/menuMusic.mp3",0.3),
-    MUSIC_IN_GAME("audio/musicDuringGame.mp3",0.5);
+    MUSIC_IN_MENU("audio/menuMusic.mp3",0.0),
+    MUSIC_IN_GAME("audio/musicDuringGame.mp3",0.0);
 
     private MediaPlayer mediaPlayer;
 

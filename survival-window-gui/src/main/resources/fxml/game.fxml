@@ -16,7 +16,7 @@
         <URL value="@main.css" />
     </stylesheets>
    <top>
-      <Label text="Day 1" textAlignment="CENTER" BorderPane.alignment="CENTER">
+      <Label fx:id="dayLabel" text="Day 1" textAlignment="CENTER" BorderPane.alignment="CENTER">
          <font>
             <Font name="Agency FB" size="49.0" />
          </font>
@@ -36,6 +36,11 @@
             <Button fx:id="goOnExpeditionButton" mnemonicParsing="false" styleClass="buttonInGame" text="Go on expedition" />
             <Button fx:id="drinkButton" mnemonicParsing="false" styleClass="buttonInGame" text="Drink" />
             <Button fx:id="eatButton" mnemonicParsing="false" styleClass="buttonInGame" text="Eat" />
+            <Button fx:id="diaryButton" mnemonicParsing="false" prefHeight="66.0" styleClass="buttonInGame" text="Diary">
+               <font>
+                  <Font name="Agency FB" size="12.0" />
+               </font>
+            </Button>
          </children>
       </VBox>
    </left>
@@ -78,7 +83,7 @@
       </HBox>
    </center>
    <right>
-      <VBox alignment="CENTER" spacing="30.0" BorderPane.alignment="CENTER">
+      <VBox alignment="BOTTOM_CENTER" spacing="30.0" BorderPane.alignment="CENTER">
          <children>
             <Button fx:id="menuButton" mnemonicParsing="false" prefHeight="66.0" styleClass="buttonInGame" text="Menu">
                <font>
@@ -91,6 +96,9 @@
                </font>
             </Button>
          </children>
+         <padding>
+            <Insets bottom="75.0" />
+         </padding>
       </VBox>
    </right>
 </BorderPane>
