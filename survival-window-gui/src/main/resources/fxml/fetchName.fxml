@@ -29,12 +29,12 @@
         </Label>
     </top>
    <center>
-      <TextField fx:id="usernameTextField" alignment="CENTER" BorderPane.alignment="CENTER">
+      <TextField fx:id="usernameTextField" alignment="CENTER" style="-fx-text-inner-color: #B80000;" BorderPane.alignment="CENTER">
          <font>
             <Font name="Agency FB" size="26.0" />
          </font>
          <BorderPane.margin>
-            <Insets left="30.0" right="30.0" />
+            <Insets left="150.0" right="150.0" />
          </BorderPane.margin>
       </TextField>
    </center>
