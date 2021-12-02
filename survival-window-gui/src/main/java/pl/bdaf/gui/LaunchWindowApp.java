@@ -20,21 +20,11 @@ public class LaunchWindowApp extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         MusicInGame.MUSIC_IN_MENU.play();
-        playerName = fetchNameStage();
-
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getClassLoader().getResource("fxml/menu.fxml"));
-        loader.setController(new MenuController(playerName));
-        stage.getIcons().add(new Image("graphics/icon.jpg"));
-
-        Scene scene = new Scene(loader.load());
-        stage.setTitle("Survival");
-        stage.setResizable(false);
-        stage.setScene(scene);
-        stage.show();
+        playerName = showFetchNameWindow();
+        showMenuWindow(stage, playerName);
     }
 
-    private String fetchNameStage() throws Exception {
+    private String showFetchNameWindow() throws Exception {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getClassLoader().getResource("fxml/fetchName.fxml"));
         loader.setController(new FetchNameController(this));
@@ -49,6 +39,49 @@ public class LaunchWindowApp extends Application {
             playerName = DEFAULT_NAME;
         }
         return playerName;
+    }
+
+    static void showMenuWindow(Stage aMenuWindow, String aPlayerName) {
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(LaunchWindowApp.class.getClassLoader().getResource("fxml/menu.fxml"));
+        loader.setController(new MenuController(aPlayerName));
+        aMenuWindow.getIcons().add(new Image("graphics/icon.jpg"));
+
+        Scene scene = null;
+        try {
+            scene = new Scene(loader.load());
+        } catch (IOException aE) {
+            aE.printStackTrace();
+        }
+        aMenuWindow.setTitle("Survival - menu");
+        aMenuWindow.setResizable(false);
+        aMenuWindow.setScene(scene);
+        aMenuWindow.show();
+    }
+
+    static void showGameWindow(String aPlayerName){
+        Stage gameWindow = new Stage();
+        gameWindow.getIcons().add(new Image("graphics/icon.jpg"));
+
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(LaunchWindowApp.class.getClassLoader().getResource("fxml/game.fxml"));
+        loader.setController(new WindowGameController(gameWindow, aPlayerName));
+
+        Scene scene = null;
+        try {
+            scene = new Scene(loader.load());
+        } catch (IOException aE) {
+            aE.printStackTrace();
+        }
+        gameWindow.setTitle("Survival - game");
+        gameWindow.setResizable(false);
+        gameWindow.setScene(scene);
+        gameWindow.setOnCloseRequest(aWindowEvent -> {
+            MusicInGame.MUSIC_IN_GAME.stop();
+            MusicInGame.MUSIC_IN_MENU.play();
+        });
+
+        gameWindow.show();
     }
 
     void setPlayerName(String aPlayerName) {

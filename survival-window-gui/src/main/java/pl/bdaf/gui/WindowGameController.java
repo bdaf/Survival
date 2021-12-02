@@ -1,33 +1,27 @@
 package pl.bdaf.gui;
 
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 import pl.bdaf.person.GameEngine;
 import pl.bdaf.person.Person;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.io.IOException;
 import java.util.List;
 
 import static javafx.application.Platform.exit;
 import static pl.bdaf.person.Backpack.TOMATO_SOUP;
 import static pl.bdaf.person.Backpack.WATER_BOTTLE;
 import static pl.bdaf.person.GameEngine.*;
-import static pl.bdaf.person.GameEngine.UPDATE_DIARY;
 import static pl.bdaf.person.PersonStatistic.*;
-import static pl.bdaf.person.PersonStatistic.BERTA;
 
 public class WindowGameController implements PropertyChangeListener {
     private final Stage currentStage;
     private final GameEngine engine;
+    private final String playerName;
     @FXML private Button nextDayButton;
     @FXML private Button nextPersonButton;
     @FXML private Button goOnExpeditionButton;
@@ -38,7 +32,8 @@ public class WindowGameController implements PropertyChangeListener {
     @FXML private Button diaryButton;
     @FXML private Label dayLabel;
 
-    WindowGameController(Stage aStage) {
+    WindowGameController(Stage aStage, String aPlayerName) {
+        playerName = aPlayerName;
         currentStage = aStage;
         engine = new GameEngine(List.of(new Person(TED), new Person(DOLORES), new Person(TIMMY), new Person(BERTA)));
     }
@@ -58,9 +53,10 @@ public class WindowGameController implements PropertyChangeListener {
 
     private void initButtons() {
         menuButton.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
-            currentStage.close();
             MusicInGame.MUSIC_IN_GAME.stop();
             MusicInGame.MUSIC_IN_MENU.play();
+            currentStage.close();
+            LaunchWindowApp.showMenuWindow(new Stage(), playerName);
         });
         exitButton.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
             currentStage.close();
@@ -83,4 +79,5 @@ public class WindowGameController implements PropertyChangeListener {
             dayLabel.setText("Day " + engine.getCurrentDay());
         }
     }
+
 }

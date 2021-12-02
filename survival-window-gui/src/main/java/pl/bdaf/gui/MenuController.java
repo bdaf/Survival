@@ -1,16 +1,10 @@
 package pl.bdaf.gui;
 
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
-
-import java.io.IOException;
 
 import static javafx.application.Platform.exit;
 
@@ -44,30 +38,9 @@ public class MenuController {
     private void startGameClicked(){
         MusicInGame.MUSIC_IN_MENU.stop();
         MusicInGame.MUSIC_IN_GAME.play();
-
-        Stage stage = new Stage();
-        stage.getIcons().add(new Image("graphics/icon.jpg"));
-
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getClassLoader().getResource("fxml/game.fxml"));
-        loader.setController(new WindowGameController(stage));
-
-        Scene scene = null;
-        try {
-            scene = new Scene(loader.load());
-        } catch (IOException aE) {
-            aE.printStackTrace();
-        }
-        stage.setTitle("Survival - game");
-        stage.setResizable(false);
-        stage.setScene(scene);
-        stage.initOwner(quitButton.getScene().getWindow());
-        stage.initModality(Modality.APPLICATION_MODAL);
-        stage.setOnCloseRequest(aWindowEvent -> {
-            MusicInGame.MUSIC_IN_GAME.stop();
-            MusicInGame.MUSIC_IN_MENU.play();
-        });
-        stage.showAndWait();
+        Stage menuWindow = (Stage) quitButton.getScene().getWindow();
+        menuWindow.close();
+        LaunchWindowApp.showGameWindow(nameOfPlayer);
     }
 
     private void howToPlayClicked() {
