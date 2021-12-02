@@ -27,7 +27,7 @@ public class DiaryController {
             stage.close();
         });
 
-        String[] partsOfDiaryContent = diaryContent.split("-");
+        String[] partsOfDiaryContent = diaryContent.split("_");
         firstPageText.setText("Day "+day+"\n");
         secondPageText.setText("");
         for (int i = 0; i < partsOfDiaryContent.length; i++) {

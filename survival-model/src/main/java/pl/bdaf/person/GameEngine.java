@@ -23,6 +23,7 @@ public class GameEngine {
     private String dailyDescribe;
     private int day;
     private PropertyChangeSupport observers;
+    private boolean endOfGame;
 
     public GameEngine(List<Person> aPersonList) {
         this(aPersonList, new Backpack());
@@ -38,6 +39,7 @@ public class GameEngine {
     }
 
     public void pass() {
+        if(endOfGame) return;
         Person oldPerson = getActivePerson();
         queue.next();
         notifyObservers(new PropertyChangeEvent(this, PERSON_PASSES, oldPerson, null));
@@ -81,13 +83,14 @@ public class GameEngine {
         currentDayDiary.append(getDescriptionOfAlivePeopleAndMakeDayChangesAbout(1));
         for (Person p : queue.getDeadPeople()) {
             currentDayDiary.append(DiaryWriter.describeDeadPerson(p));
-            currentDayDiary.append("-");
+            currentDayDiary.append("_");
         }
         dailyDescribe = currentDayDiary.toString();
         notifyObservers(new PropertyChangeEvent(this, UPDATE_DIARY, null, null));
     }
 
     public void goForExpeditionAndPass() { // from 1 day to 3 days on expedition
+        if(endOfGame) return;
         if (queue.getAlivePeople().stream().filter(p -> p.getExpeditionDaysLeft() > 0).count() > 0) {
             notifyObservers(new PropertyChangeEvent(this, SEND_MESSAGE, "Forbidden action", "Somebody else is on expedition!"));
         } else if(queue.getAlivePeople().size() <= 1 ) {
@@ -108,7 +111,7 @@ public class GameEngine {
                 p.setSatietyPoints(p.getSatietyPoints() - aFactorOfChanges);
                 p.setCheerfulness(p.getCheerfulness() - aFactorOfChanges);
                 currentDayDiary.append(DiaryWriter.describe(p));
-                currentDayDiary.append("-");
+                currentDayDiary.append("_");
             } else {
                 currentDayDiary.append(DiaryWriter.describeExpeditionDay(p));
             }
@@ -143,6 +146,7 @@ public class GameEngine {
     }
 
     private void consumeSupply(int aAmountOfSupply, String aNameOfSupply) {
+        if(endOfGame) return;
         if (aAmountOfSupply > 0 && reduceNumberOfSupply(aAmountOfSupply, aNameOfSupply)) {
             getActivePerson().takeSupply(aNameOfSupply, aAmountOfSupply);
             int numberOfSupply = backpack.getAmountOf(aNameOfSupply);
@@ -175,12 +179,14 @@ public class GameEngine {
     }
 
     void endOfGame() {
-        String endOfGameDescribe = END_OF_THE_GAME + " - your score is " + (getCurrentDay() - 1) + " day!";
+        String endOfGameDescribe = END_OF_THE_GAME + " - your score is " + (getCurrentDay()) + " day!";
         dailyDescribe += endOfGameDescribe;
+        endOfGame = true;
         notifyObservers(new PropertyChangeEvent(this, END_OF_THE_GAME, null, (getCurrentDay() - 1)));
     }
 
     public void passWholeDay() {
+        if(endOfGame) return;
         while (!isActiveCreatureLastInQueue()) {
             pass();
         }
@@ -192,8 +198,13 @@ public class GameEngine {
     }
 
     public void clearDiaryDescribe() {
+        if(endOfGame) return;
         dailyDescribe = "";
         notifyObservers(new PropertyChangeEvent(this, UPDATE_DIARY, null, null));
         notifyObservers(new PropertyChangeEvent(this, SEND_MESSAGE, "Diary cleaned successfully", "Daily describe of this day has been cleared!"));
+    }
+
+    public boolean isEndOfGame() {
+        return endOfGame;
     }
 }

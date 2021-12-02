@@ -77,7 +77,11 @@ public class WindowGameController implements PropertyChangeListener {
     @Override
     public void propertyChange(PropertyChangeEvent aPropertyChangeEvent) {
         if(aPropertyChangeEvent.getPropertyName().equals(PERSON_PASSES)){
-            dayLabel.setText("Day " + engine.getCurrentDay());
+            String dayHeader = "Day " + engine.getCurrentDay();
+            if(engine.isEndOfGame()) dayHeader +=" - End of the game";
+            dayLabel.setText(dayHeader);
+        } else if(aPropertyChangeEvent.getPropertyName().equals(END_OF_THE_GAME)){
+            EndOfTheGameController.showWindowAndWait(dayLabel.getScene().getWindow(), engine.getCurrentDay());
         }
     }
 
