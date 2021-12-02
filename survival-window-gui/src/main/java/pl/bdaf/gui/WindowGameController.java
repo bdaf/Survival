@@ -62,7 +62,8 @@ public class WindowGameController implements PropertyChangeListener {
             currentStage.close();
             exit();
         });
-        diaryButton.addEventHandler(MouseEvent.MOUSE_CLICKED, e-> DiaryController.showDiaryAndWait(diaryButton, engine.getDailyDescribe()));
+        diaryButton.addEventHandler(MouseEvent.MOUSE_CLICKED, e-> DiaryController.showDiaryAndWait(
+                diaryButton, engine.getDailyDescribe(), engine.getCurrentDay()));
         eatButton.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> engine.eat());
         drinkButton.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> engine.drink());
         goOnExpeditionButton.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> engine.goForExpeditionAndPass());

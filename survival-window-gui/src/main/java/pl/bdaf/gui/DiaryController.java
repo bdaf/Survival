@@ -15,6 +15,7 @@ import java.io.IOException;
 public class DiaryController {
 
     private final String diaryContent;
+    private final int day;
     @FXML private Button closeDiaryButton;
     @FXML private Text firstPageText;
     @FXML private Text secondPageText;
@@ -27,7 +28,7 @@ public class DiaryController {
         });
 
         String[] partsOfDiaryContent = diaryContent.split("-");
-        firstPageText.setText("");
+        firstPageText.setText("Day "+day+"\n");
         secondPageText.setText("");
         for (int i = 0; i < partsOfDiaryContent.length; i++) {
             if(i%2 == 0) firstPageText.setText(firstPageText.getText()+partsOfDiaryContent[i]);
@@ -35,17 +36,18 @@ public class DiaryController {
         }
     }
 
-    DiaryController(String aDiaryContent) {
+    DiaryController(String aDiaryContent, int aDay) {
         diaryContent = aDiaryContent;
+        day = aDay;
     }
 
-    static void showDiaryAndWait(Button aDiaryButton, String aDiaryContent) {
+    static void showDiaryAndWait(Button aDiaryButton, String aDiaryContent, int aDay) {
         Stage stage = new Stage();
         stage.getIcons().add(new Image("graphics/icon.jpg"));
 
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(DiaryController.class.getClassLoader().getResource("fxml/diary.fxml"));
-        loader.setController(new DiaryController(aDiaryContent));
+        loader.setController(new DiaryController(aDiaryContent, aDay));
 
         Scene scene = null;
         try {
