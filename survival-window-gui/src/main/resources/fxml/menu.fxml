@@ -10,29 +10,29 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="628.0" prefWidth="912.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="680.0" prefWidth="912.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
     <stylesheets>
         <URL value="@main.css" />
     </stylesheets>
-   <top>
-      <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+   <center>
+      <VBox alignment="CENTER" prefHeight="659.0" prefWidth="912.0" spacing="20.0" style="-fx-background-color: #2e2e2c;" BorderPane.alignment="CENTER">
          <children>
-            <ImageView fitHeight="150.0" fitWidth="555.0" pickOnBounds="true">
+            <ImageView fitHeight="417.0" fitWidth="826.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../graphics/will_you_survive.png" />
+                  <Image url="@../graphics/will_you_survive_without_background.png" />
                </image>
+               <VBox.margin>
+                  <Insets top="30.0" />
+               </VBox.margin>
             </ImageView>
-            <Label fx:id="topTitleLabel" text="Survival" textFill="#872929">
+            <Label fx:id="topTitleLabel" prefHeight="69.0" prefWidth="271.0" text="Survival" textFill="#872929">
                <font>
                   <Font name="Engravers MT" size="40.0" />
                </font>
+               <VBox.margin>
+                  <Insets top="-20.0" />
+               </VBox.margin>
             </Label>
-         </children>
-      </VBox>
-   </top>
-   <center>
-      <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="20.0" BorderPane.alignment="CENTER">
-         <children>
             <Label fx:id="helloPlayerLabel" text="Hello the one who is afraid to enter his or her name" textFill="#8c0000">
                <font>
                   <Font name="Agency FB" size="26.0" />
@@ -40,8 +40,9 @@
             </Label>
             <Button fx:id="startGameButton" mnemonicParsing="false" text=" Start the survival game" />
             <Button fx:id="howToPlayButton" mnemonicParsing="false" text="How to play" />
-            <Button fx:id="aboutButton" mnemonicParsing="false" text="About" />
+            <Button fx:id="optionsButton" mnemonicParsing="false" text="Options" />
             <Button fx:id="quitButton" mnemonicParsing="false" text="Quit" />
+            <Label prefHeight="0.0" prefWidth="0.0" text="Label" />
          </children>
          <opaqueInsets>
             <Insets />

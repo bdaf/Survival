@@ -1,10 +1,14 @@
 package pl.bdaf.gui;
 
+import javafx.animation.ScaleTransition;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import pl.bdaf.person.GameEngine;
 import pl.bdaf.person.Person;
 
@@ -22,6 +26,7 @@ public class WindowGameController implements PropertyChangeListener {
     private final Stage currentStage;
     private final GameEngine engine;
     private final String playerName;
+    private boolean isDayUpdatable;
     @FXML private Button nextDayButton;
     @FXML private Button nextPersonButton;
     @FXML private Button goOnExpeditionButton;
@@ -31,24 +36,41 @@ public class WindowGameController implements PropertyChangeListener {
     @FXML private Button exitButton;
     @FXML private Button diaryButton;
     @FXML private Label dayLabel;
+    @FXML private Label bottlesOfWaterLabel;
+    @FXML private Label cansOfSoupsLabel;
+    @FXML private Label emptyToMoveArrowLabel;
+    @FXML private ImageView arrowImageView;
+    @FXML private ImageView tedImageView;
+    @FXML private ImageView doloresImageView;
+    @FXML private ImageView timmyImageView;
+    @FXML private ImageView bertaImageView;
 
     WindowGameController(Stage aStage, String aPlayerName) {
         playerName = aPlayerName;
         currentStage = aStage;
+        isDayUpdatable = true;
         engine = new GameEngine(List.of(new Person(TED), new Person(DOLORES), new Person(TIMMY), new Person(BERTA)));
     }
 
     @FXML
-    private void initialize(){
+    private void initialize() {
         initButtons();
-
-        engine.addObserver(WATER_BOTTLE + EATEN, this);
-        engine.addObserver(TOMATO_SOUP + EATEN, this);
+        updateSuppliesLabels();
+        animateByScaleTransition(arrowImageView);
+        engine.addObserver(WATER_BOTTLE + UPDATE_SUPPLIES, this);
+        engine.addObserver(TOMATO_SOUP + UPDATE_SUPPLIES, this);
+        engine.addObserver(PERSON_DID_ACTION_ABOUT_EXPEDITION, this);
         engine.addObserver(RETURN_FROM_EXPEDITION, this);
         engine.addObserver(SEND_MESSAGE, this);
         engine.addObserver(END_OF_THE_GAME, this);
+        engine.addObserver(DAY_CHANGED, this);
         engine.addObserver(PERSON_PASSES, this);
         engine.addObserver(UPDATE_DIARY, this);
+    }
+
+    private void updateSuppliesLabels() {
+        bottlesOfWaterLabel.setText("Bottles of water: " + engine.getAmountOf(WATER_BOTTLE));
+        cansOfSoupsLabel.setText("Bottles of water: " + engine.getAmountOf(TOMATO_SOUP));
     }
 
     private void initButtons() {
@@ -62,7 +84,7 @@ public class WindowGameController implements PropertyChangeListener {
             currentStage.close();
             exit();
         });
-        diaryButton.addEventHandler(MouseEvent.MOUSE_CLICKED, e-> DiaryController.showDiaryAndWait(
+        diaryButton.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> DiaryController.showDiaryAndWait(
                 diaryButton, engine.getDailyDescribe(), engine.getCurrentDay()));
         eatButton.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> engine.eat());
         drinkButton.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> engine.drink());
@@ -73,15 +95,64 @@ public class WindowGameController implements PropertyChangeListener {
 
     }
 
-
     @Override
     public void propertyChange(PropertyChangeEvent aPropertyChangeEvent) {
-        if(aPropertyChangeEvent.getPropertyName().equals(PERSON_PASSES)){
-            String dayHeader = "Day " + engine.getCurrentDay();
-            if(engine.isEndOfGame()) dayHeader +=" - End of the game";
+        if(aPropertyChangeEvent.getPropertyName().equals(PERSON_DID_ACTION_ABOUT_EXPEDITION)){
+            Person person = (Person) aPropertyChangeEvent.getNewValue();
+            setPersonVisible(person, !person.isPersonOnExpedition());
+        }
+        if (aPropertyChangeEvent.getPropertyName().equals(DAY_CHANGED)) {
+            String dayHeader = "Day " + aPropertyChangeEvent.getNewValue();
+            if (engine.isEndOfGame()) {
+                dayHeader += "\nEnd of the game";
+            }
             dayLabel.setText(dayHeader);
-        } else if(aPropertyChangeEvent.getPropertyName().equals(END_OF_THE_GAME)){
-            EndOfTheGameController.showWindowAndWait(dayLabel.getScene().getWindow(), engine.getCurrentDay());
+        }
+        if (aPropertyChangeEvent.getPropertyName().equals(PERSON_PASSES)) {
+            setArrowAboveProperCharacter(aPropertyChangeEvent);
+        } else if (aPropertyChangeEvent.getPropertyName().contains(UPDATE_SUPPLIES)) {
+            updateSuppliesLabels();
+        } else if (aPropertyChangeEvent.getPropertyName().equals(END_OF_THE_GAME)) {
+            EndOfTheGameController.showWindowAndWait(dayLabel.getScene().getWindow(), (Integer) aPropertyChangeEvent.getNewValue());
+        }
+    }
+
+    private void setPersonVisible(Person aPerson, boolean aVisible) {
+        if(aPerson.getName().equalsIgnoreCase(TED.getName())) tedImageView.setVisible(aVisible);
+        else if(aPerson.getName().equalsIgnoreCase(DOLORES.getName())) doloresImageView.setVisible(aVisible);
+        else if(aPerson.getName().equalsIgnoreCase(TIMMY.getName())) timmyImageView.setVisible(aVisible);
+        else if(aPerson.getName().equalsIgnoreCase(BERTA.getName())) bertaImageView.setVisible(aVisible);
+    }
+
+    public void animateByScaleTransition(Node aNodeToScaleTransition) {
+        ScaleTransition st = new ScaleTransition(Duration.millis(1000), aNodeToScaleTransition);
+        st.setFromX(0.8);
+        st.setFromY(0.8);
+        st.setByX(0.3);
+        st.setByY(0.3);
+        st.setCycleCount(ScaleTransition.INDEFINITE);
+        st.setAutoReverse(true);
+        st.play();
+    }
+
+    private void setArrowAboveProperCharacter(PropertyChangeEvent aPropertyChangeEvent) {
+        Person ac = (Person) (aPropertyChangeEvent.getNewValue());
+        String nameOfCharacter = ac.getName();
+        switch (nameOfCharacter) {
+            case Constants.TED:
+                emptyToMoveArrowLabel.setStyle("-fx-padding: 0 0 0 0;");
+                break;
+            case Constants.DOLORES:
+                emptyToMoveArrowLabel.setStyle("-fx-padding: 0 0 0 105;");
+                break;
+            case Constants.TIMMY:
+                emptyToMoveArrowLabel.setStyle("-fx-padding: 0 0 0 245;");
+                break;
+            case Constants.BERTA:
+                emptyToMoveArrowLabel.setStyle("-fx-padding: 0 0 0 340;");
+                break;
+            default:
+                throw new IllegalStateException("Unexpected value: " + ac);
         }
     }
 

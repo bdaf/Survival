@@ -1,5 +1,6 @@
 package pl.bdaf.person;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
@@ -15,7 +16,7 @@ public class Backpack {
     private Random rand = new Random();
 
     Backpack(List<String> aContent) {
-        content = new LinkedList<>(aContent);
+        content = new ArrayList<>(aContent);
     }
 
     Backpack() {
@@ -30,7 +31,7 @@ public class Backpack {
     }
 
     public Backpack(Backpack aBackpack) {
-        content = aBackpack.getContent();
+        content = new ArrayList<>(aBackpack.getContent());
     }
 
     List<String> getContent() {

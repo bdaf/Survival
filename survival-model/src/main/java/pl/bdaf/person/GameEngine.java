@@ -13,9 +13,11 @@ public class GameEngine {
     private static final int MIN_EXPEDITION_DAYS = 1;
     private static final int MAX_EXPEDITION_DAYS = 3;
     public static final String END_OF_THE_GAME = "End Of the Game";
+    public static final String PERSON_DID_ACTION_ABOUT_EXPEDITION = "PERSON_DID_ACTION_ABOUT_EXPEDITION";
     public static final String PERSON_PASSES = "PERSON_PASSES";
     public static final String UPDATE_DIARY = "UPDATE_DIARY";
-    public static final String EATEN = "EATEN";
+    public static final String UPDATE_SUPPLIES = "UPDATE_SUPPLIES";
+    public static final String DAY_CHANGED = "DAY_CHANGED";
     public static final String RETURN_FROM_EXPEDITION = "RETURN_FROM_EXPEDITION";
     public static final String SEND_MESSAGE = "SEND_MESSAGE";
     private final Backpack backpack;
@@ -41,8 +43,10 @@ public class GameEngine {
     public void pass() {
         if(endOfGame) return;
         Person oldPerson = getActivePerson();
+        int oldDay = getCurrentDay();
         queue.next();
-        notifyObservers(new PropertyChangeEvent(this, PERSON_PASSES, oldPerson, null));
+        notifyObservers(new PropertyChangeEvent(this, DAY_CHANGED, oldDay, getCurrentDay()));
+        notifyObservers(new PropertyChangeEvent(this, PERSON_PASSES, oldPerson, getActivePerson()));
     }
 
     public void drink() {
@@ -73,11 +77,12 @@ public class GameEngine {
         return dailyDescribe;
     }
 
-    public int getAmountOf(String aWaterBottle) {
-        return backpack.getAmountOf(aWaterBottle);
+    public int getAmountOf(String aResource) {
+        return backpack.getAmountOf(aResource);
     }
 
     void nextDay() {
+        if(isEndOfGame()) return;
         day++;
         StringBuilder currentDayDiary = new StringBuilder();
         currentDayDiary.append(getDescriptionOfAlivePeopleAndMakeDayChangesAbout(1));
@@ -98,6 +103,7 @@ public class GameEngine {
         } else {
             getActivePerson().setExpeditionDaysLeft(getActivePerson().getState().getRand()
                     .nextInt(MAX_EXPEDITION_DAYS - MIN_EXPEDITION_DAYS + 1) + MIN_EXPEDITION_DAYS);
+            notifyObservers(new PropertyChangeEvent(this, PERSON_DID_ACTION_ABOUT_EXPEDITION, null, getActivePerson()));
             pass();
         }
     }
@@ -127,11 +133,12 @@ public class GameEngine {
             int amountOfWater = backpack.getAmountOf(WATER_BOTTLE) - oldBackpack.getAmountOf(WATER_BOTTLE);
             int amountOfSoup = backpack.getAmountOf(TOMATO_SOUP) - oldBackpack.getAmountOf(TOMATO_SOUP);
             aCurrentDayDiary.append(aPerson + " came back from expedition with " + amountOfWater + " water bottles and " + amountOfSoup + " tomato soups.\n");
-            notifyObservers(new PropertyChangeEvent(this, RETURN_FROM_EXPEDITION, oldBackpack, backpack));
+            notifyObservers(new PropertyChangeEvent(this, UPDATE_SUPPLIES, oldBackpack, backpack));
         }
         aPerson.setExpeditionDaysLeft(aPerson.getExpeditionDaysLeft() - 1);
         if (aPerson.getExpeditionDaysLeft() <= 0) {
             aPerson.setExpeditionDaysLeft(0);
+            notifyObservers(new PropertyChangeEvent(this, PERSON_DID_ACTION_ABOUT_EXPEDITION, null, aPerson));
         }
         return aPerson.getExpeditionDaysLeft();
     }
@@ -150,7 +157,7 @@ public class GameEngine {
         if (aAmountOfSupply > 0 && reduceNumberOfSupply(aAmountOfSupply, aNameOfSupply)) {
             getActivePerson().takeSupply(aNameOfSupply, aAmountOfSupply);
             int numberOfSupply = backpack.getAmountOf(aNameOfSupply);
-            notifyObservers(new PropertyChangeEvent(this, aNameOfSupply + EATEN, numberOfSupply - aAmountOfSupply, numberOfSupply));
+            notifyObservers(new PropertyChangeEvent(this, aNameOfSupply + UPDATE_SUPPLIES, numberOfSupply - aAmountOfSupply, numberOfSupply));
             notifyObservers(new PropertyChangeEvent(this, SEND_MESSAGE, "Successfully consumed", getActivePerson().getName() + " consumed " + aNameOfSupply + "."));
             return;
         } else if (aAmountOfSupply <= 0) {
@@ -182,7 +189,8 @@ public class GameEngine {
         String endOfGameDescribe = END_OF_THE_GAME + " - your score is " + (getCurrentDay()) + " day!";
         dailyDescribe += endOfGameDescribe;
         endOfGame = true;
-        notifyObservers(new PropertyChangeEvent(this, END_OF_THE_GAME, null, (getCurrentDay() - 1)));
+        notifyObservers(new PropertyChangeEvent(this, DAY_CHANGED, getCurrentDay()-1, getCurrentDay()));
+        notifyObservers(new PropertyChangeEvent(this, END_OF_THE_GAME, null, (getCurrentDay())));
     }
 
     public void passWholeDay() {

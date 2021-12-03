@@ -13,7 +13,7 @@ public class MenuController {
     @FXML
     private Button quitButton;
     @FXML
-    private Button aboutButton;
+    private Button optionsButton;
     @FXML
     private Button howToPlayButton;
     @FXML
@@ -29,7 +29,7 @@ public class MenuController {
     void initialize(){
         startGameButton.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> startGameClicked());
         howToPlayButton.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> howToPlayClicked());
-        aboutButton.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> aboutClicked());
+        optionsButton.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> optionsClicked());
         quitButton.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> exit());
 
         helloPlayerLabel.setText("Hello "+nameOfPlayer);
@@ -46,7 +46,7 @@ public class MenuController {
     private void howToPlayClicked() {
     }
 
-    private void aboutClicked() {
+    private void optionsClicked() {
 
     }
 }

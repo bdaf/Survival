@@ -19,7 +19,6 @@ public class LaunchWindowApp extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        MusicInGame.MUSIC_IN_MENU.play();
         playerName = showFetchNameWindow();
         showMenuWindow(stage, playerName);
     }
@@ -42,6 +41,7 @@ public class LaunchWindowApp extends Application {
     }
 
     static void showMenuWindow(Stage aMenuWindow, String aPlayerName) {
+        MusicInGame.MUSIC_IN_MENU.play();
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(LaunchWindowApp.class.getClassLoader().getResource("fxml/menu.fxml"));
         loader.setController(new MenuController(aPlayerName));

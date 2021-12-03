@@ -44,8 +44,8 @@ public class GameController implements PropertyChangeListener {
     }
 
     private void init() {
-        engine.addObserver(WATER_BOTTLE + EATEN, this);
-        engine.addObserver(TOMATO_SOUP + EATEN, this);
+        engine.addObserver(WATER_BOTTLE + UPDATE_SUPPLIES, this);
+        engine.addObserver(TOMATO_SOUP + UPDATE_SUPPLIES, this);
         engine.addObserver(RETURN_FROM_EXPEDITION, this);
         engine.addObserver(SEND_MESSAGE, this);
         engine.addObserver(END_OF_THE_GAME, this);
@@ -120,7 +120,7 @@ public class GameController implements PropertyChangeListener {
             updateAnimatedPerson(engine.getActivePerson().getName());
         } else if (aEvent.getPropertyName().equals(UPDATE_DIARY)) {
             setDiaryDescribe(engine.getDailyDescribe());
-        } else if (aEvent.getPropertyName().contains(EATEN) || aEvent.getPropertyName().equals(RETURN_FROM_EXPEDITION)) {
+        } else if (aEvent.getPropertyName().contains(UPDATE_SUPPLIES) || aEvent.getPropertyName().equals(RETURN_FROM_EXPEDITION)) {
             updateAmountsOfSupplies();
         } else if (aEvent.getPropertyName().equals(SEND_MESSAGE)) {
             MessageDialog.showMessageDialog(gui, aEvent.getOldValue().toString(), aEvent.getNewValue().toString());

@@ -6,10 +6,10 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="634.0" prefWidth="593.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="634.0" prefWidth="593.0" style="-fx-background-color: #2e2e2c;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <center>
       <ImageView fitHeight="355.0" fitWidth="479.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
          <image>
@@ -20,18 +20,23 @@
          </BorderPane.margin>
       </ImageView>
    </center>
-   <top>
-      <Label fx:id="endOfTheGameLabel" alignment="CENTER" prefHeight="132.0" prefWidth="332.0" text="End of the game" textAlignment="CENTER" textFill="RED" BorderPane.alignment="CENTER">
-         <font>
-            <Font name="Agency FB" size="44.0" />
-         </font>
-      </Label>
-   </top>
    <bottom>
       <Button fx:id="exitButton" mnemonicParsing="false" stylesheets="@main.css" text="Got it" BorderPane.alignment="CENTER">
          <BorderPane.margin>
-            <Insets bottom="40.0" />
+            <Insets bottom="30.0" />
          </BorderPane.margin>
       </Button>
    </bottom>
+   <top>
+      <VBox alignment="CENTER" prefHeight="139.0" prefWidth="593.0" BorderPane.alignment="CENTER">
+         <children>
+            <Label fx:id="endOfTheGameLabel" alignment="CENTER" prefHeight="94.0" prefWidth="556.0" text="End of the game" textAlignment="CENTER" textFill="WHITE">
+               <font>
+                  <Font name="Agency FB" size="44.0" />
+               </font>
+            </Label>
+            <Label text="You can look around" textFill="WHITE" />
+         </children>
+      </VBox>
+   </top>
 </BorderPane>

@@ -108,6 +108,11 @@ public class Person {
         expeditionDaysLeft = aExpeditionDaysLeft;
     }
 
+    public boolean isPersonOnExpedition(){
+        if(expeditionDaysLeft > 0) return true;
+        return false;
+    }
+
     @Override
     public String toString() {
         return name;

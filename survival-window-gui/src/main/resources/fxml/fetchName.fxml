@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane prefHeight="350.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane prefHeight="350.0" prefWidth="545.0" style="-fx-background-color: #2e2e2c;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
     <stylesheets>
         <URL value="@main.css" />
     </stylesheets>
@@ -19,9 +19,9 @@
          </BorderPane.margin></Button>
     </bottom>
     <top>
-        <Label text="Type your username" BorderPane.alignment="CENTER">
+        <Label text="Type your username" textFill="#6f0000" BorderPane.alignment="CENTER">
             <font>
-                <Font name="Engravers MT" size="33.0" />
+                <Font name="Agency FB" size="33.0" />
             </font>
          <BorderPane.margin>
             <Insets top="50.0" />
@@ -29,7 +29,7 @@
         </Label>
     </top>
    <center>
-      <TextField fx:id="usernameTextField" alignment="CENTER" style="-fx-text-inner-color: #B80000;" BorderPane.alignment="CENTER">
+      <TextField fx:id="usernameTextField" alignment="CENTER" style="-fx-text-inner-color: #B80000; -fx-background-color: #696969;" BorderPane.alignment="CENTER">
          <font>
             <Font name="Agency FB" size="26.0" />
          </font>

@@ -4,10 +4,10 @@ public enum PersonStatistic{
     TO_TEST(10,10,10,10,"TestName"),
     TO_TEST_MIN(1,1,1,1,"TestNameMin"),
 
-    TED(30,5,7,20, "Ted"),
-    DOLORES(22, 4,6, 15, "Dolores"),
-    TIMMY(15, 4, 5, 10, "Timmy"),
-    BERTA(24, 3, 6, 15, "Berta");
+    TED(30,5,7,20, Constants.TED),
+    DOLORES(22, 4,6, 15, Constants.DOLORES),
+    TIMMY(15, 4, 5, 10, Constants.TIMMY),
+    BERTA(24, 3, 6, 15, Constants.BERTA);
 
     int strength;
     int hydrationPoints;
@@ -25,5 +25,12 @@ public enum PersonStatistic{
 
     public String getName() {
         return name;
+    }
+
+    public static class Constants {
+        public static final String TED = "Ted";
+        public static final String DOLORES = "Dolores";
+        public static final String TIMMY = "Timmy";
+        public static final String BERTA = "Berta";
     }
 }
