@@ -5,6 +5,7 @@ import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
@@ -14,6 +15,7 @@ import pl.bdaf.person.Person;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.net.URL;
 import java.util.List;
 
 import static javafx.application.Platform.exit;
@@ -44,6 +46,12 @@ public class WindowGameController implements PropertyChangeListener {
     @FXML private ImageView doloresImageView;
     @FXML private ImageView timmyImageView;
     @FXML private ImageView bertaImageView;
+    @FXML private ImageView waterBottle0ImageView;
+    @FXML private ImageView waterBottle1ImageView;
+    @FXML private ImageView waterBottle2ImageView;
+    @FXML private ImageView tomatoSoup0ImageView;
+    @FXML private ImageView tomatoSoup1ImageView;
+    @FXML private ImageView tomatoSoup2ImageView;
 
     WindowGameController(Stage aStage, String aPlayerName) {
         playerName = aPlayerName;
@@ -57,8 +65,7 @@ public class WindowGameController implements PropertyChangeListener {
         initButtons();
         updateSuppliesLabels();
         animateByScaleTransition(arrowImageView);
-        engine.addObserver(WATER_BOTTLE + UPDATE_SUPPLIES, this);
-        engine.addObserver(TOMATO_SOUP + UPDATE_SUPPLIES, this);
+        engine.addObserver(UPDATE_SUPPLIES, this);
         engine.addObserver(PERSON_DID_ACTION_ABOUT_EXPEDITION, this);
         engine.addObserver(RETURN_FROM_EXPEDITION, this);
         engine.addObserver(SEND_MESSAGE, this);
@@ -66,11 +73,27 @@ public class WindowGameController implements PropertyChangeListener {
         engine.addObserver(DAY_CHANGED, this);
         engine.addObserver(PERSON_PASSES, this);
         engine.addObserver(UPDATE_DIARY, this);
+        engine.addObserver(PEOPLE_DIE, this);
     }
 
     private void updateSuppliesLabels() {
-        bottlesOfWaterLabel.setText("Bottles of water: " + engine.getAmountOf(WATER_BOTTLE));
-        cansOfSoupsLabel.setText("Bottles of water: " + engine.getAmountOf(TOMATO_SOUP));
+        int waterBottlesAmount = engine.getAmountOf(WATER_BOTTLE);
+        int tomatoSoupsAmount = engine.getAmountOf(TOMATO_SOUP);
+        bottlesOfWaterLabel.setText("Bottles of water: " + waterBottlesAmount);
+        cansOfSoupsLabel.setText("Bottles of soups: " + tomatoSoupsAmount);
+
+        setVisibleOfNodeBasedOnSupplyAmount(waterBottlesAmount, 0, waterBottle0ImageView);
+        setVisibleOfNodeBasedOnSupplyAmount(waterBottlesAmount, 4, waterBottle1ImageView);
+        setVisibleOfNodeBasedOnSupplyAmount(waterBottlesAmount, 8, waterBottle2ImageView);
+
+        setVisibleOfNodeBasedOnSupplyAmount(tomatoSoupsAmount, 0, tomatoSoup0ImageView);
+        setVisibleOfNodeBasedOnSupplyAmount(tomatoSoupsAmount, 4, tomatoSoup1ImageView);
+        setVisibleOfNodeBasedOnSupplyAmount(tomatoSoupsAmount, 8, tomatoSoup2ImageView);
+    }
+
+    private void setVisibleOfNodeBasedOnSupplyAmount(int aSupplyAmount, int amountToBeVisible, ImageView aSupplyImageView) {
+        if (aSupplyAmount > amountToBeVisible) aSupplyImageView.setVisible(true);
+        else aSupplyImageView.setVisible(false);
     }
 
     private void initButtons() {
@@ -89,7 +112,6 @@ public class WindowGameController implements PropertyChangeListener {
         eatButton.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> engine.eat());
         drinkButton.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> engine.drink());
         goOnExpeditionButton.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> engine.goForExpeditionAndPass());
-        eatButton.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> engine.eat());
         nextDayButton.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> engine.passWholeDay());
         nextPersonButton.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> engine.pass());
 
@@ -114,6 +136,34 @@ public class WindowGameController implements PropertyChangeListener {
             updateSuppliesLabels();
         } else if (aPropertyChangeEvent.getPropertyName().equals(END_OF_THE_GAME)) {
             EndOfTheGameController.showWindowAndWait(dayLabel.getScene().getWindow(), (Integer) aPropertyChangeEvent.getNewValue());
+        } else if(aPropertyChangeEvent.getPropertyName().equals(PEOPLE_DIE)){
+            showThatPeopleDied( (List<Person>) aPropertyChangeEvent.getNewValue());
+        }
+    }
+
+    private void showThatPeopleDied(List<Person> aDeadPeople) {
+        for (int i = 0; i < aDeadPeople.size(); i++) {
+            String name = aDeadPeople.get(i).getName();
+            URL resources = getClass().getResource("/graphics/"+name+"Dead.png");
+            switch(name){
+                case "ted":
+                    tedImageView.setImage(new Image(resources.toString()));
+                    tedImageView.setRotate(90);
+                    break;
+                case "dolores":
+                    doloresImageView.setImage(new Image(resources.toString()));
+                    doloresImageView.setRotate(270);
+                    break;
+                case "timmy":
+                    timmyImageView.setImage(new Image(resources.toString()));
+                    timmyImageView.setRotate(270);
+                    break;
+                case "berta":
+                    bertaImageView.setImage(new Image(resources.toString()));
+                    bertaImageView.setRotate(270);
+                    break;
+                default: break;
+            }
         }
     }
 

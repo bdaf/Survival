@@ -20,6 +20,7 @@ public class GameEngine {
     public static final String DAY_CHANGED = "DAY_CHANGED";
     public static final String RETURN_FROM_EXPEDITION = "RETURN_FROM_EXPEDITION";
     public static final String SEND_MESSAGE = "SEND_MESSAGE";
+    public static final String PEOPLE_DIE = "PEOPLE_DIE";
     private final Backpack backpack;
     private final GameQueue queue;
     private String dailyDescribe;
@@ -133,7 +134,7 @@ public class GameEngine {
             int amountOfWater = backpack.getAmountOf(WATER_BOTTLE) - oldBackpack.getAmountOf(WATER_BOTTLE);
             int amountOfSoup = backpack.getAmountOf(TOMATO_SOUP) - oldBackpack.getAmountOf(TOMATO_SOUP);
             aCurrentDayDiary.append(aPerson + " came back from expedition with " + amountOfWater + " water bottles and " + amountOfSoup + " tomato soups.\n");
-            notifyObservers(new PropertyChangeEvent(this, UPDATE_SUPPLIES, oldBackpack, backpack));
+            notifyObservers(new PropertyChangeEvent(this, UPDATE_SUPPLIES, null, null));
         }
         aPerson.setExpeditionDaysLeft(aPerson.getExpeditionDaysLeft() - 1);
         if (aPerson.getExpeditionDaysLeft() <= 0) {
@@ -155,9 +156,10 @@ public class GameEngine {
     private void consumeSupply(int aAmountOfSupply, String aNameOfSupply) {
         if(endOfGame) return;
         if (aAmountOfSupply > 0 && reduceNumberOfSupply(aAmountOfSupply, aNameOfSupply)) {
+            Backpack oldBackpack = new Backpack(backpack);
             getActivePerson().takeSupply(aNameOfSupply, aAmountOfSupply);
             int numberOfSupply = backpack.getAmountOf(aNameOfSupply);
-            notifyObservers(new PropertyChangeEvent(this, aNameOfSupply + UPDATE_SUPPLIES, numberOfSupply - aAmountOfSupply, numberOfSupply));
+            notifyObservers(new PropertyChangeEvent(this, UPDATE_SUPPLIES, oldBackpack, backpack));
             notifyObservers(new PropertyChangeEvent(this, SEND_MESSAGE, "Successfully consumed", getActivePerson().getName() + " consumed " + aNameOfSupply + "."));
             return;
         } else if (aAmountOfSupply <= 0) {
@@ -171,6 +173,7 @@ public class GameEngine {
         for (Person person : aPeopleJustDied) {
             person.setDeadDay(day);
         }
+        notifyObservers(new PropertyChangeEvent(this, PEOPLE_DIE, null, aPeopleJustDied));
     }
 
     public void addObserver(String aNameOfProperty, PropertyChangeListener aListener) {

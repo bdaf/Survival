@@ -28,9 +28,9 @@ public enum PersonStatistic{
     }
 
     public static class Constants {
-        public static final String TED = "Ted";
-        public static final String DOLORES = "Dolores";
-        public static final String TIMMY = "Timmy";
-        public static final String BERTA = "Berta";
+        public static final String TED = "ted";
+        public static final String DOLORES = "dolores";
+        public static final String TIMMY = "timmy";
+        public static final String BERTA = "berta";
     }
 }
