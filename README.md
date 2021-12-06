@@ -1,10 +1,9 @@
-# Survival game
+# Survival game in window gui
 
 
 ## Table of contents
 * [What is it?](#what-this-is-about)
-* [Functionality](#functionality-in-game)
-* [How to install](#how-to-install)
+* [Functionality](#functionality-in-game-with-amazing-view)
 * [Manual](#manual-how-to-navigate-through-game)
 * [Images](#images-from-game)
 * [Fragments of code](#interesting-fragments-of-code)
@@ -15,7 +14,7 @@
 
 Similar game to sixty seconds, especially to the second part of it, a bit simpler. Make choices which will lead you to survive as many days as possible. Score are set based on days you survived. Feed people and keep them hydrated, send them on expedition to catch supplies and try to survive the next day! How many days are you able to achieve? Try yourself!
 
-## Functionality in game
+## Functionality in game with amazing view!
 
   1. Play the game! - that is the first and the most important functionality, during the game you can do actions like:
 - Drink: hydrate current person!
@@ -23,33 +22,25 @@ Similar game to sixty seconds, especially to the second part of it, a bit simple
 - Expedition: send current person out from shelter for  from 1 to 3 days in order to find some water and potato soups.
 - Next person: change person you are do actions on (if this is the last person in shelter - next day executes).
 - Next day: move on to the next day and update dialy diary.
-- Clear diary: if you don't want to know what is going on and increase your user's experience by surprise - go ahead!
-- Turn on/off music.
+- Set volume music volume.
 - Back to menu: go back to menu.
    
-## How to install:
-Download <a href="https://drive.google.com/file/d/15RokKFqIwwDeRT_Tpdd9G_d8dlHzk3yC/view?usp=sharing">Survival.jar</a> and open it with java.
-
-# WARNING OF CLOSING
-Do NOT close game by direct closing terminal (for example by clicking in the "X" in up-right corner), don't do it!
-
-# Proper closing game
-Close game by button "Quit game" in menu, otherwise music will NOT stop and you will need to close app by task manager. Unfortunatelly lanterna doesn't have solution for this.
-
 ## Manual how to navigate through game:
-You will only need arrows (up and down) to choose actions from menu and action lists and enter to confirm it. 
+You will only need mouse and PMK (Primary Mouse Key) to choose actions from menu and action lists it, so simple! 
 
 ## Images from game
 
-![image](https://user-images.githubusercontent.com/39047457/140241333-3a7af4b4-b39b-4831-843d-1c03e63d9410.png)
+![image](https://user-images.githubusercontent.com/39047457/144833289-41ccc358-0547-420b-af2f-fdae6f38c9c3.png)
 
-![image](https://user-images.githubusercontent.com/39047457/140241277-63bf316b-9c2e-4990-85ac-4f4c2a267b4d.png)
+![image](https://user-images.githubusercontent.com/39047457/144833324-e75d9553-b0c8-42b0-8133-6f0d9b3028c9.png)
 
-![image](https://user-images.githubusercontent.com/39047457/140240571-04e47e57-237a-4430-a520-f8c964f5e773.png)
+![image](https://user-images.githubusercontent.com/39047457/144833537-8145f915-2292-4e6f-af7b-d5305f3b883a.png)
 
-![image](https://user-images.githubusercontent.com/39047457/140240515-5ade5443-61fd-45db-a0ce-377dd496d44b.png)
+![image](https://user-images.githubusercontent.com/39047457/144833658-72158bd5-b26f-4d5b-8d85-80faa999c456.png)
 
-![image](https://user-images.githubusercontent.com/39047457/140240831-4db5a9c0-8337-4576-a262-7181a478abb4.png)
+![image](https://user-images.githubusercontent.com/39047457/144833785-562e8de9-cacb-4a3d-aa43-ae691d057681.png)
+
+![image](https://user-images.githubusercontent.com/39047457/144833838-2f524266-d341-44f3-aa24-dc7b9a012916.png)
 
 ## Interesting fragments of code:
 
@@ -66,8 +57,7 @@ You will only need arrows (up and down) to choose actions from menu and action l
 
 ## Technologies used in this project:
 - Java version 11
-- Lanterna version 3.1.1
-- Jlayer version 1.0.1
+- Javafx version 11.0.1
 
 ## Technologies in unit tests:
 - JUnit Jupiter API version 5.8.1
@@ -75,9 +65,6 @@ You will only need arrows (up and down) to choose actions from menu and action l
 
 ## License
 [MIT](https://choosealicense.com/licenses/mit/)
-
-
-
 
 
 
