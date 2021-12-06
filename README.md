@@ -36,7 +36,7 @@ You will only need mouse and PMK (Primary Mouse Key) to choose actions from menu
 
 ![image](https://user-images.githubusercontent.com/39047457/144833537-8145f915-2292-4e6f-af7b-d5305f3b883a.png)
 
-![image](https://user-images.githubusercontent.com/39047457/144833658-72158bd5-b26f-4d5b-8d85-80faa999c456.png)
+![image](https://user-images.githubusercontent.com/39047457/144834738-6b5c25b1-7f73-465c-bf57-1c92cc0341eb.png)
 
 ![image](https://user-images.githubusercontent.com/39047457/144833785-562e8de9-cacb-4a3d-aa43-ae691d057681.png)
 
