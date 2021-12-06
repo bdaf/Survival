@@ -30,10 +30,10 @@
     -fx-background-insets: 2 0 0 0,2 0 3 0, 2 0 4 0, 2 0 5 0;
 }
 
-#quitButton, #optionsButton {
+#quitButton, #musicButton {
     -fx-padding: 17 75 17 75;
 }
-#quitButton:pressed, #optionsButton:pressed {
+#quitButton:pressed, #musicButton:pressed {
      -fx-padding: 13 60 13 60;
      -fx-background-insets: 2 0 0 0,2 0 3 0, 2 0 4 0, 2 0 5 0;
 }

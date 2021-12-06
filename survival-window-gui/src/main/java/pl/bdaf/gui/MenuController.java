@@ -13,7 +13,7 @@ public class MenuController {
     @FXML
     private Button quitButton;
     @FXML
-    private Button optionsButton;
+    private Button musicButton;
     @FXML
     private Button howToPlayButton;
     @FXML
@@ -26,16 +26,16 @@ public class MenuController {
     }
 
     @FXML
-    void initialize(){
+    void initialize() {
         startGameButton.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> startGameClicked());
         howToPlayButton.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> howToPlayClicked());
-        optionsButton.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> optionsClicked());
+        musicButton.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> musicClicked());
         quitButton.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> exit());
 
-        helloPlayerLabel.setText("Hello "+nameOfPlayer);
+        helloPlayerLabel.setText("Hello " + nameOfPlayer);
     }
 
-    private void startGameClicked(){
+    private void startGameClicked() {
         MusicInGame.MUSIC_IN_MENU.stop();
         MusicInGame.MUSIC_IN_GAME.play();
         Stage menuWindow = (Stage) quitButton.getScene().getWindow();
@@ -44,9 +44,18 @@ public class MenuController {
     }
 
     private void howToPlayClicked() {
+        try {
+            HowToPlayController.showHowToPlayWindow(quitButton.getScene().getWindow());
+        } catch (Exception aE) {
+            aE.printStackTrace();
+        }
     }
 
-    private void optionsClicked() {
-
+    private void musicClicked() {
+        try {
+            MusicController.showMusicSettingsWindow(quitButton.getScene().getWindow());
+        } catch (Exception aE) {
+            aE.printStackTrace();
+        }
     }
 }

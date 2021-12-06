@@ -8,7 +8,7 @@ import java.net.URL;
 
 public enum MusicInGame {
     MUSIC_IN_MENU("audio/menuMusic.mp3",0.3),
-    MUSIC_IN_GAME("audio/musicDuringGame.mp3",0.5);
+    MUSIC_IN_GAME("audio/musicDuringGame.mp3",0.3);
 
     private MediaPlayer mediaPlayer;
 
@@ -26,4 +26,8 @@ public enum MusicInGame {
     public void stop() { if (mediaPlayer != null) mediaPlayer.stop(); }
 
     public void setVolume(double aValue) { if (mediaPlayer != null) mediaPlayer.setVolume(aValue); }
+
+    public double getVolume() { if (mediaPlayer != null) return mediaPlayer.getVolume(); return 0.3D; }
+
+
 }

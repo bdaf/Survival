@@ -40,7 +40,7 @@
             </Label>
             <Button fx:id="startGameButton" mnemonicParsing="false" text=" Start the survival game" />
             <Button fx:id="howToPlayButton" mnemonicParsing="false" text="How to play" />
-            <Button fx:id="optionsButton" mnemonicParsing="false" text="Options" />
+            <Button fx:id="musicButton" mnemonicParsing="false" prefHeight="60.0" prefWidth="222.0" text="Music" />
             <Button fx:id="quitButton" mnemonicParsing="false" text="Quit" />
             <Label prefHeight="0.0" prefWidth="0.0" text="Label" />
          </children>
