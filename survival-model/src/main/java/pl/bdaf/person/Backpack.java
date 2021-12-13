@@ -12,6 +12,7 @@ public class Backpack {
     public static final int MIN_OF_WATER = 10;
     public static final int MAX_OF_SOUP = 12;
     public static final int MIN_OF_SOUP = 6;
+    // content contains only tomato soups and water bottles - 2 things in different amounts
     private final List<String> content;
     private Random rand = new Random();
 

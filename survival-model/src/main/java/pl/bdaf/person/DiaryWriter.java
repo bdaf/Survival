@@ -3,9 +3,9 @@ package pl.bdaf.person;
 import java.util.Random;
 
 public class DiaryWriter {
-    private static Random rand = new Random();
+    private Random rand = new Random();
 
-    static String describe(Person aPerson){
+    String describe(Person aPerson){
         StringBuilder diary = new StringBuilder();
         diary.append(aPerson.getName() + aPerson.getState().getDescribe());
         if (aPerson.getStrength() < 10) diary.append(aPerson.getName() + randomThreeStrings(" is exhausted.\n"," is really tired.\n"," have almost no strength.\n"));
@@ -18,25 +18,25 @@ public class DiaryWriter {
         return diary.toString();
     }
 
-    static String describeDeadPerson(Person aDeadPerson) {
+    String describeDeadPerson(Person aDeadPerson) {
         if(aDeadPerson.isAlive())
             return null;
         return aDeadPerson.getName() + aDeadPerson.getState().getDescribe()+aDeadPerson.getDeadDay()+"...\n";
     }
 
-    static String describeExpeditionDay(Person aPerson) {
+    String describeExpeditionDay(Person aPerson) {
         return aPerson.getName() + " is on expedition.\n";
     }
 
 
-    private static String randomThreeStrings(String aS1, String aS2, String aS3){
+    private String randomThreeStrings(String aS1, String aS2, String aS3){
         int numberToRandom = rand.nextInt(3);
         if(numberToRandom == 0) return aS1;
         else if(numberToRandom == 1) return aS2;
         return aS3;
     }
 
-    static String describeConsuming() {
+    private String describeConsuming() {
         return randomThreeStrings(" is so delighted to consume some "," finally got what was needed - "," feels great because of some ");
     }
 }

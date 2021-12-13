@@ -47,14 +47,14 @@ public class GameTest {
     void afterAllQueueEngineShouldMakeDayHigher() {
         assertEquals(1, engine.getCurrentDay());
         assertEquals(ted, engine.getActivePerson());
-        engine.pass();
+        engine.passToNextPerson();
         assertEquals(dolores, engine.getActivePerson());
-        engine.pass();
+        engine.passToNextPerson();
         assertEquals(timmy, engine.getActivePerson());
-        engine.pass();
+        engine.passToNextPerson();
         assertEquals(1, engine.getCurrentDay());
         assertEquals(berta, engine.getActivePerson());
-        engine.pass();
+        engine.passToNextPerson();
         assertEquals(2, engine.getCurrentDay());
         assertEquals(ted, engine.getActivePerson());
     }
@@ -63,31 +63,31 @@ public class GameTest {
     void QueueInEngineShouldBeSmallerAfterSomeDeaths() {
         assertEquals(1, engine.getCurrentDay());
         assertEquals(ted, engine.getActivePerson());
-        engine.pass();
+        engine.passToNextPerson();
         ted.setState(new State.Dead());
         assertEquals(dolores, engine.getActivePerson());
-        engine.pass();
+        engine.passToNextPerson();
         assertEquals(timmy, engine.getActivePerson());
-        engine.pass();
+        engine.passToNextPerson();
         assertEquals(berta, engine.getActivePerson());
-        engine.pass();
+        engine.passToNextPerson();
         assertEquals(2, engine.getCurrentDay());
         assertEquals(dolores, engine.getActivePerson());
         engine.drink();
         engine.eat();
-        engine.pass();
+        engine.passToNextPerson();
         assertEquals(timmy, engine.getActivePerson());
         timmy.setState(new State.Dead());
-        engine.pass();
+        engine.passToNextPerson();
         assertEquals(berta, engine.getActivePerson());
         engine.drink();
         engine.eat();
-        engine.pass();
+        engine.passToNextPerson();
         assertEquals(3, engine.getCurrentDay());
         assertEquals(dolores, engine.getActivePerson());
-        engine.pass();
+        engine.passToNextPerson();
         assertEquals(berta, engine.getActivePerson());
-        engine.pass();
+        engine.passToNextPerson();
         assertEquals(4, engine.getCurrentDay());
     }
 
@@ -95,20 +95,20 @@ public class GameTest {
     void gameEngineShouldSetWhenIsEndOfGame() {
         assertEquals(1, engine.getCurrentDay());
         assertEquals(ted, engine.getActivePerson());
-        engine.pass();
+        engine.passToNextPerson();
         ted.setState(new State.Dead());
         dolores.setState(new State.Dead());
         berta.setState(new State.Dead());
         assertEquals(dolores, engine.getActivePerson());
-        engine.pass();
+        engine.passToNextPerson();
         assertEquals(timmy, engine.getActivePerson());
-        engine.pass();
+        engine.passToNextPerson();
         assertEquals(berta, engine.getActivePerson());
-        engine.pass();
+        engine.passToNextPerson();
         assertEquals(2, engine.getCurrentDay());
         assertEquals(timmy, engine.getActivePerson());
         timmy.setState(new State.Dead());
-        engine.pass();
+        engine.passToNextPerson();
         assertEquals(3, engine.getCurrentDay());
         assertTrue(engine.getDailyDescribe().contains(END_OF_THE_GAME));
     }

@@ -144,7 +144,7 @@ public class WindowGameController implements PropertyChangeListener, Controller 
         drinkButton.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> engine.drink());
         goOnExpeditionButton.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> engine.goForExpeditionAndPass());
         nextDayButton.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> engine.passWholeDay());
-        nextPersonButton.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> engine.pass());
+        nextPersonButton.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> engine.passToNextPerson());
 
     }
 
