@@ -31,7 +31,7 @@ public class GameEngine {
     private boolean endOfGame;
 
     public static GameEngine getInstance(){
-        return this(List.of(new Person(TED), new Person(DOLORES), new Person(TIMMY), new Person(BERTA));
+        return new GameEngine(List.of(new Person(TED), new Person(DOLORES), new Person(TIMMY), new Person(BERTA)));
     }
 
     private GameEngine(List<Person> aPersonList) {

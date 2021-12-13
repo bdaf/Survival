@@ -27,7 +27,7 @@ public class GameTest {
         berta = new Person(BERTA);
         List<Person> list = new LinkedList<>(List.of(ted, dolores, timmy, berta));
         gameQueue = new GameQueue(list);
-        engine = new GameEngine(list);
+        engine = new GameEngine(list, new Backpack());
     }
 
     @Test
