@@ -57,7 +57,7 @@ public class WindowGameController implements PropertyChangeListener {
         playerName = aPlayerName;
         currentStage = aStage;
         isDayUpdatable = true;
-        engine = new GameEngine(List.of(new Person(TED), new Person(DOLORES), new Person(TIMMY), new Person(BERTA)));
+        engine = GameEngine.getInstance();
     }
 
     @FXML
@@ -146,19 +146,19 @@ public class WindowGameController implements PropertyChangeListener {
             String name = aDeadPeople.get(i).getName();
             URL resources = getClass().getResource("/graphics/"+name+"Dead.png");
             switch(name){
-                case "ted":
+                case "Ted":
                     tedImageView.setImage(new Image(resources.toString()));
                     tedImageView.setRotate(90);
                     break;
-                case "dolores":
+                case "Dolores":
                     doloresImageView.setImage(new Image(resources.toString()));
                     doloresImageView.setRotate(270);
                     break;
-                case "timmy":
+                case "Timmy":
                     timmyImageView.setImage(new Image(resources.toString()));
                     timmyImageView.setRotate(270);
                     break;
-                case "berta":
+                case "Berta":
                     bertaImageView.setImage(new Image(resources.toString()));
                     bertaImageView.setRotate(270);
                     break;

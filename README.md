@@ -7,6 +7,7 @@
 * [Manual](#manual-how-to-navigate-through-game)
 * [Images](#images-from-game)
 * [Fragments of code](#interesting-fragments-of-code)
+* [Self-esteem](#self-esteem)
 * [Used technologies](#technologies-used-in-this-project)
 * [License](#license)
 
@@ -55,6 +56,9 @@ You will only need mouse and PMK (Primary Mouse Key) to choose actions from menu
 ![image](https://user-images.githubusercontent.com/39047457/140243970-4e293dbf-8f58-4cc6-a0f3-227c39cff551.png)
 ![image](https://user-images.githubusercontent.com/39047457/140244095-0518be33-16d0-4fe3-8466-954200870be0.png)
 
+## Self-esteem
+From my point of view application is very intuitive and because of a lot of phothos and on live changing colors of buttons and arrow animate above characters the game gives a lot of users' experience, and despite this possibility to change volume of music in game is very comfortable.
+
 ## Technologies used in this project:
 - Java version 11
 - Javafx version 11.0.1
@@ -65,6 +69,5 @@ You will only need mouse and PMK (Primary Mouse Key) to choose actions from menu
 
 ## License
 [MIT](https://choosealicense.com/licenses/mit/)
-
 
 

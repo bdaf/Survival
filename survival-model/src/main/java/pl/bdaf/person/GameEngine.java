@@ -7,6 +7,8 @@ import java.util.List;
 
 import static pl.bdaf.person.Backpack.TOMATO_SOUP;
 import static pl.bdaf.person.Backpack.WATER_BOTTLE;
+import static pl.bdaf.person.PersonStatistic.*;
+import static pl.bdaf.person.PersonStatistic.BERTA;
 
 public class GameEngine {
 
@@ -28,11 +30,16 @@ public class GameEngine {
     private PropertyChangeSupport observers;
     private boolean endOfGame;
 
-    public GameEngine(List<Person> aPersonList) {
+    public static GameEngine getInstance(){
+        return this(List.of(new Person(TED), new Person(DOLORES), new Person(TIMMY), new Person(BERTA));
+    }
+
+    private GameEngine(List<Person> aPersonList) {
         this(aPersonList, new Backpack());
     }
 
-    public GameEngine(List<Person> aPersonList, Backpack aBackpack) {
+    // for tests
+    GameEngine(List<Person> aPersonList, Backpack aBackpack) {
         queue = new GameQueue(aPersonList);
         queue.addObserver(this);
         backpack = aBackpack;
