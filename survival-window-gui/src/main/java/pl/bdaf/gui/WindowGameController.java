@@ -8,6 +8,7 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -17,6 +18,7 @@ import pl.bdaf.person.Person;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 
 import static javafx.application.Platform.exit;
@@ -30,29 +32,55 @@ public class WindowGameController implements PropertyChangeListener, Controller 
     private final GameEngine engine;
     private final String playerName;
     private boolean isDayUpdatable;
-    @FXML private Button nextDayButton;
-    @FXML private Button nextPersonButton;
-    @FXML private Button goOnExpeditionButton;
-    @FXML private Button drinkButton;
-    @FXML private Button eatButton;
-    @FXML private Button menuButton;
-    @FXML private Button exitButton;
-    @FXML private Button diaryButton;
-    @FXML private Label dayLabel;
-    @FXML private Label bottlesOfWaterLabel;
-    @FXML private Label cansOfSoupsLabel;
-    @FXML private Label emptyToMoveArrowLabel;
-    @FXML private ImageView arrowImageView;
-    @FXML private ImageView tedImageView;
-    @FXML private ImageView doloresImageView;
-    @FXML private ImageView timmyImageView;
-    @FXML private ImageView bertaImageView;
-    @FXML private ImageView waterBottle0ImageView;
-    @FXML private ImageView waterBottle1ImageView;
-    @FXML private ImageView waterBottle2ImageView;
-    @FXML private ImageView tomatoSoup0ImageView;
-    @FXML private ImageView tomatoSoup1ImageView;
-    @FXML private ImageView tomatoSoup2ImageView;
+    @FXML
+    private VBox rightVBox;
+    @FXML
+    private Button nextDayButton;
+    @FXML
+    private Button nextPersonButton;
+    @FXML
+    private Button goOnExpeditionButton;
+    @FXML
+    private Button drinkButton;
+    @FXML
+    private Button eatButton;
+    @FXML
+    private Button menuButton;
+    @FXML
+    private Button exitButton;
+    @FXML
+    private Button diaryButton;
+    @FXML
+    private Label dayLabel;
+    @FXML
+    private Label bottlesOfWaterLabel;
+    @FXML
+    private Label cansOfSoupsLabel;
+    @FXML
+    private Label emptyToMoveArrowLabel;
+    @FXML
+    private ImageView arrowImageView;
+    @FXML
+    private ImageView tedImageView;
+    @FXML
+    private ImageView doloresImageView;
+    @FXML
+    private ImageView timmyImageView;
+    @FXML
+    private ImageView bertaImageView;
+    @FXML
+    private ImageView waterBottle0ImageView;
+    @FXML
+    private ImageView waterBottle1ImageView;
+    @FXML
+    private ImageView waterBottle2ImageView;
+    @FXML
+    private ImageView tomatoSoup0ImageView;
+    @FXML
+    private ImageView tomatoSoup1ImageView;
+    @FXML
+    private ImageView tomatoSoup2ImageView;
+    private List<Node> buttonsInRightVBox;
 
     WindowGameController(Stage aStage, String aPlayerName) {
         playerName = aPlayerName;
@@ -64,7 +92,8 @@ public class WindowGameController implements PropertyChangeListener, Controller 
     @FXML
     private void initialize() {
         initButtons();
-        updateSuppliesLabels();
+        buttonsInRightVBox = new ArrayList<>(rightVBox.getChildren());
+        updateSuppliesViewsAndLabels();
         animateByScaleTransition(arrowImageView);
         engine.addObserver(UPDATE_SUPPLIES, this);
         engine.addObserver(PERSON_DID_ACTION_ABOUT_EXPEDITION, this);
@@ -77,24 +106,16 @@ public class WindowGameController implements PropertyChangeListener, Controller 
         engine.addObserver(PEOPLE_DIE, this);
     }
 
-    private void updateSuppliesLabels() {
+    private void updateSuppliesViewsAndLabels() {
         int waterBottlesAmount = engine.getAmountOf(WATER_BOTTLE);
         int tomatoSoupsAmount = engine.getAmountOf(TOMATO_SOUP);
         bottlesOfWaterLabel.setText("Bottles of water: " + waterBottlesAmount);
         cansOfSoupsLabel.setText("Bottles of soups: " + tomatoSoupsAmount);
 
-        setVisibleOfNodeBasedOnSupplyAmount(waterBottlesAmount, 0, waterBottle0ImageView);
-        setVisibleOfNodeBasedOnSupplyAmount(waterBottlesAmount, 4, waterBottle1ImageView);
-        setVisibleOfNodeBasedOnSupplyAmount(waterBottlesAmount, 8, waterBottle2ImageView);
-
-        setVisibleOfNodeBasedOnSupplyAmount(tomatoSoupsAmount, 0, tomatoSoup0ImageView);
-        setVisibleOfNodeBasedOnSupplyAmount(tomatoSoupsAmount, 4, tomatoSoup1ImageView);
-        setVisibleOfNodeBasedOnSupplyAmount(tomatoSoupsAmount, 8, tomatoSoup2ImageView);
-    }
-
-    private void setVisibleOfNodeBasedOnSupplyAmount(int aSupplyAmount, int amountToBeVisible, ImageView aSupplyImageView) {
-        if (aSupplyAmount > amountToBeVisible) aSupplyImageView.setVisible(true);
-        else aSupplyImageView.setVisible(false);
+        rightVBox.getChildren().clear();
+        rightVBox = new WaterImageSupplier().addSupplyImageToVBox(rightVBox, engine);
+        rightVBox = new SoupImageSupplier().addSupplyImageToVBox(rightVBox, engine);
+        rightVBox.getChildren().addAll(buttonsInRightVBox);
     }
 
     private void initButtons() {
@@ -127,7 +148,7 @@ public class WindowGameController implements PropertyChangeListener, Controller 
 
     @Override
     public void propertyChange(PropertyChangeEvent aPropertyChangeEvent) {
-        if(aPropertyChangeEvent.getPropertyName().equals(PERSON_DID_ACTION_ABOUT_EXPEDITION)){
+        if (aPropertyChangeEvent.getPropertyName().equals(PERSON_DID_ACTION_ABOUT_EXPEDITION)) {
             Person person = (Person) aPropertyChangeEvent.getNewValue();
             setPersonVisible(person, !person.isPersonOnExpedition());
         }
@@ -139,10 +160,10 @@ public class WindowGameController implements PropertyChangeListener, Controller 
         if (aPropertyChangeEvent.getPropertyName().equals(PERSON_PASSES)) {
             setArrowAboveProperCharacter(aPropertyChangeEvent);
         } else if (aPropertyChangeEvent.getPropertyName().contains(UPDATE_SUPPLIES)) {
-            updateSuppliesLabels();
+            updateSuppliesViewsAndLabels();
         } else if (aPropertyChangeEvent.getPropertyName().equals(PEOPLE_DIE)) {
-            showThatPeopleDied( (List<Person>) aPropertyChangeEvent.getNewValue());
-        } else if(aPropertyChangeEvent.getPropertyName().equals(END_OF_THE_GAME)){
+            showThatPeopleDied((List<Person>) aPropertyChangeEvent.getNewValue());
+        } else if (aPropertyChangeEvent.getPropertyName().equals(END_OF_THE_GAME)) {
             new StageBuilderImpl().controller(new EndOfTheGameController((Integer) aPropertyChangeEvent.getNewValue()))
                     .title("Survival - end of the game")
                     .viewName("endOfGame.fxml")
@@ -155,8 +176,8 @@ public class WindowGameController implements PropertyChangeListener, Controller 
     private void showThatPeopleDied(List<Person> aDeadPeople) {
         for (int i = 0; i < aDeadPeople.size(); i++) {
             String name = aDeadPeople.get(i).getName();
-            URL resources = getClass().getResource("/graphics/"+name+"Dead.png");
-            switch(name){
+            URL resources = getClass().getResource("/graphics/" + name + "Dead.png");
+            switch (name) {
                 case "Ted":
                     tedImageView.setImage(new Image(resources.toString()));
                     tedImageView.setRotate(90);
@@ -173,16 +194,17 @@ public class WindowGameController implements PropertyChangeListener, Controller 
                     bertaImageView.setImage(new Image(resources.toString()));
                     bertaImageView.setRotate(270);
                     break;
-                default: break;
+                default:
+                    break;
             }
         }
     }
 
     private void setPersonVisible(Person aPerson, boolean aVisible) {
-        if(aPerson.getName().equalsIgnoreCase(TED.getName())) tedImageView.setVisible(aVisible);
-        else if(aPerson.getName().equalsIgnoreCase(DOLORES.getName())) doloresImageView.setVisible(aVisible);
-        else if(aPerson.getName().equalsIgnoreCase(TIMMY.getName())) timmyImageView.setVisible(aVisible);
-        else if(aPerson.getName().equalsIgnoreCase(BERTA.getName())) bertaImageView.setVisible(aVisible);
+        if (aPerson.getName().equalsIgnoreCase(TED.getName())) tedImageView.setVisible(aVisible);
+        else if (aPerson.getName().equalsIgnoreCase(DOLORES.getName())) doloresImageView.setVisible(aVisible);
+        else if (aPerson.getName().equalsIgnoreCase(TIMMY.getName())) timmyImageView.setVisible(aVisible);
+        else if (aPerson.getName().equalsIgnoreCase(BERTA.getName())) bertaImageView.setVisible(aVisible);
     }
 
     public void animateByScaleTransition(Node aNodeToScaleTransition) {
