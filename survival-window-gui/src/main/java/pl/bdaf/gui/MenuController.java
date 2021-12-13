@@ -46,7 +46,7 @@ public class MenuController implements Controller {
     }
 
     private void howToPlayClicked() {
-        StageBuilderFX stageBuilder = new StageBuilderFX();
+        WindowBuilderFX stageBuilder = new WindowBuilderFX();
         stageBuilder.controller(new HowToPlayController())
                 .title("Survival - how to play")
                 .viewName("musicOrHowToPlay.fxml")
@@ -56,7 +56,7 @@ public class MenuController implements Controller {
     }
 
     private void musicClicked() {
-        StageBuilderFX stageBuilder = new StageBuilderFX();
+        WindowBuilderFX stageBuilder = new WindowBuilderFX();
         stageBuilder.controller(new MusicController(MusicInGame.MUSIC_IN_GAME, MusicInGame.MUSIC_IN_MENU))
                 .title("Survival - setting music")
                 .viewName("musicOrHowToPlay.fxml")

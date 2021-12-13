@@ -41,11 +41,11 @@ public class Person {
         this.strength = strength;
     }
 
-    public void eat() {
+    void eat() {
         state.eat(this);
     }
 
-    public void drink() {
+    void drink() {
         state.drink(this);
     }
 

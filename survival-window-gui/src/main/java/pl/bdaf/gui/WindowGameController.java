@@ -131,7 +131,7 @@ public class WindowGameController implements PropertyChangeListener, Controller 
         });
 
         diaryButton.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
-            StageBuilderFX stageBuilder = new StageBuilderFX();
+            WindowBuilderFX stageBuilder = new WindowBuilderFX();
             stageBuilder.controller(new DiaryController(engine.getDailyDescribe(), engine.getCurrentDay()))
                     .title("Survival - diary")
                     .modality(Modality.APPLICATION_MODAL)
@@ -166,7 +166,7 @@ public class WindowGameController implements PropertyChangeListener, Controller 
         } else if (aPropertyChangeEvent.getPropertyName().equals(PEOPLE_DIE)) {
             showThatPeopleDied((List<Person>) aPropertyChangeEvent.getNewValue());
         } else if (aPropertyChangeEvent.getPropertyName().equals(END_OF_THE_GAME)) {
-            StageBuilderFX stageBuilder = new StageBuilderFX();
+            WindowBuilderFX stageBuilder = new WindowBuilderFX();
             stageBuilder.controller(new EndOfTheGameController((Integer) aPropertyChangeEvent.getNewValue()))
                     .title("Survival - end of the game")
                     .viewName("endOfGame.fxml")

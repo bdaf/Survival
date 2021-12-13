@@ -9,7 +9,7 @@ import javafx.stage.Window;
 
 import java.io.IOException;
 
-public class StageBuilderFX implements StageBuilder {
+public class WindowBuilderFX implements WindowBuilder {
     private Controller controller;
     private String viewName;
     private String iconName = "icon.jpg";
@@ -21,49 +21,49 @@ public class StageBuilderFX implements StageBuilder {
 
 
     @Override
-    public StageBuilder iconName(String aIconName) {
+    public WindowBuilder iconName(String aIconName) {
         iconName = aIconName;
         return this;
     }
 
     @Override
-    public StageBuilder controller(Controller aController) {
+    public WindowBuilder controller(Controller aController) {
         controller = aController;
         return this;
     }
 
     @Override
-    public StageBuilder viewName(String aViewName) {
+    public WindowBuilder viewName(String aViewName) {
         viewName = aViewName;
         return this;
     }
 
     @Override
-    public StageBuilder stage(Stage aWindow) {
+    public WindowBuilder stage(Stage aWindow) {
         stage = aWindow;
         return this;
     }
 
     @Override
-    public StageBuilder title(String aTitle) {
+    public WindowBuilder title(String aTitle) {
         title = aTitle;
         return this;
     }
 
     @Override
-    public StageBuilder isResizable(boolean aIsResizable) {
+    public WindowBuilder isResizable(boolean aIsResizable) {
         isResizable = aIsResizable;
         return this;
     }
 
     @Override
-    public StageBuilder modality(Modality aApplicationModal) {
+    public WindowBuilder modality(Modality aApplicationModal) {
         modality = aApplicationModal;
         return this;
     }
 
     @Override
-    public StageBuilder owner(Window aOwner) {
+    public WindowBuilder owner(Window aOwner) {
         owner = aOwner;
         return this;
     }

@@ -11,7 +11,7 @@ import static pl.bdaf.person.PersonStatistic.*;
 import static pl.bdaf.person.PersonStatistic.BERTA;
 
 public class GameEngine {
-
+    private static GameEngine gameEngine;
     private static final int MIN_EXPEDITION_DAYS = 1;
     private static final int MAX_EXPEDITION_DAYS = 3;
     public static final String END_OF_THE_GAME = "End Of the Game";
@@ -31,7 +31,8 @@ public class GameEngine {
     private boolean endOfGame;
 
     public static GameEngine getInstance(){
-        return new GameEngine(List.of(new Person(TED), new Person(DOLORES), new Person(TIMMY), new Person(BERTA)));
+        if(gameEngine == null) gameEngine = new GameEngine(List.of(new Person(TED), new Person(DOLORES), new Person(TIMMY), new Person(BERTA)));
+        return gameEngine;
     }
 
     private GameEngine(List<Person> aPersonList) {

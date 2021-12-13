@@ -16,7 +16,7 @@ public abstract class State {
     private static final int MAX_HYDRATION = 4;
     private static final int MAX_SATIETY = 7;
 
-    Random rand;
+    protected Random rand;
     private String name;
 
     protected State() {

@@ -20,7 +20,7 @@ public class LaunchWindowApp extends Application {
     }
 
     static void showMenuWindow(Stage aStage, String aPlayerName) {
-        StageBuilderFX stageBuilder = new StageBuilderFX();
+        WindowBuilderFX stageBuilder = new WindowBuilderFX();
         stageBuilder.controller(new MenuController(aPlayerName))
                 .viewName("menu.fxml")
                 .title("Survival - menu")
@@ -29,7 +29,7 @@ public class LaunchWindowApp extends Application {
     }
 
     private String showFetchNameWindow() {
-        StageBuilderFX stageBuilder = new StageBuilderFX();
+        WindowBuilderFX stageBuilder = new WindowBuilderFX();
         stageBuilder.controller(new FetchNameController(this))
                 .viewName("fetchName.fxml")
                 .title("Survival - choosing name");
@@ -46,7 +46,7 @@ public class LaunchWindowApp extends Application {
             MusicInGame.MUSIC_IN_MENU.play();
         });
 
-        StageBuilderFX stageBuilder = new StageBuilderFX();
+        WindowBuilderFX stageBuilder = new WindowBuilderFX();
         stageBuilder.controller(new WindowGameController(gameWindow, aPlayerName))
                 .stage(gameWindow)
                 .viewName("game.fxml")
