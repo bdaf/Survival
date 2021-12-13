@@ -13,7 +13,7 @@ import javafx.stage.Window;
 
 import java.io.IOException;
 
-public class EndOfTheGameController {
+public class EndOfTheGameController implements Controller {
     private final int finalDay;
 
     @FXML private Label endOfTheGameLabel;

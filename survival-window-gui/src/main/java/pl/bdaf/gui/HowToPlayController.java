@@ -16,7 +16,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 
-public class HowToPlayController {
+public class HowToPlayController implements Controller {
     @FXML private BorderPane borderPane;
     @FXML private Label topLabel;
     @FXML private Button botButton;

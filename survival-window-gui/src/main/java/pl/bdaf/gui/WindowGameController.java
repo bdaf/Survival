@@ -24,7 +24,7 @@ import static pl.bdaf.person.Backpack.WATER_BOTTLE;
 import static pl.bdaf.person.GameEngine.*;
 import static pl.bdaf.person.PersonStatistic.*;
 
-public class WindowGameController implements PropertyChangeListener {
+public class WindowGameController implements PropertyChangeListener, Controller {
     private final Stage currentStage;
     private final GameEngine engine;
     private final String playerName;

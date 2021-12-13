@@ -8,7 +8,7 @@ import javafx.stage.Stage;
 
 import static javafx.scene.input.KeyCode.ENTER;
 
-public class FetchNameController {
+public class FetchNameController implements Controller {
     private final LaunchWindowApp launchWindowApp;
 
     @FXML

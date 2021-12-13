@@ -8,8 +8,9 @@ import javafx.stage.Stage;
 
 import static javafx.application.Platform.exit;
 
-public class MenuController {
+public class MenuController implements Controller {
     private final String nameOfPlayer;
+
     @FXML
     private Button quitButton;
     @FXML

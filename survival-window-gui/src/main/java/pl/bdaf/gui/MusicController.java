@@ -13,7 +13,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 
-public class MusicController {
+public class MusicController implements Controller {
 
     private final MusicInGame musicInGame;
     private final MusicInGame musicInMenu;

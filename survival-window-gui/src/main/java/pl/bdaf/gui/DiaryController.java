@@ -12,7 +12,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class DiaryController {
+public class DiaryController implements Controller {
 
     private final String diaryContent;
     private final int day;
