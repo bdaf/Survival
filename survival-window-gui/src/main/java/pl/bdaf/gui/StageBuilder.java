@@ -5,7 +5,6 @@ import javafx.stage.Window;
 
 public interface StageBuilder {
 
-    StageBuilder windowName(String aWindowName);
     StageBuilder iconName(String aIconName);
     StageBuilder controller(Controller aController);
     StageBuilder viewName(String aViewName);
