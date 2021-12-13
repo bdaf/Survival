@@ -32,24 +32,6 @@ public class EndOfTheGameController implements Controller {
     }
 
     static void showWindowAndWait(Window aWindow, int aCurrentDay) {
-        Stage stage = new Stage();
-        stage.getIcons().add(new Image("graphics/icon.jpg"));
 
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(DiaryController.class.getClassLoader().getResource("fxml/endOfGame.fxml"));
-        loader.setController(new EndOfTheGameController(aCurrentDay));
-
-        Scene scene = null;
-        try {
-            scene = new Scene(loader.load());
-        } catch (IOException aE) {
-            aE.printStackTrace();
-        }
-        stage.setTitle("Survival - end of the game");
-        stage.setResizable(false);
-        stage.setScene(scene);
-        stage.initOwner(aWindow);
-        stage.initModality(Modality.APPLICATION_MODAL);
-        stage.showAndWait();
     }
 }

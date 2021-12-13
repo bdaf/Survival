@@ -141,7 +141,11 @@ public class WindowGameController implements PropertyChangeListener, Controller 
         } else if (aPropertyChangeEvent.getPropertyName().contains(UPDATE_SUPPLIES)) {
             updateSuppliesLabels();
         } else if (aPropertyChangeEvent.getPropertyName().equals(END_OF_THE_GAME)) {
-            EndOfTheGameController.showWindowAndWait(dayLabel.getScene().getWindow(), (Integer) aPropertyChangeEvent.getNewValue());
+            new StageBuilderImpl().controller(new EndOfTheGameController((Integer) aPropertyChangeEvent.getNewValue()))
+                    .title("Survival - end of the game")
+                    .viewName("endOfGame.fxml")
+                    .owner(dayLabel.getScene().getWindow())
+                    .build().showAndWait();
         } else if(aPropertyChangeEvent.getPropertyName().equals(PEOPLE_DIE)){
             showThatPeopleDied( (List<Person>) aPropertyChangeEvent.getNewValue());
         }

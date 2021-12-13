@@ -34,6 +34,4 @@ public class DiaryController implements Controller {
         diaryContent = aDiaryContent;
         day = aDay;
     }
-
-
 }
