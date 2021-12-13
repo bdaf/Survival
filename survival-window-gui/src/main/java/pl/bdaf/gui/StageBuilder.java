@@ -13,8 +13,5 @@ public interface StageBuilder {
     StageBuilder viewName(String aViewName);
     StageBuilder stage(Stage aWindow);
     StageBuilder title(String aTitle);
-
     StageBuilder owner(Window aOwner);
-
-    Stage build();
 }

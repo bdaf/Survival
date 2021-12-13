@@ -9,7 +9,7 @@ import javafx.stage.Window;
 
 import java.io.IOException;
 
-public class StageBuilderImpl implements StageBuilder {
+public class StageBuilderFX implements StageBuilder {
     private Controller controller;
     private String viewName;
     private String iconName = "icon.jpg";
@@ -68,7 +68,6 @@ public class StageBuilderImpl implements StageBuilder {
         return this;
     }
 
-    @Override
     public Stage build() {
         if (controller == null) throw new IllegalStateException("Controller has not been specified");
         if (viewName == null) throw new IllegalStateException("Name of view (fxml file) has not been specified");

@@ -46,20 +46,22 @@ public class MenuController implements Controller {
     }
 
     private void howToPlayClicked() {
-        new StageBuilderImpl().controller(new HowToPlayController())
+        StageBuilderFX stageBuilder = new StageBuilderFX();
+        stageBuilder.controller(new HowToPlayController())
                 .title("Survival - how to play")
                 .viewName("musicOrHowToPlay.fxml")
                 .modality(Modality.APPLICATION_MODAL)
-                .owner(quitButton.getScene().getWindow())
-                .build().showAndWait();
+                .owner(quitButton.getScene().getWindow());
+        stageBuilder.build().showAndWait();
     }
 
     private void musicClicked() {
-        new StageBuilderImpl().controller(new MusicController(MusicInGame.MUSIC_IN_GAME, MusicInGame.MUSIC_IN_MENU))
+        StageBuilderFX stageBuilder = new StageBuilderFX();
+        stageBuilder.controller(new MusicController(MusicInGame.MUSIC_IN_GAME, MusicInGame.MUSIC_IN_MENU))
                 .title("Survival - setting music")
                 .viewName("musicOrHowToPlay.fxml")
                 .modality(Modality.APPLICATION_MODAL)
-                .owner(quitButton.getScene().getWindow())
-                .build().showAndWait();
+                .owner(quitButton.getScene().getWindow());
+        stageBuilder.build().showAndWait();
     }
 }

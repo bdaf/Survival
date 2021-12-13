@@ -130,13 +130,15 @@ public class WindowGameController implements PropertyChangeListener, Controller 
             exit();
         });
 
-        diaryButton.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> new StageBuilderImpl()
-                .controller(new DiaryController(engine.getDailyDescribe(), engine.getCurrentDay()))
-                .title("Survival - diary")
-                .modality(Modality.APPLICATION_MODAL)
-                .owner(diaryButton.getScene().getWindow())
-                .viewName("diary.fxml")
-                .build().showAndWait());
+        diaryButton.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
+            StageBuilderFX stageBuilder = new StageBuilderFX();
+            stageBuilder.controller(new DiaryController(engine.getDailyDescribe(), engine.getCurrentDay()))
+                    .title("Survival - diary")
+                    .modality(Modality.APPLICATION_MODAL)
+                    .owner(diaryButton.getScene().getWindow())
+                    .viewName("diary.fxml");
+            stageBuilder.build().showAndWait();
+        });
 
         eatButton.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> engine.eat());
         drinkButton.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> engine.drink());
@@ -164,12 +166,13 @@ public class WindowGameController implements PropertyChangeListener, Controller 
         } else if (aPropertyChangeEvent.getPropertyName().equals(PEOPLE_DIE)) {
             showThatPeopleDied((List<Person>) aPropertyChangeEvent.getNewValue());
         } else if (aPropertyChangeEvent.getPropertyName().equals(END_OF_THE_GAME)) {
-            new StageBuilderImpl().controller(new EndOfTheGameController((Integer) aPropertyChangeEvent.getNewValue()))
+            StageBuilderFX stageBuilder = new StageBuilderFX();
+            stageBuilder.controller(new EndOfTheGameController((Integer) aPropertyChangeEvent.getNewValue()))
                     .title("Survival - end of the game")
                     .viewName("endOfGame.fxml")
                     .modality(Modality.APPLICATION_MODAL)
-                    .owner(dayLabel.getScene().getWindow())
-                    .build().showAndWait();
+                    .owner(dayLabel.getScene().getWindow());
+            stageBuilder.build().showAndWait();
         }
     }
 

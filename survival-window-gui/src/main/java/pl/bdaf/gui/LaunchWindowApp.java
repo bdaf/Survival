@@ -1,13 +1,7 @@
 package pl.bdaf.gui;
 
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
-import javafx.scene.image.Image;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
-
-import java.io.IOException;
 
 public class LaunchWindowApp extends Application {
 
@@ -26,18 +20,20 @@ public class LaunchWindowApp extends Application {
     }
 
     static void showMenuWindow(Stage aStage, String aPlayerName) {
-        new StageBuilderImpl().controller(new MenuController(aPlayerName))
+        StageBuilderFX stageBuilder = new StageBuilderFX();
+        stageBuilder.controller(new MenuController(aPlayerName))
                 .viewName("menu.fxml")
                 .title("Survival - menu")
-                .stage(aStage)
-                .build().show();
+                .stage(aStage);
+        stageBuilder.build().show();
     }
 
     private String showFetchNameWindow() {
-        new StageBuilderImpl().controller(new FetchNameController(this))
+        StageBuilderFX stageBuilder = new StageBuilderFX();
+        stageBuilder.controller(new FetchNameController(this))
                 .viewName("fetchName.fxml")
-                .title("Survival - choosing name")
-                .build().showAndWait();
+                .title("Survival - choosing name");
+        stageBuilder.build().showAndWait();
 
         if(playerName == null || playerName.equals("")) playerName = DEFAULT_NAME;
         return playerName;
@@ -50,11 +46,12 @@ public class LaunchWindowApp extends Application {
             MusicInGame.MUSIC_IN_MENU.play();
         });
 
-        new StageBuilderImpl().controller(new WindowGameController(gameWindow, aPlayerName))
+        StageBuilderFX stageBuilder = new StageBuilderFX();
+        stageBuilder.controller(new WindowGameController(gameWindow, aPlayerName))
                 .stage(gameWindow)
                 .viewName("game.fxml")
-                .title("Survival - game")
-                .build().show();
+                .title("Survival - game");
+        stageBuilder.build().show();
     }
 
     void setPlayerName(String aPlayerName) {

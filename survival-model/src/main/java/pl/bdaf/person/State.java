@@ -133,11 +133,6 @@ public abstract class State {
             return " is completely healthy.\n";
         }
 
-        @Override
-        public String toString() {
-            return getName();
-        }
-
     }
 
 
@@ -180,11 +175,6 @@ public abstract class State {
         @Override
         String getDescribe() {
             return " is coughing a little and has a runny nose.\n";
-        }
-
-        @Override
-        public String toString() {
-            return getName();
         }
     }
 
@@ -231,11 +221,6 @@ public abstract class State {
         @Override
         String getDescribe() {
             return " has a high fever and pneumonia!\n";
-        }
-
-        @Override
-        public String toString() {
-            return getName();
         }
     }
 
@@ -284,11 +269,6 @@ public abstract class State {
         @Override
         String getDescribe() {
             return " has left in day ";
-        }
-
-        @Override
-        public String toString() {
-            return getName();
         }
     }
 }
