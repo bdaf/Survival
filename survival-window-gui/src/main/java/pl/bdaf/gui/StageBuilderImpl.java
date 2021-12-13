@@ -9,13 +9,15 @@ import javafx.stage.Window;
 
 import java.io.IOException;
 
-public class StageBuilderImpl implements StageBuilder{
-    private Controller controller = new MenuController(null);;
-    private String viewName = "menu.fxml";
+public class StageBuilderImpl implements StageBuilder {
+    private Controller controller;
+    private String viewName;
     private String iconName = "icon.jpg";
     private String title = "Survival";
     private boolean isResizable;
     private Window owner;
+    private Stage stage;
+    private Modality modality;
 
 
     @Override
@@ -37,6 +39,12 @@ public class StageBuilderImpl implements StageBuilder{
     }
 
     @Override
+    public StageBuilder stage(Stage aWindow) {
+        stage = aWindow;
+        return this;
+    }
+
+    @Override
     public StageBuilder title(String aTitle) {
         title = aTitle;
         return this;
@@ -49,6 +57,12 @@ public class StageBuilderImpl implements StageBuilder{
     }
 
     @Override
+    public StageBuilder modality(Modality aApplicationModal) {
+        modality = aApplicationModal;
+        return this;
+    }
+
+    @Override
     public StageBuilder owner(Window aOwner) {
         owner = aOwner;
         return this;
@@ -56,15 +70,15 @@ public class StageBuilderImpl implements StageBuilder{
 
     @Override
     public Stage build() {
+        if (controller == null) throw new IllegalStateException("Controller has not been specified");
+        if (viewName == null) throw new IllegalStateException("Name of view (fxml file) has not been specified");
+        if (stage == null) stage = new Stage();
+        if (owner != null) stage.initOwner(owner);
+        if (modality != null) stage.initModality(modality);
 
-        Stage stage = new Stage();
         FXMLLoader loader = new FXMLLoader();
-
-        // if set
-        if(owner != null) stage.initOwner(owner);
-
-        loader.setLocation(DiaryController.class.getClassLoader().getResource("fxml/"+viewName));
-        stage.getIcons().add(new Image("graphics/"+iconName));
+        loader.setLocation(DiaryController.class.getClassLoader().getResource("fxml/" + viewName));
+        stage.getIcons().add(new Image("graphics/" + iconName));
         stage.setTitle(title);
         loader.setController(controller);
 
@@ -74,9 +88,10 @@ public class StageBuilderImpl implements StageBuilder{
         } catch (IOException aE) {
             aE.printStackTrace();
         }
+
         stage.setResizable(isResizable);
         stage.setScene(scene);
-        stage.initModality(Modality.APPLICATION_MODAL);
+
         return stage;
     }
 }

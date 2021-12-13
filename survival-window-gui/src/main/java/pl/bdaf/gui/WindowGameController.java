@@ -8,6 +8,7 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import pl.bdaf.person.GameEngine;
@@ -111,6 +112,7 @@ public class WindowGameController implements PropertyChangeListener, Controller 
         diaryButton.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> new StageBuilderImpl()
                 .controller(new DiaryController(engine.getDailyDescribe(), engine.getCurrentDay()))
                 .title("Survival - diary")
+                .modality(Modality.APPLICATION_MODAL)
                 .owner(diaryButton.getScene().getWindow())
                 .viewName("diary.fxml")
                 .build().showAndWait());
@@ -131,23 +133,22 @@ public class WindowGameController implements PropertyChangeListener, Controller 
         }
         if (aPropertyChangeEvent.getPropertyName().equals(DAY_CHANGED)) {
             String dayHeader = "Day " + aPropertyChangeEvent.getNewValue();
-            if (engine.isEndOfGame()) {
-                dayHeader += "\nEnd of the game";
-            }
+            if (engine.isEndOfGame()) dayHeader += "\nEnd of the game";
             dayLabel.setText(dayHeader);
         }
         if (aPropertyChangeEvent.getPropertyName().equals(PERSON_PASSES)) {
             setArrowAboveProperCharacter(aPropertyChangeEvent);
         } else if (aPropertyChangeEvent.getPropertyName().contains(UPDATE_SUPPLIES)) {
             updateSuppliesLabels();
-        } else if (aPropertyChangeEvent.getPropertyName().equals(END_OF_THE_GAME)) {
+        } else if (aPropertyChangeEvent.getPropertyName().equals(PEOPLE_DIE)) {
+            showThatPeopleDied( (List<Person>) aPropertyChangeEvent.getNewValue());
+        } else if(aPropertyChangeEvent.getPropertyName().equals(END_OF_THE_GAME)){
             new StageBuilderImpl().controller(new EndOfTheGameController((Integer) aPropertyChangeEvent.getNewValue()))
                     .title("Survival - end of the game")
                     .viewName("endOfGame.fxml")
+                    .modality(Modality.APPLICATION_MODAL)
                     .owner(dayLabel.getScene().getWindow())
                     .build().showAndWait();
-        } else if(aPropertyChangeEvent.getPropertyName().equals(PEOPLE_DIE)){
-            showThatPeopleDied( (List<Person>) aPropertyChangeEvent.getNewValue());
         }
     }
 

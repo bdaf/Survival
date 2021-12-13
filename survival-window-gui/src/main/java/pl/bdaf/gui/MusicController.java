@@ -54,19 +54,4 @@ public class MusicController implements Controller {
         slider.setStyle("-fx-padding: 0 30 0 30;");
         return slider;
     }
-
-    public static void showMusicSettingsWindow(Window aOwnerWindow) throws Exception {
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(MusicController.class.getClassLoader().getResource("fxml/musicOrHowToPlay.fxml"));
-        loader.setController(new MusicController(MusicInGame.MUSIC_IN_GAME, MusicInGame.MUSIC_IN_MENU));
-        Stage stage = new Stage();
-        stage.getIcons().add(new Image("graphics/icon.jpg"));
-        Scene scene = new Scene(loader.load());
-        stage.initOwner(aOwnerWindow);
-        stage.initModality(Modality.APPLICATION_MODAL);
-        stage.setTitle("Survival - setting music");
-        stage.setResizable(false);
-        stage.setScene(scene);
-        stage.showAndWait();
-    }
 }

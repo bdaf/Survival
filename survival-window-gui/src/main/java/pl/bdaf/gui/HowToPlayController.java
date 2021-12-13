@@ -1,20 +1,15 @@
 package pl.bdaf.gui;
 
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.stage.Window;
 
 public class HowToPlayController implements Controller {
     @FXML private BorderPane borderPane;
@@ -46,18 +41,4 @@ public class HowToPlayController implements Controller {
         return text;
     }
 
-    public static void showHowToPlayWindow(Window aOwnerWindow) throws Exception {
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(MusicController.class.getClassLoader().getResource("fxml/musicOrHowToPlay.fxml"));
-        loader.setController(new HowToPlayController());
-        Stage stage = new Stage();
-        stage.getIcons().add(new Image("graphics/icon.jpg"));
-        Scene scene = new Scene(loader.load());
-        stage.initOwner(aOwnerWindow);
-        stage.initModality(Modality.APPLICATION_MODAL);
-        stage.setTitle("Survival - how to play");
-        stage.setResizable(false);
-        stage.setScene(scene);
-        stage.showAndWait();
-    }
 }

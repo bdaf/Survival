@@ -4,6 +4,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import static javafx.application.Platform.exit;
@@ -45,18 +46,20 @@ public class MenuController implements Controller {
     }
 
     private void howToPlayClicked() {
-        try {
-            HowToPlayController.showHowToPlayWindow(quitButton.getScene().getWindow());
-        } catch (Exception aE) {
-            aE.printStackTrace();
-        }
+        new StageBuilderImpl().controller(new HowToPlayController())
+                .title("Survival - how to play")
+                .viewName("musicOrHowToPlay.fxml")
+                .modality(Modality.APPLICATION_MODAL)
+                .owner(quitButton.getScene().getWindow())
+                .build().showAndWait();
     }
 
     private void musicClicked() {
-        try {
-            MusicController.showMusicSettingsWindow(quitButton.getScene().getWindow());
-        } catch (Exception aE) {
-            aE.printStackTrace();
-        }
+        new StageBuilderImpl().controller(new MusicController(MusicInGame.MUSIC_IN_GAME, MusicInGame.MUSIC_IN_MENU))
+                .title("Survival - setting music")
+                .viewName("musicOrHowToPlay.fxml")
+                .modality(Modality.APPLICATION_MODAL)
+                .owner(quitButton.getScene().getWindow())
+                .build().showAndWait();
     }
 }

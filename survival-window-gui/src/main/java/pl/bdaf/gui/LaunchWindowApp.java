@@ -4,6 +4,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -18,70 +19,42 @@ public class LaunchWindowApp extends Application {
     }
 
     @Override
-    public void start(Stage stage) throws Exception {
+    public void start(Stage stage) {
         playerName = showFetchNameWindow();
+        MusicInGame.MUSIC_IN_MENU.play();
         showMenuWindow(stage, playerName);
     }
 
-    private String showFetchNameWindow() throws Exception {
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getClassLoader().getResource("fxml/fetchName.fxml"));
-        loader.setController(new FetchNameController(this));
-        Stage stage = new Stage();
-        stage.getIcons().add(new Image("graphics/icon.jpg"));
-        Scene scene = new Scene(loader.load());
-        stage.setTitle("Survival - choosing name");
-        stage.setResizable(false);
-        stage.setScene(scene);
-        stage.showAndWait();
-        if(playerName == null || playerName.equals("")) {
-            playerName = DEFAULT_NAME;
-        }
-        return playerName;
+    static void showMenuWindow(Stage aStage, String aPlayerName) {
+        new StageBuilderImpl().controller(new MenuController(aPlayerName))
+                .viewName("menu.fxml")
+                .title("Survival - menu")
+                .stage(aStage)
+                .build().show();
     }
 
-    static void showMenuWindow(Stage aMenuWindow, String aPlayerName) {
-        MusicInGame.MUSIC_IN_MENU.play();
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(LaunchWindowApp.class.getClassLoader().getResource("fxml/menu.fxml"));
-        loader.setController(new MenuController(aPlayerName));
-        aMenuWindow.getIcons().add(new Image("graphics/icon.jpg"));
+    private String showFetchNameWindow() {
+        new StageBuilderImpl().controller(new FetchNameController(this))
+                .viewName("fetchName.fxml")
+                .title("Survival - choosing name")
+                .build().showAndWait();
 
-        Scene scene = null;
-        try {
-            scene = new Scene(loader.load());
-        } catch (IOException aE) {
-            aE.printStackTrace();
-        }
-        aMenuWindow.setTitle("Survival - menu");
-        aMenuWindow.setResizable(false);
-        aMenuWindow.setScene(scene);
-        aMenuWindow.show();
+        if(playerName == null || playerName.equals("")) playerName = DEFAULT_NAME;
+        return playerName;
     }
 
     static void showGameWindow(String aPlayerName){
         Stage gameWindow = new Stage();
-        gameWindow.getIcons().add(new Image("graphics/icon.jpg"));
-
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(LaunchWindowApp.class.getClassLoader().getResource("fxml/game.fxml"));
-        loader.setController(new WindowGameController(gameWindow, aPlayerName));
-
-        Scene scene = null;
-        try {
-            scene = new Scene(loader.load());
-        } catch (IOException aE) {
-            aE.printStackTrace();
-        }
-        gameWindow.setTitle("Survival - game");
-        gameWindow.setResizable(false);
-        gameWindow.setScene(scene);
         gameWindow.setOnCloseRequest(aWindowEvent -> {
             MusicInGame.MUSIC_IN_GAME.stop();
             MusicInGame.MUSIC_IN_MENU.play();
         });
 
-        gameWindow.show();
+        new StageBuilderImpl().controller(new WindowGameController(gameWindow, aPlayerName))
+                .stage(gameWindow)
+                .viewName("game.fxml")
+                .title("Survival - game")
+                .build().show();
     }
 
     void setPlayerName(String aPlayerName) {
