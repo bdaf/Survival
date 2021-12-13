@@ -10,13 +10,12 @@ import javafx.stage.Window;
 import java.io.IOException;
 
 public class StageBuilderImpl implements StageBuilder{
-    private static final String NOT_DEFINED = "NOT_DEFINED";
-    private String iconName = NOT_DEFINED;
-    private String viewName = NOT_DEFINED;
-    private String title = NOT_DEFINED;
+    private Controller controller = new MenuController(null);;
+    private String viewName = "menu.fxml";
+    private String iconName = "icon.jpg";
+    private String title = "Survival";
     private boolean isResizable;
     private Window owner;
-    private Controller controller;
 
 
     @Override
@@ -60,12 +59,14 @@ public class StageBuilderImpl implements StageBuilder{
 
         Stage stage = new Stage();
         FXMLLoader loader = new FXMLLoader();
+
         // if set
-        if(!viewName.equals(NOT_DEFINED)) loader.setLocation(DiaryController.class.getClassLoader().getResource("fxml/"+viewName));
-        if(!iconName.equals(NOT_DEFINED)) stage.getIcons().add(new Image("graphics/"+iconName));
-        if(!title.equalsIgnoreCase(NOT_DEFINED)) stage.setTitle(title);
-        if(controller != null) loader.setController(controller);
         if(owner != null) stage.initOwner(owner);
+
+        loader.setLocation(DiaryController.class.getClassLoader().getResource("fxml/"+viewName));
+        stage.getIcons().add(new Image("graphics/"+iconName));
+        stage.setTitle(title);
+        loader.setController(controller);
 
         Scene scene = null;
         try {
@@ -73,7 +74,6 @@ public class StageBuilderImpl implements StageBuilder{
         } catch (IOException aE) {
             aE.printStackTrace();
         }
-
         stage.setResizable(isResizable);
         stage.setScene(scene);
         stage.initModality(Modality.APPLICATION_MODAL);
