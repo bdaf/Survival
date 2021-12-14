@@ -71,7 +71,7 @@ abstract class State {
         name = aName;
     }
 
-    public String getName() {
+    String getName() {
         return name;
     }
 
@@ -103,13 +103,13 @@ abstract class State {
         }
 
         @Override
-        public void drink(Person aPerson) {
+         void drink(Person aPerson) {
             super.drink(aPerson);
             aPerson.setStrength(aPerson.getStrength() + 1);
         }
 
         @Override
-        public void eat(Person aPerson) {
+         void eat(Person aPerson) {
             super.eat(aPerson);
             aPerson.setStrength(aPerson.getStrength() + 1);
         }
@@ -144,13 +144,13 @@ abstract class State {
         }
 
         @Override
-        public void drink(Person aPerson) {
+        void drink(Person aPerson) {
             super.drink(aPerson);
             changeStateRandomly(aPerson,0.0, 0.8);
         }
 
         @Override
-        public void eat(Person aPerson) {
+        void eat(Person aPerson) {
             super.eat(aPerson);
             changeStateRandomly(aPerson,0.0, 0.6);
         }
@@ -187,13 +187,13 @@ abstract class State {
         }
 
         @Override
-        public void drink(Person aPerson) {
+         void drink(Person aPerson) {
             super.drink(aPerson);
             changeStateRandomly(aPerson, 0.2, 0.6);
         }
 
         @Override
-        public void eat(Person aPerson) {
+         void eat(Person aPerson) {
             super.eat(aPerson);
             changeStateRandomly(aPerson,0.35, 0.45);
         }
@@ -237,17 +237,17 @@ abstract class State {
         }
 
         @Override
-        public void goForExpedition(Person aPerson, Backpack aBackpack) {
+         void goForExpedition(Person aPerson, Backpack aBackpack) {
             throw new IllegalStateException("Dead person's state cannot go out, he's dead!");
         }
 
         @Override
-        public void drink(Person aPerson) {
+         void drink(Person aPerson) {
             throw new IllegalStateException("Dead person cannot drink!");
         }
 
         @Override
-        public void eat(Person aPerson) {
+         void eat(Person aPerson) {
             throw new IllegalStateException("Dead person cannot eat!");
         }
 

@@ -1,13 +1,13 @@
 package pl.bdaf.person;
 
-public enum PersonStatistic{
+enum PersonStatistic{
     TO_TEST(10,10,10,10,"TestName"),
     TO_TEST_MIN(1,1,1,1,"TestNameMin"),
 
-    TED(30,5,7,20, Constants.TED),
-    DOLORES(22, 4,6, 15, Constants.DOLORES),
-    TIMMY(15, 4, 5, 10, Constants.TIMMY),
-    BERTA(24, 3, 6, 15, Constants.BERTA);
+    TED(30,5,7,20, Person.Constants.TED),
+    DOLORES(22, 4,6, 15, Person.Constants.DOLORES),
+    TIMMY(15, 4, 5, 10, Person.Constants.TIMMY),
+    BERTA(24, 3, 6, 15, Person.Constants.BERTA);
 
     int strength;
     int hydrationPoints;
@@ -27,10 +27,4 @@ public enum PersonStatistic{
         return name;
     }
 
-    public static class Constants {
-        public static final String TED = "Ted";
-        public static final String DOLORES = "Dolores";
-        public static final String TIMMY = "Timmy";
-        public static final String BERTA = "Berta";
-    }
 }

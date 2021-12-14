@@ -84,6 +84,7 @@ public class Person {
     void setCheerfulness(int aCheerfulness) {
         cheerfulness = aCheerfulness;
     }
+
     public boolean isAlive(){
         return !getState().toString().equals(DEAD) && getHydrationPoints() > 0 && getSatietyPoints() > 0 && getCheerfulness() > 0 ;
     }
@@ -118,7 +119,7 @@ public class Person {
         return name;
     }
 
-    public void takeSupply(String aSupply, int aAmountOfSupply) {
+    void takeSupply(String aSupply, int aAmountOfSupply) {
         if(aAmountOfSupply > 0){
             if(aSupply.equalsIgnoreCase(WATER_BOTTLE)){
                 drink();
@@ -130,5 +131,12 @@ public class Person {
             }
             takeSupply(aSupply,aAmountOfSupply-1);
         }
+    }
+
+    public static class Constants {
+        public static final String TED = "Ted";
+        public static final String DOLORES = "Dolores";
+        public static final String TIMMY = "Timmy";
+        public static final String BERTA = "Berta";
     }
 }

@@ -24,7 +24,6 @@ import java.util.List;
 
 import static javafx.application.Platform.exit;
 import static pl.bdaf.person.GameEngine.*;
-import static pl.bdaf.person.PersonStatistic.*;
 
 public class WindowGameController implements PropertyChangeListener, Controller {
     private final Stage currentStage;
@@ -187,10 +186,10 @@ public class WindowGameController implements PropertyChangeListener, Controller 
     }
 
     private void setPersonVisible(Person aPerson, boolean aVisible) {
-        if (aPerson.getName().equalsIgnoreCase(TED.getName())) tedImageView.setVisible(aVisible);
-        else if (aPerson.getName().equalsIgnoreCase(DOLORES.getName())) doloresImageView.setVisible(aVisible);
-        else if (aPerson.getName().equalsIgnoreCase(TIMMY.getName())) timmyImageView.setVisible(aVisible);
-        else if (aPerson.getName().equalsIgnoreCase(BERTA.getName())) bertaImageView.setVisible(aVisible);
+        if (aPerson.getName().equalsIgnoreCase(Person.Constants.TED)) tedImageView.setVisible(aVisible);
+        else if (aPerson.getName().equalsIgnoreCase(Person.Constants.DOLORES)) doloresImageView.setVisible(aVisible);
+        else if (aPerson.getName().equalsIgnoreCase(Person.Constants.TIMMY)) timmyImageView.setVisible(aVisible);
+        else if (aPerson.getName().equalsIgnoreCase(Person.Constants.BERTA)) bertaImageView.setVisible(aVisible);
     }
 
     private void animateByScaleTransition(Node aNodeToScaleTransition) {
@@ -207,16 +206,16 @@ public class WindowGameController implements PropertyChangeListener, Controller 
     private void setArrowAboveProperCharacter(Person aPerson) {
         String nameOfCharacter = aPerson.getName();
         switch (nameOfCharacter) {
-            case Constants.TED:
+            case Person.Constants.TED:
                 emptyToMoveArrowLabel.setStyle("-fx-padding: 0 0 0 0;");
                 break;
-            case Constants.DOLORES:
+            case Person.Constants.DOLORES:
                 emptyToMoveArrowLabel.setStyle("-fx-padding: 0 0 0 105;");
                 break;
-            case Constants.TIMMY:
+            case Person.Constants.TIMMY:
                 emptyToMoveArrowLabel.setStyle("-fx-padding: 0 0 0 245;");
                 break;
-            case Constants.BERTA:
+            case Person.Constants.BERTA:
                 emptyToMoveArrowLabel.setStyle("-fx-padding: 0 0 0 340;");
                 break;
             default:
