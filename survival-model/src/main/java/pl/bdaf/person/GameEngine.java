@@ -10,17 +10,15 @@ import static pl.bdaf.person.Backpack.WATER_BOTTLE;
 import static pl.bdaf.person.PersonStatistic.*;
 import static pl.bdaf.person.PersonStatistic.BERTA;
 
-public class GameEngine {
+public class GameEngine implements GameEngineI{
     private static GameEngine gameEngine;
     private static final int MIN_EXPEDITION_DAYS = 1;
     private static final int MAX_EXPEDITION_DAYS = 3;
     public static final String END_OF_THE_GAME = "End Of the Game";
     public static final String PERSON_DID_ACTION_ABOUT_EXPEDITION = "PERSON_DID_ACTION_ABOUT_EXPEDITION";
     public static final String PERSON_PASSES = "PERSON_PASSES";
-    public static final String UPDATE_DIARY = "UPDATE_DIARY";
     public static final String UPDATE_SUPPLIES = "UPDATE_SUPPLIES";
     public static final String DAY_CHANGED = "DAY_CHANGED";
-    public static final String RETURN_FROM_EXPEDITION = "RETURN_FROM_EXPEDITION";
     public static final String SEND_MESSAGE = "SEND_MESSAGE";
     public static final String PEOPLE_DIE = "PEOPLE_DIE";
     private final DiaryWriter diaryWriter;
@@ -31,12 +29,8 @@ public class GameEngine {
     private PropertyChangeSupport observers;
     private boolean endOfGame;
 
-    public static GameEngine getInstance(){
-        if(gameEngine == null) gameEngine = new GameEngine(List.of(new Person(TED), new Person(DOLORES), new Person(TIMMY), new Person(BERTA)));
-        return gameEngine;
-    }
-
-    private GameEngine(List<Person> aPersonList) {
+    // for gameEngineProxy
+    GameEngine(List<Person> aPersonList) {
         this(aPersonList, new Backpack());
     }
 
@@ -55,9 +49,10 @@ public class GameEngine {
         if(endOfGame) return;
         Person oldPerson = getActivePerson();
         int oldDay = getCurrentDay();
+        boolean itWillBeNextDay = isActiveCreatureLastInQueue();
         queue.next();
-        notifyObservers(new PropertyChangeEvent(this, DAY_CHANGED, oldDay, getCurrentDay()));
         notifyObservers(new PropertyChangeEvent(this, PERSON_PASSES, oldPerson, getActivePerson()));
+        if(itWillBeNextDay) notifyObservers(new PropertyChangeEvent(this, DAY_CHANGED, oldDay, getCurrentDay()));
     }
 
     public void drink() {
@@ -93,7 +88,6 @@ public class GameEngine {
     }
 
     void nextDay() {
-        if(isEndOfGame()) return;
         day++;
         StringBuilder currentDayDiary = new StringBuilder();
         currentDayDiary.append(getDescriptionOfAlivePeopleAndMakeDayChangesAbout(1));
@@ -102,11 +96,9 @@ public class GameEngine {
             currentDayDiary.append("_");
         }
         dailyDescribe = currentDayDiary.toString();
-        notifyObservers(new PropertyChangeEvent(this, UPDATE_DIARY, null, null));
     }
 
     public void goForExpeditionAndPass() { // from 1 day to 3 days on expedition
-        if(endOfGame) return;
         if (queue.getAlivePeople().stream().filter(p -> p.getExpeditionDaysLeft() > 0).count() > 0) {
             notifyObservers(new PropertyChangeEvent(this, SEND_MESSAGE, "Forbidden action", "Somebody else is on expedition!"));
         } else if(queue.getAlivePeople().size() <= 1 ) {
@@ -157,14 +149,13 @@ public class GameEngine {
     // returns whether there was supply in backpack to remove
     private boolean reduceNumberOfSupply(int aAmountOfSupply, String aWaterBottle) {
         if (backpack.getAmountOf(aWaterBottle) >= aAmountOfSupply) {
-            backpack.remove(aWaterBottle, aAmountOfSupply);
+            backpack.removeSupply(aWaterBottle, aAmountOfSupply);
             return true;
         }
         return false;
     }
 
     private void consumeSupply(int aAmountOfSupply, String aNameOfSupply) {
-        if(endOfGame) return;
         if (aAmountOfSupply > 0 && reduceNumberOfSupply(aAmountOfSupply, aNameOfSupply)) {
             Backpack oldBackpack = new Backpack(backpack);
             getActivePerson().takeSupply(aNameOfSupply, aAmountOfSupply);
@@ -185,12 +176,26 @@ public class GameEngine {
         notifyObservers(new PropertyChangeEvent(this, PEOPLE_DIE, null, aPeopleJustDied));
     }
 
+    public List<Person> getDeadPeople(){
+        return queue.getDeadPeople();
+    }
+
+    public List<Person> getAlivePeople(){
+        return queue.getAlivePeople();
+    }
+
     public void addObserver(String aNameOfProperty, PropertyChangeListener aListener) {
-        observers.addPropertyChangeListener(aNameOfProperty, aListener);
+        if(!observers.hasListeners(aNameOfProperty)){
+            observers.addPropertyChangeListener(aNameOfProperty, aListener);
+        }
     }
 
     public void removeObserver(String aNameOfProperty, PropertyChangeListener aListener) {
         observers.removePropertyChangeListener(aNameOfProperty, aListener);
+    }
+
+    public void removeObserver(PropertyChangeListener aListener) {
+        observers.removePropertyChangeListener(aListener);
     }
 
     private void notifyObservers(PropertyChangeEvent aPropertyChangeEvent) {
@@ -201,12 +206,10 @@ public class GameEngine {
         String endOfGameDescribe = END_OF_THE_GAME + " - your score is " + (getCurrentDay()) + " day!";
         dailyDescribe += endOfGameDescribe;
         endOfGame = true;
-        notifyObservers(new PropertyChangeEvent(this, DAY_CHANGED, getCurrentDay()-1, getCurrentDay()));
-        notifyObservers(new PropertyChangeEvent(this, END_OF_THE_GAME, null, (getCurrentDay())));
+        notifyObservers(new PropertyChangeEvent(this, END_OF_THE_GAME, null, getCurrentDay()));
     }
 
     public void passWholeDay() {
-        if(endOfGame) return;
         while (!isActiveCreatureLastInQueue()) {
             passToNextPerson();
         }
@@ -215,13 +218,6 @@ public class GameEngine {
 
     private boolean isActiveCreatureLastInQueue() {
         return queue.isActiveCreatureTheLast();
-    }
-
-    public void clearDiaryDescribe() {
-        if(endOfGame) return;
-        dailyDescribe = "";
-        notifyObservers(new PropertyChangeEvent(this, UPDATE_DIARY, null, null));
-        notifyObservers(new PropertyChangeEvent(this, SEND_MESSAGE, "Diary cleaned successfully", "Daily describe of this day has been cleared!"));
     }
 
     public boolean isEndOfGame() {

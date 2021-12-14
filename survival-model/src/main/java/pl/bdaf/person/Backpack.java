@@ -50,7 +50,7 @@ public class Backpack {
         return (int) content.stream().filter(r -> r.equalsIgnoreCase(aResource)).count();
     }
 
-    void remove(String aResource, int aAmountOfSupply) {
+    void removeSupply(String aResource, int aAmountOfSupply) {
         throwExceptionIfStringIsNotProperty(aResource);
         for (int i = 0; i < aAmountOfSupply; i++) {
             content.remove(aResource);
