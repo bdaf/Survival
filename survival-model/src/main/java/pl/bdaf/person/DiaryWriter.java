@@ -2,7 +2,7 @@ package pl.bdaf.person;
 
 import java.util.Random;
 
-public class DiaryWriter {
+class DiaryWriter {
     private Random rand = new Random();
 
     String describe(Person aPerson){

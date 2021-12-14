@@ -10,6 +10,8 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+import static pl.bdaf.person.GameEngine.TOMATO_SOUP;
+import static pl.bdaf.person.GameEngine.WATER_BOTTLE;
 
 public class BackpackTest {
 
@@ -26,12 +28,12 @@ public class BackpackTest {
 
     @Test
     void backpackShouldContain10WaterBottlesAnd6SoupsAndAfterNewRandomizePlus3() {
-        assertEquals(10, backpack.getAmountOf(Backpack.WATER_BOTTLE));
-        assertEquals(6, backpack.getAmountOf(Backpack.TOMATO_SOUP));
+        assertEquals(10, backpack.getAmountOf(WATER_BOTTLE));
+        assertEquals(6, backpack.getAmountOf(TOMATO_SOUP));
         when(randomize.nextInt(anyInt())).thenReturn(3);
         backpack = new Backpack(randomize);
-        assertEquals(13, backpack.getAmountOf(Backpack.WATER_BOTTLE));
-        assertEquals(9, backpack.getAmountOf(Backpack.TOMATO_SOUP));
+        assertEquals(13, backpack.getAmountOf(WATER_BOTTLE));
+        assertEquals(9, backpack.getAmountOf(TOMATO_SOUP));
     }
 
     @Test

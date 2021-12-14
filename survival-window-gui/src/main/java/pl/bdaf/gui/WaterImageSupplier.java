@@ -5,7 +5,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import pl.bdaf.person.GameEngineI;
 
-import static pl.bdaf.person.Backpack.WATER_BOTTLE;
+import static pl.bdaf.person.GameEngine.WATER_BOTTLE;
 
 public class WaterImageSupplier {
 

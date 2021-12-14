@@ -5,15 +5,18 @@ import java.util.List;
 
 public interface GameEngineI {
 
-    void passWholeDay();
-    void passToNextPerson();
+    // actions
+    boolean passWholeDay();
+    boolean passToNextPerson();
+    boolean eat();
+    boolean drink();
+    boolean goForExpeditionAndPass();
+    boolean addObserver(String aNameOfProperty, PropertyChangeListener aListener);
+    boolean removeObserver(String aNameOfProperty, PropertyChangeListener aListener);
+    boolean removeObserver(PropertyChangeListener aListener);
+
+    // getters
     int getAmountOf(String aResource);
-    void eat();
-    void drink();
-    void goForExpeditionAndPass();
-    void addObserver(String aNameOfProperty, PropertyChangeListener aListener);
-    void removeObserver(String aNameOfProperty, PropertyChangeListener aListener);
-    void removeObserver(PropertyChangeListener aListener);
     String getDailyDescribe();
     int getCurrentDay();
     Person getActivePerson();

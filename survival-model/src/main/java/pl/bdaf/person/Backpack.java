@@ -5,13 +5,14 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
-public class Backpack {
-    public static final String TOMATO_SOUP = "tomato_soup";
-    public static final String WATER_BOTTLE = "water_bottle";
-    public static final int MAX_OF_WATER = 20;
-    public static final int MIN_OF_WATER = 10;
-    public static final int MAX_OF_SOUP = 12;
-    public static final int MIN_OF_SOUP = 6;
+import static pl.bdaf.person.GameEngine.TOMATO_SOUP;
+import static pl.bdaf.person.GameEngine.WATER_BOTTLE;
+
+class Backpack {
+    static final int MAX_OF_WATER = 20;
+    static final int MIN_OF_WATER = 10;
+    static final int MAX_OF_SOUP = 12;
+    static final int MIN_OF_SOUP = 6;
     // content contains only tomato soups and water bottles - 2 things in different amounts
     private final List<String> content;
     private Random rand = new Random();
@@ -27,11 +28,11 @@ public class Backpack {
     Backpack(Random aRand) {
         rand = aRand;
         content = new LinkedList<>();
-        addRandomAmountOf(WATER_BOTTLE,MIN_OF_WATER,MAX_OF_WATER);
-        addRandomAmountOf(TOMATO_SOUP,MIN_OF_SOUP,MAX_OF_SOUP);
+        addRandomAmountOf(WATER_BOTTLE, MIN_OF_WATER, MAX_OF_WATER);
+        addRandomAmountOf(TOMATO_SOUP, MIN_OF_SOUP, MAX_OF_SOUP);
     }
 
-    public Backpack(Backpack aBackpack) {
+    Backpack(Backpack aBackpack) {
         content = new ArrayList<>(aBackpack.getContent());
     }
 
@@ -40,12 +41,12 @@ public class Backpack {
     }
 
     private void addRandomAmountOf(String aResource, int aMinBorder, int aMaxBorder) {
-        for (int i = 0; i < rand.nextInt(aMaxBorder-aMinBorder) + aMinBorder; i++) {
+        for (int i = 0; i < rand.nextInt(aMaxBorder - aMinBorder) + aMinBorder; i++) {
             content.add(aResource);
         }
     }
 
-    int getAmountOf(String aResource){
+    int getAmountOf(String aResource) {
         throwExceptionIfStringIsNotProperty(aResource);
         return (int) content.stream().filter(r -> r.equalsIgnoreCase(aResource)).count();
     }
@@ -58,7 +59,7 @@ public class Backpack {
     }
 
     private void throwExceptionIfStringIsNotProperty(String aResource) {
-        if(!aResource.equalsIgnoreCase(TOMATO_SOUP) && !aResource.equalsIgnoreCase(WATER_BOTTLE))
+        if (!aResource.equalsIgnoreCase(TOMATO_SOUP) && !aResource.equalsIgnoreCase(WATER_BOTTLE))
             throw new IllegalArgumentException("Argument should be \"Tomato soup\" or \"Water bottle\"!");
     }
 

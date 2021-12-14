@@ -23,8 +23,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static javafx.application.Platform.exit;
-import static pl.bdaf.person.Backpack.TOMATO_SOUP;
-import static pl.bdaf.person.Backpack.WATER_BOTTLE;
 import static pl.bdaf.person.GameEngine.*;
 import static pl.bdaf.person.PersonStatistic.*;
 

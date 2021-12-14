@@ -1,7 +1,7 @@
 package pl.bdaf.person;
 
-import static pl.bdaf.person.Backpack.TOMATO_SOUP;
-import static pl.bdaf.person.Backpack.WATER_BOTTLE;
+import static pl.bdaf.person.GameEngine.TOMATO_SOUP;
+import static pl.bdaf.person.GameEngine.WATER_BOTTLE;
 import static pl.bdaf.person.State.DEAD;
 
 public class Person {

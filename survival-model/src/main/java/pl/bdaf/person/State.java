@@ -2,10 +2,10 @@ package pl.bdaf.person;
 
 import java.util.Random;
 
-import static pl.bdaf.person.Backpack.TOMATO_SOUP;
-import static pl.bdaf.person.Backpack.WATER_BOTTLE;
+import static pl.bdaf.person.GameEngine.TOMATO_SOUP;
+import static pl.bdaf.person.GameEngine.WATER_BOTTLE;
 
-public abstract class State {
+abstract class State {
 
     public static final String HEALTHY = "Healthy";
     public static final String UNHEALTHY = "Unhealthy";

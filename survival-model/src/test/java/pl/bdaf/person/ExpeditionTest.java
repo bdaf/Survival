@@ -8,12 +8,11 @@ import java.util.List;
 import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-import static pl.bdaf.person.Backpack.TOMATO_SOUP;
-import static pl.bdaf.person.Backpack.WATER_BOTTLE;
+import static pl.bdaf.person.GameEngine.TOMATO_SOUP;
+import static pl.bdaf.person.GameEngine.WATER_BOTTLE;
 import static pl.bdaf.person.PersonStatistic.*;
 import static pl.bdaf.person.State.*;
 
@@ -30,8 +29,8 @@ public class ExpeditionTest {
         randomize = new Random();
         randomize = mock(Random.class);
         backpack = new Backpack(List.of(WATER_BOTTLE, WATER_BOTTLE, WATER_BOTTLE ,TOMATO_SOUP, TOMATO_SOUP, TOMATO_SOUP));
-        assertEquals(3, backpack.getAmountOf(Backpack.WATER_BOTTLE));
-        assertEquals(3, backpack.getAmountOf(Backpack.TOMATO_SOUP));
+        assertEquals(3, backpack.getAmountOf(WATER_BOTTLE));
+        assertEquals(3, backpack.getAmountOf(TOMATO_SOUP));
         ted = new Person(TED);
         ted.setState(new State.Healthy(randomize));
         List<Person> people = new LinkedList<>();

@@ -5,13 +5,10 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.List;
 
-import static pl.bdaf.person.Backpack.TOMATO_SOUP;
-import static pl.bdaf.person.Backpack.WATER_BOTTLE;
-import static pl.bdaf.person.PersonStatistic.*;
-import static pl.bdaf.person.PersonStatistic.BERTA;
-
-public class GameEngine implements GameEngineI{
+public class GameEngine implements GameEngineI {
     private static GameEngine gameEngine;
+    public static final String TOMATO_SOUP = "tomato_soup";
+    public static final String WATER_BOTTLE = "water_bottle";
     private static final int MIN_EXPEDITION_DAYS = 1;
     private static final int MAX_EXPEDITION_DAYS = 3;
     public static final String END_OF_THE_GAME = "End Of the Game";
@@ -45,31 +42,29 @@ public class GameEngine implements GameEngineI{
         dailyDescribe = getDescriptionOfAlivePeopleAndMakeDayChangesAbout(0);
     }
 
-    public void passToNextPerson() {
-        if(endOfGame) return;
+    public boolean passToNextPerson() {
         Person oldPerson = getActivePerson();
         int oldDay = getCurrentDay();
         boolean itWillBeNextDay = isActiveCreatureLastInQueue();
         queue.next();
         notifyObservers(new PropertyChangeEvent(this, PERSON_PASSES, oldPerson, getActivePerson()));
-        if(itWillBeNextDay) notifyObservers(new PropertyChangeEvent(this, DAY_CHANGED, oldDay, getCurrentDay()));
+        if (itWillBeNextDay) notifyObservers(new PropertyChangeEvent(this, DAY_CHANGED, oldDay, getCurrentDay()));
+        return true;
     }
 
-    public void drink() {
-        drink(1);
+    public boolean drink() {
+        return drink(1);
     }
 
-    public void drink(int aAmountOfSupply) {
-        consumeSupply(aAmountOfSupply, WATER_BOTTLE);
+    public boolean drink(int aAmountOfSupply) {
+        return consumeSupply(aAmountOfSupply, WATER_BOTTLE);
     }
 
-    public void eat() {
-        eat(1);
+    public boolean eat() {
+        return eat(1);
     }
 
-    public void eat(int aAmountOfSupply) {
-        consumeSupply(aAmountOfSupply, TOMATO_SOUP);
-    }
+    public boolean eat(int aAmountOfSupply) { return consumeSupply(aAmountOfSupply, TOMATO_SOUP); }
 
     public int getCurrentDay() {
         return day;
@@ -98,17 +93,19 @@ public class GameEngine implements GameEngineI{
         dailyDescribe = currentDayDiary.toString();
     }
 
-    public void goForExpeditionAndPass() { // from 1 day to 3 days on expedition
+    public boolean goForExpeditionAndPass() { // from 1 day to 3 days on expedition
         if (queue.getAlivePeople().stream().filter(p -> p.getExpeditionDaysLeft() > 0).count() > 0) {
             notifyObservers(new PropertyChangeEvent(this, SEND_MESSAGE, "Forbidden action", "Somebody else is on expedition!"));
-        } else if(queue.getAlivePeople().size() <= 1 ) {
+        } else if (queue.getAlivePeople().size() <= 1) {
             notifyObservers(new PropertyChangeEvent(this, SEND_MESSAGE, "Forbidden action", "You cannot let shelter be empty!"));
         } else {
             getActivePerson().setExpeditionDaysLeft(getActivePerson().getState().getRand()
                     .nextInt(MAX_EXPEDITION_DAYS - MIN_EXPEDITION_DAYS + 1) + MIN_EXPEDITION_DAYS);
             notifyObservers(new PropertyChangeEvent(this, PERSON_DID_ACTION_ABOUT_EXPEDITION, null, getActivePerson()));
             passToNextPerson();
+            return true;
         }
+        return false;
     }
 
     private String getDescriptionOfAlivePeopleAndMakeDayChangesAbout(int aFactorOfChanges) {
@@ -155,18 +152,19 @@ public class GameEngine implements GameEngineI{
         return false;
     }
 
-    private void consumeSupply(int aAmountOfSupply, String aNameOfSupply) {
+    private boolean consumeSupply(int aAmountOfSupply, String aNameOfSupply) {
         if (aAmountOfSupply > 0 && reduceNumberOfSupply(aAmountOfSupply, aNameOfSupply)) {
             Backpack oldBackpack = new Backpack(backpack);
             getActivePerson().takeSupply(aNameOfSupply, aAmountOfSupply);
             notifyObservers(new PropertyChangeEvent(this, UPDATE_SUPPLIES, oldBackpack, backpack));
             notifyObservers(new PropertyChangeEvent(this, SEND_MESSAGE, "Successfully consumed", getActivePerson().getName() + " consumed " + aNameOfSupply + "."));
-            return;
+            return true;
         } else if (aAmountOfSupply <= 0) {
             throw new IllegalStateException("You can only take positive value of number of supply: " + aNameOfSupply);
         } else {
             notifyObservers(new PropertyChangeEvent(this, SEND_MESSAGE, "Lack of " + aNameOfSupply, "You don't have this supply to consume!"));
         }
+        return false;
     }
 
     void setDeadDayFor(List<Person> aPeopleJustDied) {
@@ -176,30 +174,35 @@ public class GameEngine implements GameEngineI{
         notifyObservers(new PropertyChangeEvent(this, PEOPLE_DIE, null, aPeopleJustDied));
     }
 
-    public List<Person> getDeadPeople(){
+    public List<Person> getDeadPeople() {
         return queue.getDeadPeople();
     }
 
-    public List<Person> getAlivePeople(){
+    public List<Person> getAlivePeople() {
         return queue.getAlivePeople();
     }
 
-    public void addObserver(String aNameOfProperty, PropertyChangeListener aListener) {
-        if(!observers.hasListeners(aNameOfProperty)){
+    public boolean addObserver(String aNameOfProperty, PropertyChangeListener aListener) {
+        if (!observers.hasListeners(aNameOfProperty)) {
             observers.addPropertyChangeListener(aNameOfProperty, aListener);
+            return true;
         }
+        return false;
     }
 
-    public void removeObserver(String aNameOfProperty, PropertyChangeListener aListener) {
+    public boolean removeObserver(String aNameOfProperty, PropertyChangeListener aListener) {
         observers.removePropertyChangeListener(aNameOfProperty, aListener);
+        return true;
     }
 
-    public void removeObserver(PropertyChangeListener aListener) {
+    public boolean removeObserver(PropertyChangeListener aListener) {
         observers.removePropertyChangeListener(aListener);
+        return true;
     }
 
-    private void notifyObservers(PropertyChangeEvent aPropertyChangeEvent) {
+    private boolean notifyObservers(PropertyChangeEvent aPropertyChangeEvent) {
         observers.firePropertyChange(aPropertyChangeEvent);
+        return true;
     }
 
     void endOfGame() {
@@ -209,11 +212,12 @@ public class GameEngine implements GameEngineI{
         notifyObservers(new PropertyChangeEvent(this, END_OF_THE_GAME, null, getCurrentDay()));
     }
 
-    public void passWholeDay() {
+    public boolean passWholeDay() {
         while (!isActiveCreatureLastInQueue()) {
             passToNextPerson();
         }
         passToNextPerson();
+        return true;
     }
 
     private boolean isActiveCreatureLastInQueue() {
