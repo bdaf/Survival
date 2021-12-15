@@ -16,7 +16,7 @@
 Similar game to sixty seconds, especially to the second part of it, a bit simpler. Make choices which will lead you to survive as many days as possible. Score are set based on days you survived. Feed people and keep them hydrated, send them on expedition to catch supplies and try to survive the next day! How many days are you able to achieve? Try yourself!
 
 <hr>
-<h1> To play the game (version 1.0.0-SNAPSHOT):</h1>
+<h1> To play the game (version 1.0.0-SNAPSHOT) on windows:</h1>
 <h3>1.<a href="https://drive.google.com/file/d/1ZMQx_k8-E5J_l_8SyN1X1s_gthAwkXSk/view?usp=sharing"> Download</a> zip file.</h3> 
 <h3>2. Extract it.</h3> 
 <h3>3. Execute start.bat.</h3> 
