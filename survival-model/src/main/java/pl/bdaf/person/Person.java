@@ -86,7 +86,7 @@ public class Person {
     }
 
     public boolean isAlive(){
-        return !getState().toString().equals(DEAD) && getHydrationPoints() > 0 && getSatietyPoints() > 0 && getCheerfulness() > 0 ;
+        return !getState().getName().equals(DEAD) && getHydrationPoints() > 0 && getSatietyPoints() > 0 && getCheerfulness() > 0;
     }
 
     public String getName() {

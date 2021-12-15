@@ -38,7 +38,7 @@ public class BackpackTest {
 
     @Test
     void shouldThrowIllegalArgumentExceptionWhenYouGetAmountOfNoWaterAndNoSoup() {
-        assertThrows(IllegalArgumentException.class, () -> backpack.getAmountOf("Tomato_soup"));
-        assertThrows(IllegalArgumentException.class, () -> backpack.getAmountOf("Water_bottle"));
+        assertThrows(IllegalArgumentException.class, () -> backpack.getAmountOf("Tomato_soup1"));
+        assertThrows(IllegalArgumentException.class, () -> backpack.getAmountOf("Water_bottle1"));
     }
 }

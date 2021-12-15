@@ -106,7 +106,7 @@ public class ExpeditionTest {
         assertEquals(BEGINNING_TED_STRENGTH *3/10-2+1, engine.getActivePerson().getStrength());
         assertEquals(3, engine.getAmountOf(WATER_BOTTLE));
         assertEquals(3, engine.getAmountOf(TOMATO_SOUP));
-        assertEquals(HEALTHY, ted.getState().toString());
+        assertEquals(HEALTHY, ted.getState().getName());
         engine.passToNextPerson();
         assertEquals(DOLORES.getName(), engine.getActivePerson().getName());
         engine.passToNextPerson();
@@ -126,7 +126,7 @@ public class ExpeditionTest {
         assertEquals(TIMMY.getName(), engine.getActivePerson().getName());
         engine.passToNextPerson();
         assertEquals(BERTA.getName(), engine.getActivePerson().getName());
-        assertEquals(HEALTHY, ted.getState().toString());
+        assertEquals(HEALTHY, ted.getState().getName());
         assertEquals(3, engine.getAmountOf(WATER_BOTTLE));
         assertEquals(3, engine.getAmountOf(TOMATO_SOUP));
         assertEquals(30, ted.getStrength());
@@ -135,7 +135,7 @@ public class ExpeditionTest {
         when(randomize.nextInt(anyInt())).thenReturn(89);
         engine.passToNextPerson();
         // 2th day starts
-        assertEquals(UNHEALTHY, ted.getState().toString());
+        assertEquals(UNHEALTHY, ted.getState().getName());
         assertEquals(TED.getName(), engine.getActivePerson().getName());
         assertEquals(4, engine.getAmountOf(WATER_BOTTLE));
         assertEquals(4, engine.getAmountOf(TOMATO_SOUP));
@@ -151,7 +151,7 @@ public class ExpeditionTest {
     void tedShouldGoForExpeditionFor1DayAndGainNothingAndReturnSickBecauseHeWasAlreadyUnhealthy(){
         assertEquals(1, engine.getCurrentDay());
         ted.setWorseState();
-        assertEquals(UNHEALTHY, ted.getState().toString());
+        assertEquals(UNHEALTHY, ted.getState().getName());
         assertEquals(TED.getName(), engine.getActivePerson().getName());
         when(randomize.nextInt(anyInt())).thenReturn(0);
         engine.goForExpeditionAndPass();
@@ -160,7 +160,7 @@ public class ExpeditionTest {
         assertEquals(TIMMY.getName(), engine.getActivePerson().getName());
         engine.passToNextPerson();
         assertEquals(BERTA.getName(), engine.getActivePerson().getName());
-        assertEquals(UNHEALTHY, ted.getState().toString());
+        assertEquals(UNHEALTHY, ted.getState().getName());
         assertEquals(3, engine.getAmountOf(WATER_BOTTLE));
         assertEquals(3, engine.getAmountOf(TOMATO_SOUP));
         assertEquals(30, ted.getStrength());
@@ -169,7 +169,7 @@ public class ExpeditionTest {
         when(randomize.nextInt(anyInt())).thenReturn(0);
         engine.passToNextPerson();
         // 2th day starts
-        assertEquals(SICK, ted.getState().toString());
+        assertEquals(SICK, ted.getState().getName());
         assertEquals(TED.getName(), engine.getActivePerson().getName());
         assertEquals(3, engine.getAmountOf(WATER_BOTTLE));
         assertEquals(3, engine.getAmountOf(TOMATO_SOUP));

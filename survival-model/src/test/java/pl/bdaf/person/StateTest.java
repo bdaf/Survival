@@ -27,7 +27,7 @@ public class StateTest {
 
     @Test
     void personShouldGet8StrengthPointByDrinkingTwiceAnd7PointsByEatingBeingHealthy() {
-        assertEquals(HEALTHY, person.getState().toString());
+        assertEquals(HEALTHY, person.getState().getName());
         person.drink();
         assertEquals(14, person.getStrength());
         person.drink();
@@ -38,7 +38,7 @@ public class StateTest {
 
     @Test
     void personShouldGet39StrengthPointByEating3TimesBeingHealthy() {
-        assertEquals(HEALTHY, person.getState().toString());
+        assertEquals(HEALTHY, person.getState().getName());
         person.eat();
         assertEquals(17, person.getStrength());
         person.eat();
@@ -50,71 +50,71 @@ public class StateTest {
     @Test
     void personInMediumStateShouldBecameHealthyByDrinking() {
         person.setWorseState();
-        assertEquals(UNHEALTHY, person.getState().toString());
+        assertEquals(UNHEALTHY, person.getState().getName());
         when(randomize.nextDouble()).thenReturn(0.8);
         person.drink();
-        assertEquals(UNHEALTHY, person.getState().toString());
+        assertEquals(UNHEALTHY, person.getState().getName());
 
         when(randomize.nextDouble()).thenReturn(0.79);
         person.drink();
-        assertEquals(HEALTHY, person.getState().toString());
+        assertEquals(HEALTHY, person.getState().getName());
     }
 
     @Test
     void personInMediumStateShouldBecameHealthyByEating() {
         person.setWorseState();
-        assertEquals(UNHEALTHY, person.getState().toString());
+        assertEquals(UNHEALTHY, person.getState().getName());
         when(randomize.nextDouble()).thenReturn(0.6);
         person.eat();
-        assertEquals(UNHEALTHY, person.getState().toString());
+        assertEquals(UNHEALTHY, person.getState().getName());
 
         when(randomize.nextDouble()).thenReturn(0.5);
         person.eat();
-        assertEquals(HEALTHY, person.getState().toString());
+        assertEquals(HEALTHY, person.getState().getName());
     }
 
     @Test
     void personInSickStateShouldBecameHealthyByDrinking() {
         person.setWorseState();
         person.setWorseState();
-        assertEquals(SICK, person.getState().toString());
+        assertEquals(SICK, person.getState().getName());
 
         when(randomize.nextDouble()).thenReturn(0.6);
         person.drink();
-        assertEquals(SICK, person.getState().toString());
+        assertEquals(SICK, person.getState().getName());
 
         when(randomize.nextDouble()).thenReturn(0.5);
         person.drink();
-        assertEquals(UNHEALTHY, person.getState().toString());
+        assertEquals(UNHEALTHY, person.getState().getName());
 
         person.setWorseState();
-        assertEquals(SICK, person.getState().toString());
+        assertEquals(SICK, person.getState().getName());
 
         when(randomize.nextDouble()).thenReturn(0.19);
         person.drink();
-        assertEquals(HEALTHY, person.getState().toString());
+        assertEquals(HEALTHY, person.getState().getName());
     }
 
     @Test
     void personInSickStateShouldBecameHealthyByEating() {
         person.setWorseState();
         person.setWorseState();
-        assertEquals(SICK, person.getState().toString());
+        assertEquals(SICK, person.getState().getName());
 
         when(randomize.nextDouble()).thenReturn(0.45);
         person.eat();
-        assertEquals(SICK, person.getState().toString());
+        assertEquals(SICK, person.getState().getName());
 
         when(randomize.nextDouble()).thenReturn(0.44);
         person.eat();
-        assertEquals(UNHEALTHY, person.getState().toString());
+        assertEquals(UNHEALTHY, person.getState().getName());
 
         person.setWorseState();
-        assertEquals(SICK, person.getState().toString());
+        assertEquals(SICK, person.getState().getName());
 
         when(randomize.nextDouble()).thenReturn(0.34);
         person.eat();
-        assertEquals(HEALTHY, person.getState().toString());
+        assertEquals(HEALTHY, person.getState().getName());
     }
 
     @Test
@@ -122,10 +122,10 @@ public class StateTest {
         person.setWorseState();
         person.setWorseState();
         person.setWorseState();
-        assertEquals(DEAD, person.getState().toString());
+        assertEquals(DEAD, person.getState().getName());
 
         assertEquals(person.getState(), person.getState().getWorseState());
-        assertEquals(SICK, person.getState().getBetterState().toString());
+        assertEquals(SICK, person.getState().getBetterState().getName());
 
         Backpack backpack = new Backpack();
         assertThrows(IllegalStateException.class, () -> person.goForExpedition(backpack));
@@ -139,7 +139,7 @@ public class StateTest {
     void drinkingShouldGive4SStrengthAndMaxOfHydrationIs4PlusEatingShouldGive7StrengthAnd3Cheerfulness() {
         person = new Person(PersonStatistic.TO_TEST_MIN);
         person.setState(state);
-        assertEquals(HEALTHY, person.getState().toString());
+        assertEquals(HEALTHY, person.getState().getName());
 
         when(randomize.nextDouble()).thenReturn(0.95);
 
@@ -161,7 +161,7 @@ public class StateTest {
 
         person = new Person(PersonStatistic.TO_TEST_MIN);
         person.setState(new Unhealthy(randomize));
-        assertEquals(UNHEALTHY, person.getState().toString());
+        assertEquals(UNHEALTHY, person.getState().getName());
         when(randomize.nextDouble()).thenReturn(0.8);
 
         person.eat();
@@ -176,14 +176,14 @@ public class StateTest {
         assertEquals(7, person.getSatietyPoints());
         assertEquals(4, person.getHydrationPoints());
 
-        assertEquals(UNHEALTHY, person.getState().toString());
+        assertEquals(UNHEALTHY, person.getState().getName());
     }
 
     @Test
     void drinkingShouldGive3StrengthAndMaxOfHydrationIs4PlusEatingShouldGive6StrengthAnd3CheerfulnessInSickState() {
         person = new Person(PersonStatistic.TO_TEST_MIN);
         person.setState(new State.Sick(randomize));
-        assertEquals(SICK, person.getState().toString());
+        assertEquals(SICK, person.getState().getName());
         when(randomize.nextDouble()).thenReturn(0.8);
 
         person.eat();
