@@ -224,7 +224,7 @@ public class GameEngine implements GameEngineI {
         return queue.isActiveCreatureTheLast();
     }
 
-    public boolean isEndOfGame() {
+    boolean isEndOfGame() {
         return endOfGame;
     }
 }

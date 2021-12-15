@@ -12,9 +12,9 @@ abstract class State {
     public static final String SICK = "Sick";
     public static final String DEAD = "Dead";
 
-    public static final int MAX_STRENGTH = 33;
-    private static final int MAX_HYDRATION = 4;
-    private static final int MAX_SATIETY = 7;
+    static final int MAX_STRENGTH = 33;
+    static final int MAX_HYDRATION = 4;
+    static final int MAX_SATIETY = 7;
 
     protected Random rand;
     private String name;
