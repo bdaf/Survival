@@ -18,7 +18,6 @@ import pl.bdaf.person.Person;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,7 +28,6 @@ public class WindowGameController implements PropertyChangeListener, Controller 
     private final Stage currentStage;
     private final GameEngineI engine;
     private final String playerName;
-    private boolean isDayUpdatable;
     @FXML private VBox rightVBox;
     @FXML private Button nextDayButton;
     @FXML private Button nextPersonButton;
@@ -48,12 +46,11 @@ public class WindowGameController implements PropertyChangeListener, Controller 
     @FXML private ImageView doloresImageView;
     @FXML private ImageView timmyImageView;
     @FXML private ImageView bertaImageView;
-    @FXML private List<Node> buttonsInRightVBox;
+    private List<Node> buttonsInRightVBox;
 
     WindowGameController(Stage aStage, String aPlayerName) {
         playerName = aPlayerName;
         currentStage = aStage;
-        isDayUpdatable = true;
         engine = GameEngineProxy.getInstance();
     }
 
@@ -64,7 +61,9 @@ public class WindowGameController implements PropertyChangeListener, Controller 
         initButtons();
         buttonsInRightVBox = new ArrayList<>(rightVBox.getChildren());
         updateSuppliesViewsAndLabels();
+
         animateByScaleTransition(arrowImageView);
+
         engine.addObserver(UPDATE_SUPPLIES, this);
         engine.addObserver(PERSON_DID_ACTION_ABOUT_EXPEDITION, this);
         engine.addObserver(END_OF_THE_GAME, this);
@@ -91,8 +90,8 @@ public class WindowGameController implements PropertyChangeListener, Controller 
         cansOfSoupsLabel.setText("Bottles of soups: " + tomatoSoupsAmount);
 
         rightVBox.getChildren().clear();
-        rightVBox = new WaterImageSupplier().addSupplyImageToVBox(rightVBox, engine);
         rightVBox = new SoupImageSupplier().addSupplyImageToVBox(rightVBox, engine);
+        rightVBox = new WaterImageSupplier().addSupplyImageToVBox(rightVBox, engine);
         rightVBox.getChildren().addAll(buttonsInRightVBox);
     }
 
@@ -128,7 +127,8 @@ public class WindowGameController implements PropertyChangeListener, Controller 
         drinkButton.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> engine.drink());
         goOnExpeditionButton.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> engine.goForExpeditionAndPass());
         nextDayButton.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> engine.passWholeDay());
-        nextPersonButton.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> engine.passToNextPerson());
+        nextPersonButton.addEventHandler(MouseEvent.MOUSE_CLICKED, e ->
+                engine.passToNextPerson());
 
     }
 
@@ -161,22 +161,22 @@ public class WindowGameController implements PropertyChangeListener, Controller 
     private void showThatPeopleDied(List<Person> aDeadPeople) {
         for (int i = 0; i < aDeadPeople.size(); i++) {
             String name = aDeadPeople.get(i).getName();
-            URL resources = getClass().getResource("/graphics/" + name + "Dead.png");
+            Image image = new Image("graphics/"+ name.toLowerCase() +"_dead.png");
             switch (name) {
                 case "Ted":
-                    tedImageView.setImage(new Image(resources.toString()));
+                    tedImageView.setImage(image);
                     tedImageView.setRotate(90);
                     break;
                 case "Dolores":
-                    doloresImageView.setImage(new Image(resources.toString()));
+                    doloresImageView.setImage(image);
                     doloresImageView.setRotate(270);
                     break;
                 case "Timmy":
-                    timmyImageView.setImage(new Image(resources.toString()));
+                    timmyImageView.setImage(image);
                     timmyImageView.setRotate(270);
                     break;
                 case "Berta":
-                    bertaImageView.setImage(new Image(resources.toString()));
+                    bertaImageView.setImage(image);
                     bertaImageView.setRotate(270);
                     break;
                 default:

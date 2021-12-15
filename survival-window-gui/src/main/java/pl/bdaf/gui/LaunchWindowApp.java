@@ -19,15 +19,6 @@ public class LaunchWindowApp extends Application {
         showMenuWindow(stage, playerName);
     }
 
-    static void showMenuWindow(Stage aStage, String aPlayerName) {
-        WindowBuilderFX stageBuilder = new WindowBuilderFX();
-        stageBuilder.controller(new MenuController(aPlayerName))
-                .viewName("menu.fxml")
-                .title("Survival - menu")
-                .stage(aStage);
-        stageBuilder.build().show();
-    }
-
     private String showFetchNameWindow() {
         WindowBuilderFX stageBuilder = new WindowBuilderFX();
         stageBuilder.controller(new FetchNameController(this))
@@ -37,6 +28,15 @@ public class LaunchWindowApp extends Application {
 
         if(playerName == null || playerName.equals("")) playerName = DEFAULT_NAME;
         return playerName;
+    }
+
+    static void showMenuWindow(Stage aStage, String aPlayerName) {
+        WindowBuilderFX stageBuilder = new WindowBuilderFX();
+        stageBuilder.controller(new MenuController(aPlayerName))
+                .viewName("menu.fxml")
+                .title("Survival - menu")
+                .stage(aStage);
+        stageBuilder.build().show();
     }
 
     static void showGameWindow(String aPlayerName){

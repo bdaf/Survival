@@ -1,1 +1,1 @@
-start "" "java\bin\javaw.exe" -cp survival-window-gui-1.0.0-SNAPSHOT.jar;lib/* pl.bdaf.gui.LaunchWindowApp
+start "" "java\bin\javaw.exe" -cp survival-window-gui-1.0.0-SNAPSHOT.jar;lib/* pl.bdaf.gui.LaunchApp

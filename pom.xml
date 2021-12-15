@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.bdaf</groupId>
+    <groupId>pl.bdaf</groupId>
     <artifactId>Survival</artifactId>
     <packaging>pom</packaging>
     <version>1.0.0-SNAPSHOT</version>
@@ -12,28 +12,6 @@
         <module>survival-model</module>
         <module>survival-window-gui</module>
     </modules>
-
-
-    <build>
-        <pluginManagement>
-            <plugins>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-surefire-plugin</artifactId>
-                    <version>3.0.0-M5</version>
-                </plugin>
-                <plugin>
-                    <groupId>org.openjfx</groupId>
-                    <artifactId>javafx-maven-plugin</artifactId>
-                    <version>0.0.8</version>
-                    <configuration>
-                        <mainClass>pl.bdaf.gui.LaunchWindowApp</mainClass>
-                    </configuration>
-                </plugin>
-            </plugins>
-        </pluginManagement>
-    </build>
-
 
     <properties>
         <maven.compiler.target>11</maven.compiler.target>
@@ -46,7 +24,18 @@
         <dependencies>
             <dependency>
                 <groupId>org.openjfx</groupId>
+                <artifactId>javafx</artifactId>
+                <version>11</version>
+                <type>pom</type>
+            </dependency>
+            <dependency>
+                <groupId>org.openjfx</groupId>
                 <artifactId>javafx-controls</artifactId>
+                <version>11-ea+25</version>
+            </dependency>
+            <dependency>
+                <groupId>org.openjfx</groupId>
+                <artifactId>javafx-graphics</artifactId>
                 <version>11-ea+25</version>
             </dependency>
             <dependency>
@@ -70,6 +59,12 @@
                 <artifactId>mockito-core</artifactId>
                 <version>4.0.0</version>
                 <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <version>3.3.0</version>
+                <type>maven-plugin</type>
             </dependency>
         </dependencies>
     </dependencyManagement>

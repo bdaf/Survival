@@ -76,7 +76,7 @@ public class WindowBuilderFX implements WindowBuilder {
         if (modality != null) stage.initModality(modality);
 
         FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(DiaryController.class.getClassLoader().getResource("fxml/" + viewName));
+        loader.setLocation(getClass().getClassLoader().getResource("fxml/" + viewName));
         stage.getIcons().add(new Image("graphics/" + iconName));
         stage.setTitle(title);
         loader.setController(controller);

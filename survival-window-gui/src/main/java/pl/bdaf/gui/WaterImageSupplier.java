@@ -16,7 +16,8 @@ public class WaterImageSupplier {
             ImageView imageView = new ImageView();
             imageView.setFitWidth(19);
             imageView.setFitHeight(30);
-            Image image = new Image(getClass().getResourceAsStream("/graphics/"+ getNameOfSupply() +".png"));
+
+            Image image = new Image("graphics/"+ getNameOfSupply() +".png");
             imageView.setImage(image);
             aLeftVBox.getChildren().add(imageView);
         }

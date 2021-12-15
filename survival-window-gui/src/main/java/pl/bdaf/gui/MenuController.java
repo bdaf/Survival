@@ -41,8 +41,8 @@ public class MenuController implements Controller {
         MusicInGame.MUSIC_IN_MENU.stop();
         MusicInGame.MUSIC_IN_GAME.play();
         Stage menuWindow = (Stage) quitButton.getScene().getWindow();
-        menuWindow.close();
         LaunchWindowApp.showGameWindow(nameOfPlayer);
+        menuWindow.close();
     }
 
     private void howToPlayClicked() {
