@@ -96,7 +96,7 @@ public class GameEngine implements GameEngineI {
     public boolean goForExpeditionAndPass() { // from 1 day to 3 days on expedition
         if (queue.getAlivePeople().stream().filter(p -> p.getExpeditionDaysLeft() > 0).count() > 0) {
             notifyObservers(new PropertyChangeEvent(this, SEND_MESSAGE, "Forbidden action", "Somebody else is on expedition!"));
-        } else if (queue.getAlivePeople().stream().filter(p -> p.isAlive()).count() <= 1) {
+        } else if (queue.getAlivePeople().size() <= 1) {
             notifyObservers(new PropertyChangeEvent(this, SEND_MESSAGE, "Forbidden action", "You cannot let shelter be empty!"));
         } else {
             getActivePerson().setExpeditionDaysLeft(getActivePerson().getState().getRand()

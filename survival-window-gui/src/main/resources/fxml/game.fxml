@@ -47,7 +47,7 @@
                </font>
             </Button>
             <Button fx:id="nextPersonButton" mnemonicParsing="false" styleClass="buttonInGame" text="Next person" />
-            <Button fx:id="goOnExpeditionButton" mnemonicParsing="false" styleClass="buttonInGame" text="Go on expedition" />
+            <Button fx:id="goOnExpeditionButton" mnemonicParsing="false" styleClass="buttonInGame" text="Expedition" />
             <Button fx:id="drinkButton" mnemonicParsing="false" styleClass="buttonInGame" text="Drink" />
             <Button fx:id="eatButton" mnemonicParsing="false" styleClass="buttonInGame" text="Eat" />
             <Button fx:id="diaryButton" mnemonicParsing="false" prefHeight="66.0" styleClass="buttonInGame" text="Diary">
